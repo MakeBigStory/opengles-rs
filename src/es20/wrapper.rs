@@ -54,28 +54,26 @@ pub fn blend_func_separate(src_rgb: GLenum, dst_rgb: GLenum, src_alpha: GLenum, 
     unsafe { ffi::glBlendFuncSeparate(src_rgb, dst_rgb, src_alpha, dst_alpha) }
 }
 
-pub fn buffer_data<T>(target: GLenum, buffer: &[T], usage: GLenum) {
+pub fn buffer_data(target: GLenum, size: GLsizeiptr, buffer: * const GLvoid, usage: GLenum) {
     unsafe {
         ffi::glBufferData(
             target,
-            (buffer.len() * size_of::<T>()) as GLsizeiptr,
-            buffer.as_ptr() as *const GLvoid,
+            size,
+            buffer,
             usage,
         )
     }
 }
 
-pub fn buffer_sub_data<T>(target: GLenum, offset: GLintptr, buffer: &[T]) {
-    unsafe {
-        let size = size_of::<T>();
-
-        ffi::glBufferSubData(
-            target,
-            offset * size as GLintptr,
-            (buffer.len() * size) as GLsizeiptr,
-            buffer.as_ptr() as *const GLvoid,
-        )
-    }
+    pub fn buffer_sub_data(target: GLenum, offset: GLintptr, size: GLsizeiptr, buffer: *const GLvoid) {
+        unsafe {
+            ffi::glBufferSubData(
+                target,
+                offset,
+                size,
+                buffer,
+            )
+        }
 }
 
 pub fn check_framebuffer_status(target: GLenum) -> GLenum {
@@ -631,7 +629,7 @@ pub fn get_shader_source(shader: GLuint, max_length: GLsizei) -> Option<String> 
 pub fn get_string(name: GLenum) -> Option<String> {
     unsafe {
         let c_str = ffi::glGetString(name);
-
+        //todo : can't guarantee the lifetime, because the memory is allocated by C
         if !c_str.is_null() {
             match from_utf8(CStr::from_ptr(c_str as *const c_char).to_bytes()) {
                 Ok(s) => Some(s.to_string()),

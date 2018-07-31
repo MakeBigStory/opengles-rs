@@ -54,16 +54,18 @@ pub fn gl_blend_func_separate(src_rgb: GLenum, dst_rgb: GLenum, src_alpha: GLenu
     unsafe { ffi::glBlendFuncSeparate(src_rgb, dst_rgb, src_alpha, dst_alpha) }
 }
 
-pub fn gl_buffer_data<T>(target: GLenum, buffer: &[T], usage: GLenum) {
+
+pub fn gl_buffer_data(target: GLenum, size: GLsizeiptr, buffer: * const GLvoid, usage: GLenum) {
     unsafe {
         ffi::glBufferData(
             target,
-            (buffer.len() * size_of::<T>()) as GLsizeiptr,
-            buffer.as_ptr() as *const GLvoid,
+            size,
+            buffer,
             usage,
         )
     }
 }
+
 
 pub fn gl_buffer_sub_data<T>(target: GLenum, offset: GLintptr, buffer: &[T]) {
     unsafe {

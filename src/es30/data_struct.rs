@@ -1,6 +1,13 @@
 use super::es20::data_struct::*;
 use super::*;
 
+//STRUCT
+pub struct ProgramBinary{
+    pub length: GLsizei,
+    pub binaryFormat: GLenum,
+    pub binary: Vec<u8>
+}
+
 //// -------------------------------------------------------------------------------------------------
 //// CONSTANTS
 //// -------------------------------------------------------------------------------------------------

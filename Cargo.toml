@@ -9,4 +9,5 @@ libc = "0.2.42"
 
 [lib]
 name = "opengles_rs"
-crate-type = ["rlib"]
+#crate-type = ["rlib"]
+crate-type = ["staticlib"]

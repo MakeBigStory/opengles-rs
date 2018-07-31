@@ -31,6 +31,7 @@ pub struct Active {
     pub name: String,
     pub size: GLint,
     pub type_: GLenum,
+    pub length: GLsizei,
 }
 
 pub struct ShaderPrecisionFormat {

@@ -1,5 +1,5 @@
 [package]
-name          = "opengles-rs"
+name          = "opengles_rs"
 version       = "0.1.0"
 license       = "MIT"
 
@@ -9,5 +9,4 @@ libc = "0.2.42"
 
 [lib]
 name = "opengles_rs"
-#crate-type = ["rlib"]
-crate-type = ["staticlib"]
+crate-type = ["staticlib", "rlib"]

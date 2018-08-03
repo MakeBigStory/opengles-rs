@@ -25,22 +25,6 @@ pub type GLintptr = khronos_intptr_t;
 pub type GLsizeiptr = khronos_ssize_t;
 
 // -------------------------------------------------------------------------------------------------
-// STRUCTS
-// -------------------------------------------------------------------------------------------------
-
-pub struct Active {
-    pub name: String,
-    pub size: GLint,
-    pub type_: GLenum,
-    pub length: GLsizei,
-}
-
-pub struct ShaderPrecisionFormat {
-    pub precision: GLint,
-    pub range: [GLint; 2],
-}
-
-// -------------------------------------------------------------------------------------------------
 // CONSTANTS
 // -------------------------------------------------------------------------------------------------
 

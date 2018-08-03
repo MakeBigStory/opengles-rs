@@ -2,6 +2,22 @@ use super::data_struct::*;
 use super::ffi::*;
 use super::*;
 
+// -------------------------------------------------------------------------------------------------
+// STRUCTS
+// -------------------------------------------------------------------------------------------------
+
+pub struct Active {
+    pub name: String,
+    pub size: GLint,
+    pub type_: GLenum,
+    pub length: GLsizei,
+}
+
+pub struct ShaderPrecisionFormat {
+    pub precision: GLint,
+    pub range: [GLint; 2],
+}
+
 pub fn gl_active_texture(texture: GLenum) {
     unsafe { ffi::glActiveTexture(texture) }
 }

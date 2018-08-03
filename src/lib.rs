@@ -46,3 +46,5 @@ pub mod es20;
 pub mod es30;
 pub mod es31;
 pub mod es32;
+
+pub mod types;

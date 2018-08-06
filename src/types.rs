@@ -235,3 +235,27 @@ pub enum DepthFunc {
     GEQUAL = GL_GEQUAL as isize,
     ALWAYS = GL_ALWAYS as isize
 }
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum Feature {
+    BLEND = GL_BLEND as isize,
+    CULL_FACE = GL_CULL_FACE as isize,
+    DEPTH_TEST = GL_DEPTH_TEST as isize,
+    DITHER = GL_DITHER as isize,
+    POLYGON_OFFSET_FILL = GL_POLYGON_OFFSET_FILL as isize,
+    SAMPLE_ALPHA_TO_COVERAGE = GL_SAMPLE_ALPHA_TO_COVERAGE as isize,
+    SAMPLE_COVERAGE = GL_SAMPLE_COVERAGE as isize,
+    SCISSOR_TEST = GL_SCISSOR_TEST as isize,
+    STENCIL_TEST = GL_STENCIL_TEST as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BeginMode {
+    POINTS = GL_POINTS as isize,
+    LINES = GL_LINES as isize,
+    LINE_LOOP = GL_LINE_LOOP as isize,
+    LINE_STRIP = GL_LINE_STRIP as isize,
+    TRIANGLES = GL_TRIANGLES as isize,
+    TRIANGLE_STRIP = GL_TRIANGLE_STRIP as isize,
+    TRIANGLE_FAN = GL_TRIANGLE_FAN as isize
+}

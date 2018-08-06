@@ -14,6 +14,8 @@ use types::TextureTarget;
 use types::ShaderType;
 use types::CullFaceMode;
 use types::DepthFunc;
+use types::Feature;
+use types::BeginMode;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -433,51 +435,96 @@ impl Wrapper {
         Ok(())
     }
 
+    pub fn gl_depth_mask(&mut self, flag: bool) -> Result<(), Error> {
+        unsafe {
+            ffi::glDepthMask(flag as GLboolean)
+        }
 
-}
+        Ok(())
+    }
 
-pub fn gl_depth_mask(flag: bool) {
-    unsafe { ffi::glDepthMask(flag as GLboolean) }
-}
 
-pub fn gl_depth_rangef(z_near: GLclampf, z_far: GLclampf) {
-    unsafe { ffi::glDepthRangef(z_near, z_far) }
-}
+    pub fn gl_depth_rangef(&mut self, z_near: f32, z_far: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDepthRangef(z_near as GLclampf, z_far as GLclampf)
+        }
 
-pub fn gl_detach_shader(program: GLuint, shader: GLuint) {
-    unsafe { ffi::glDetachShader(program, shader) }
-}
+        Ok(())
+    }
 
-pub fn gl_disable(feature: GLenum) {
-    unsafe { ffi::glDisable(feature) }
-}
+    pub fn gl_detach_shader(&mut self, program: u32, shader: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDetachShader(program as GLuint, shader as GLuint)
+        }
 
-pub fn gl_disable_vertex_attrib_array(index: GLuint) {
-    unsafe { ffi::glDisableVertexAttribArray(index) }
-}
+        Ok(())
+    }
 
-pub fn gl_draw_arrays(mode: GLenum, first: GLint, count: GLsizei) {
-    unsafe { ffi::glDrawArrays(mode, first, count) }
-}
+    pub fn gl_disable(&mut self, feature: Feature) -> Result<(), Error> {
+        unsafe {
+            ffi::glDisable(feature as GLenum)
+        }
 
-pub fn gl_draw_elements<T>(mode: GLenum, count: GLsizei, type_: GLenum, indices: &[T]) {
-    unsafe { ffi::glDrawElements(mode, count, type_, indices.as_ptr() as *const GLvoid) }
-}
+        Ok(())
+    }
 
-pub fn gl_enable(feature: GLenum) {
-    unsafe { ffi::glEnable(feature) }
-}
+    pub fn gl_disable_vertex_attrib_array(&mut self, index: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDisableVertexAttribArray(index as GLuint)
+        }
 
-pub fn gl_enable_vertex_attrib_array(index: GLuint) {
-    unsafe { ffi::glEnableVertexAttribArray(index) }
-}
+        Ok(())
+    }
 
-pub fn gl_finish() {
-    unsafe { ffi::glFinish() }
-}
+    pub fn gl_draw_arrays(&mut self, mode: BeginMode, first: i32, count: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDrawArrays(mode as GLenum, first as GLint, count as GLsizei)
+        }
 
-pub fn gl_flush() {
-    unsafe { ffi::glFlush() }
+        Ok(())
+    }
+
+    // TODO: type_ & T is reasonable ?
+    pub fn gl_draw_elements<T>(&mut self, mode: BeginMode, count: i32, type_: GLenum, indices: &[T]) -> Result<(), Error> {
+        unsafe {
+            ffi::glDrawElements(mode as GLenum, count as GLsizei,
+                                type_, indices.as_ptr() as *const GLvoid)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_enable(&mut self, feature: Feature) -> Result<(), Error> {
+        unsafe {
+            ffi::glEnable(feature as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_enable_vertex_attrib_array(&mut self, index: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glEnableVertexAttribArray(index as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_finish(&mut self) -> Result<(), Error> {
+        unsafe {
+            ffi::glFinish()
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_flush(&mut self) -> Result<(), Error> {
+        unsafe {
+            ffi::glFlush()
+        }
+
+        Ok(())
+    }
 }
 
 pub fn gl_framebuffer_renderbuffer(

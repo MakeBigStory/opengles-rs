@@ -1,6 +1,14 @@
 use super::data_struct::*;
 use super::ffi::*;
 use super::*;
+use types::TextureUnit;
+use types::BufferBindTarget;
+use types::FrameBufferBindTarget;
+use types::RenderBufferBindTarget;
+use types::TextureBindTarget;
+use types::BlendEquationMode;
+use types::BlendFactor;
+use types::BufferUsage;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -18,81 +26,153 @@ pub struct ShaderPrecisionFormat {
     pub range: [GLint; 2],
 }
 
-pub fn gl_active_texture(texture: GLenum) {
-    unsafe { ffi::glActiveTexture(texture) }
+pub struct Error {
+
 }
 
-pub fn gl_attach_shader(program: GLuint, shader: GLuint) {
-    unsafe { ffi::glAttachShader(program, shader) }
+pub struct Wrapper {
 }
 
-pub fn gl_bind_attrib_location(program: GLuint, index: GLuint, name: &str) {
-    unsafe {
-        let c_str = CString::new(name).unwrap();
+trait Interceptor {
+    fn intercept(&mut self, fun_name: &str) -> Result<(), Error>;
+}
 
-        ffi::glBindAttribLocation(program, index, c_str.as_ptr() as *const c_char)
+impl Wrapper {
+
+    pub fn gl_active_texture(&mut self, texture_unit: TextureUnit) -> Result<(), Error> {
+        unsafe {
+            ffi::glActiveTexture(texture_unit as GLenum);
+        }
+
+        Ok(())
     }
-}
 
-pub fn gl_bind_buffer(target: GLenum, buffer: GLuint) {
-    unsafe { ffi::glBindBuffer(target, buffer) }
-}
+    pub fn gl_attach_shader(&mut self, program: u32, shader: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glAttachShader(program as GLuint, shader as GLuint);
+        }
 
-pub fn gl_bind_framebuffer(target: GLenum, framebuffer: GLuint) {
-    unsafe { ffi::glBindFramebuffer(target, framebuffer) }
-}
-
-pub fn gl_bind_renderbuffer(target: GLenum, renderbuffer: GLuint) {
-    unsafe { ffi::glBindRenderbuffer(target, renderbuffer) }
-}
-
-pub fn gl_bind_texture(target: GLenum, texture: GLuint) {
-    unsafe { ffi::glBindTexture(target, texture) }
-}
-
-pub fn gl_blend_color(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf) {
-    unsafe { ffi::glBlendColor(red, green, blue, alpha) }
-}
-
-pub fn gl_blend_equation(mode: GLenum) {
-    unsafe { ffi::glBlendEquation(mode) }
-}
-
-pub fn gl_blend_equation_separate(mode_rgb: GLenum, mode_alpha: GLenum) {
-    unsafe { ffi::glBlendEquationSeparate(mode_rgb, mode_alpha) }
-}
-
-pub fn gl_blend_func(src_factor: GLenum, dst_factor: GLenum) {
-    unsafe { ffi::glBlendFunc(src_factor, dst_factor) }
-}
-
-pub fn gl_blend_func_separate(src_rgb: GLenum, dst_rgb: GLenum, src_alpha: GLenum, dst_alpha: GLenum) {
-    unsafe { ffi::glBlendFuncSeparate(src_rgb, dst_rgb, src_alpha, dst_alpha) }
-}
-
-
-pub fn gl_buffer_data(target: GLenum, size: GLsizeiptr, buffer: * const GLvoid, usage: GLenum) {
-    unsafe {
-        ffi::glBufferData(
-            target,
-            size,
-            buffer,
-            usage,
-        )
+        Ok(())
     }
-}
 
+    pub fn gl_bind_attrib_location(&mut self, program: u32, index: u32, name: &str) -> Result<(), Error> {
+        unsafe {
+            let c_str = CString::new(name).unwrap();
 
-pub fn gl_buffer_sub_data<T>(target: GLenum, offset: GLintptr, buffer: &[T]) {
-    unsafe {
-        let size = size_of::<T>();
+            ffi::glBindAttribLocation(program as GLuint, index as GLuint,
+                                      c_str.as_ptr() as *const c_char);
+        }
 
-        ffi::glBufferSubData(
-            target,
-            offset * size as GLintptr,
-            (buffer.len() * size) as GLsizeiptr,
-            buffer.as_ptr() as *const GLvoid,
-        )
+        Ok(())
+    }
+
+    pub fn gl_bind_buffer(&mut self, target: BufferBindTarget, buffer: GLuint) -> Result<(), Error> {
+        unsafe {
+            ffi::glBindBuffer(target as GLenum, buffer as GLuint);
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_bind_framebuffer(&mut self, target: FrameBufferBindTarget, framebuffer: GLuint) -> Result<(), Error> {
+        unsafe {
+            ffi::glBindFramebuffer(target as GLenum, framebuffer as GLuint);
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_bind_renderbuffer(&mut self, target: RenderBufferBindTarget, renderbuffer: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glBindRenderbuffer(target as GLenum, renderbuffer as GLuint);
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_bind_texture(&mut self, target: TextureBindTarget, texture: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glBindTexture(target as GLenum, texture as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_blend_color(&mut self, red: f32, green: f32, blue: f32,
+                          alpha: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glBlendColor(red as GLclampf, green as GLclampf,
+                              blue as GLclampf, alpha as GLclampf)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_blend_equation(&mut self, mode: BlendEquationMode) -> Result<(), Error> {
+        unsafe {
+            ffi::glBlendEquation(mode as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_blend_equation_separate(&mut self, mode_rgb: BlendEquationMode, mode_alpha: BlendEquationMode)
+        -> Result<(), Error> {
+        unsafe {
+            ffi::glBlendEquationSeparate(mode_rgb as GLenum, mode_alpha as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_blend_func(&mut self, src_factor: BlendFactor, dst_factor: BlendFactor) -> Result<(), Error> {
+        unsafe {
+            ffi::glBlendFunc(src_factor as GLenum, dst_factor as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_blend_func_separate(&mut self, src_rgb: BlendFactor, dst_rgb: BlendFactor,
+                                  src_alpha: BlendFactor, dst_alpha: BlendFactor) -> Result<(), Error> {
+        unsafe {
+            ffi::glBlendFuncSeparate(src_rgb as GLenum, dst_rgb as GLenum,
+                                     src_alpha as GLenum, dst_alpha as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_buffer_data<T>(&mut self, target: BufferBindTarget,
+                             buffer: &[T], usage: BufferUsage) -> Result<(), Error> {
+        unsafe {
+            let t_size = size_of::<T>();
+
+            ffi::glBufferData(
+                target as GLenum,
+                (buffer.len() * t_size) as GLsizeiptr,
+                buffer.as_ptr() as *const GLvoid,
+                usage as GLenum,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_buffer_sub_data<T>(&mut self, target: BufferBindTarget, offset: u32, buffer: &[T])
+        -> Result<(), Error> {
+        unsafe {
+            let t_size = size_of::<T>();
+
+            ffi::glBufferSubData(
+                target as GLenum,
+                (offset * (t_size as u32)) as GLintptr,
+                (buffer.len() * t_size) as GLsizeiptr,
+                buffer.as_ptr() as *const GLvoid,
+            )
+        }
+
+        Ok(())
     }
 }
 

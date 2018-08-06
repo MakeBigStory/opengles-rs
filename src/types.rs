@@ -3,6 +3,8 @@
 // -------------------------------------------------------------------------------------------------
 pub use std::os::raw::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void, c_float};
 
+use super::es20::data_struct::*;
+
 // -------------------------------------------------------------------------------------------------
 // TYPES
 // -------------------------------------------------------------------------------------------------
@@ -84,3 +86,94 @@ pub type GLDEBUGPROCAMD = extern "system" fn(
 );
 pub type GLhalfNV = c_ushort;
 pub type GLvdpauSurfaceNV = GLintptr;
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum TextureUnit {
+    Texture0 = GL_TEXTURE0 as isize,
+    Texture1 = GL_TEXTURE1 as isize,
+    Texture2 = GL_TEXTURE2 as isize,
+    Texture3 = GL_TEXTURE3 as isize,
+    Texture4 = GL_TEXTURE4 as isize,
+    Texture5 = GL_TEXTURE5 as isize,
+    Texture6 = GL_TEXTURE6 as isize,
+    Texture7 = GL_TEXTURE7 as isize,
+    Texture8 = GL_TEXTURE8 as isize,
+    Texture9 = GL_TEXTURE9 as isize,
+    Texture10 = GL_TEXTURE10 as isize,
+    Texture11 = GL_TEXTURE11 as isize,
+    Texture12 = GL_TEXTURE12 as isize,
+    Texture13 = GL_TEXTURE13 as isize,
+    Texture14 = GL_TEXTURE14 as isize,
+    Texture15 = GL_TEXTURE15 as isize,
+    Texture16 = GL_TEXTURE16 as isize,
+    Texture17 = GL_TEXTURE17 as isize,
+    Texture18 = GL_TEXTURE18 as isize,
+    Texture19 = GL_TEXTURE19 as isize,
+    Texture20 = GL_TEXTURE20 as isize,
+    Texture21 = GL_TEXTURE21 as isize,
+    Texture22 = GL_TEXTURE22 as isize,
+    Texture23 = GL_TEXTURE23 as isize,
+    Texture24 = GL_TEXTURE24 as isize,
+    Texture25 = GL_TEXTURE25 as isize,
+    Texture26 = GL_TEXTURE26 as isize,
+    Texture27 = GL_TEXTURE27 as isize,
+    Texture28 = GL_TEXTURE28 as isize,
+    Texture29 = GL_TEXTURE29 as isize,
+    Texture30 = GL_TEXTURE30 as isize,
+    Texture31 = GL_TEXTURE31 as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BufferBindTarget {
+    ARRAY_BUFFER = GL_ARRAY_BUFFER_BINDING as isize,
+    ELEMENT_ARRAY_BUFFER = GL_ELEMENT_ARRAY_BUFFER_BINDING as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrameBufferBindTarget {
+    FRAMEBUFFER = GL_FRAMEBUFFER as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum RenderBufferBindTarget {
+    RENDERBUFFER = GL_RENDERBUFFER as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum TextureBindTarget {
+    TEXTURE_2D = GL_TEXTURE_BINDING_2D as isize,
+    TEXTURE_CUBE_MAP = GL_TEXTURE_BINDING_CUBE_MAP as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BlendEquationMode {
+    FUNC_ADD = GL_FUNC_ADD as isize,
+    FUNC_SUBTRACT = GL_FUNC_SUBTRACT as isize,
+    FUNC_REVERSE_SUBTRACT = GL_FUNC_REVERSE_SUBTRACT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BlendFactor {
+    ZERO = GL_ZERO as isize,
+    ONE = GL_ONE as isize,
+    SRC_COLOR = GL_SRC_COLOR as isize,
+    ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR as isize,
+    DST_COLOR = GL_DST_COLOR as isize,
+    ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR as isize,
+    SRC_ALPHA = GL_SRC_ALPHA as isize,
+    ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA as isize,
+    DST_ALPHA = GL_DST_ALPHA as isize,
+    ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA as isize,
+    CONSTANT_COLOR = GL_CONSTANT_COLOR as isize,
+    ONE_MINUS_CONSTANT_COLOR = GL_ONE_MINUS_CONSTANT_COLOR as isize,
+    CONSTANT_ALPHA = GL_CONSTANT_ALPHA as isize,
+    ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA as isize,
+    SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BufferUsage {
+    STREAM_DRAW = GL_STREAM_DRAW as isize,
+    STATIC_DRAW = GL_STATIC_DRAW as isize,
+    DYNAMIC_DRAW = GL_DYNAMIC_DRAW as isize
+}

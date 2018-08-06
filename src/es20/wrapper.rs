@@ -9,6 +9,11 @@ use types::TextureBindTarget;
 use types::BlendEquationMode;
 use types::BlendFactor;
 use types::BufferUsage;
+use types::FrameBufferStatus;
+use types::TextureTarget;
+use types::ShaderType;
+use types::CullFaceMode;
+use types::DepthFunc;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -38,7 +43,6 @@ trait Interceptor {
 }
 
 impl Wrapper {
-
     pub fn gl_active_texture(&mut self, texture_unit: TextureUnit) -> Result<(), Error> {
         unsafe {
             ffi::glActiveTexture(texture_unit as GLenum);
@@ -117,7 +121,7 @@ impl Wrapper {
     }
 
     pub fn gl_blend_equation_separate(&mut self, mode_rgb: BlendEquationMode, mode_alpha: BlendEquationMode)
-        -> Result<(), Error> {
+                                      -> Result<(), Error> {
         unsafe {
             ffi::glBlendEquationSeparate(mode_rgb as GLenum, mode_alpha as GLenum)
         }
@@ -160,7 +164,7 @@ impl Wrapper {
     }
 
     pub fn gl_buffer_sub_data<T>(&mut self, target: BufferBindTarget, offset: u32, buffer: &[T])
-        -> Result<(), Error> {
+                                 -> Result<(), Error> {
         unsafe {
             let t_size = size_of::<T>();
 
@@ -174,157 +178,262 @@ impl Wrapper {
 
         Ok(())
     }
-}
 
-pub fn gl_check_framebuffer_status(target: GLenum) -> GLenum {
-    unsafe { ffi::glCheckFramebufferStatus(target) }
-}
+    pub fn gl_check_framebuffer_status(&mut self, target: FrameBufferBindTarget) -> Result<FrameBufferStatus, Error> {
+        unsafe {
+            let status = ffi::glCheckFramebufferStatus(target as GLenum);
 
-pub fn gl_clear(mask: GLbitfield) {
-    unsafe { ffi::glClear(mask) }
-}
-
-pub fn gl_clear_color(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf) {
-    unsafe { ffi::glClearColor(red, green, blue, alpha) }
-}
-
-pub fn gl_clear_depthf(depth: GLclampf) {
-    unsafe { ffi::glClearDepthf(depth) }
-}
-
-pub fn gl_clear_stencil(stencil: GLint) {
-    unsafe { ffi::glClearStencil(stencil) }
-}
-
-pub fn gl_color_mask(red: bool, green: bool, blue: bool, alpha: bool) {
-    unsafe {
-        ffi::glColorMask(
-            red as GLboolean,
-            green as GLboolean,
-            blue as GLboolean,
-            alpha as GLboolean,
-        )
+            Ok(FrameBufferStatus::from(status))
+        }
     }
-}
 
-pub fn gl_compile_shader(shader: GLuint) {
-    unsafe { ffi::glCompileShader(shader) }
-}
+    pub fn gl_clear(&mut self, mask: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glClear(mask as GLbitfield)
+        }
 
-pub fn gl_compressed_tex_image_2d<T>(
-    target: GLenum,
-    level: GLint,
-    internal_format: GLenum,
-    width: GLsizei,
-    height: GLsizei,
-    border: GLint,
-    image_size: GLsizei,
-    buffer: &[T],
-) {
-    unsafe {
-        ffi::glCompressedTexImage2D(
-            target,
-            level,
-            internal_format,
-            width,
-            height,
-            border,
-            image_size,
-            buffer.as_ptr() as *const GLvoid,
-        )
+        Ok(())
     }
-}
 
-pub fn gl_compressed_tex_sub_image_2d<T>(
-    target: GLenum,
-    level: GLint,
-    x_offset: GLint,
-    y_offset: GLint,
-    width: GLsizei,
-    height: GLsizei,
-    format: GLenum,
-    image_size: GLsizei,
-    buffer: &[T],
-) {
-    unsafe {
-        ffi::glCompressedTexSubImage2D(
-            target,
-            level,
-            x_offset,
-            y_offset,
-            width,
-            height,
-            format,
-            image_size,
-            buffer.as_ptr() as *const GLvoid,
-        )
+    pub fn gl_clear_color(&mut self, red: f32, green: f32,
+                          blue: f32, alpha: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glClearColor(red as GLclampf, green as GLclampf, blue as GLclampf,
+                              alpha as GLclampf)
+        }
+
+        Ok(())
     }
-}
 
-pub fn gl_copy_tex_image_2d(
-    target: GLenum,
-    level: GLint,
-    internal_format: GLenum,
-    x: GLint,
-    y: GLint,
-    width: GLsizei,
-    height: GLsizei,
-    border: GLint,
-) {
-    unsafe { ffi::glCopyTexImage2D(target, level, internal_format, x, y, width, height, border) }
-}
+    pub fn gl_clear_depthf(&mut self, depth: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glClearDepthf(depth as GLclampf)
+        }
 
-pub fn gl_copy_tex_sub_image_2d(
-    target: GLenum,
-    level: GLint,
-    x_offset: GLint,
-    y_offset: GLint,
-    x: GLint,
-    y: GLint,
-    width: GLsizei,
-    height: GLsizei,
-) {
-    unsafe { ffi::glCopyTexSubImage2D(target, level, x_offset, y_offset, x, y, width, height) }
-}
+        Ok(())
+    }
 
-pub fn gl_create_program() -> GLuint {
-    unsafe { ffi::glCreateProgram() }
-}
+    pub fn gl_clear_stencil(&mut self, stencil: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glClearStencil(stencil as GLint)
+        }
 
-pub fn gl_create_shader(type_: GLenum) -> GLuint {
-    unsafe { ffi::glCreateShader(type_) }
-}
+        Ok(())
+    }
 
-pub fn gl_cull_face(mode: GLenum) {
-    unsafe { ffi::glCullFace(mode) }
-}
 
-pub fn gl_delete_buffers(buffers: &[GLuint]) {
-    unsafe { ffi::glDeleteBuffers(buffers.len() as GLsizei, buffers.as_ptr()) }
-}
+    pub fn gl_color_mask(&mut self, red: bool, green: bool, blue: bool, alpha: bool) -> Result<(), Error> {
+        unsafe {
+            ffi::glColorMask(
+                red as GLboolean,
+                green as GLboolean,
+                blue as GLboolean,
+                alpha as GLboolean,
+            )
+        }
 
-pub fn gl_delete_framebuffers(framebuffers: &[GLuint]) {
-    unsafe { ffi::glDeleteFramebuffers(framebuffers.len() as GLsizei, framebuffers.as_ptr()) }
-}
+        Ok(())
+    }
 
-pub fn gl_delete_program(program: GLuint) {
-    unsafe { ffi::glDeleteProgram(program) }
-}
+    pub fn gl_compile_shader(&mut self, shader: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glCompileShader(shader as GLuint)
+        }
 
-pub fn gl_delete_renderbuffers(renderbuffers: &[GLuint]) {
-    unsafe { ffi::glDeleteRenderbuffers(renderbuffers.len() as GLsizei, renderbuffers.as_ptr()) }
-}
+        Ok(())
+    }
 
-pub fn gl_delete_shader(shader: GLuint) {
-    unsafe { ffi::glDeleteShader(shader) }
-}
+    // TODO: internal_format 仍然是GLenum
+    // OpenGL ES defines no specific compressed texture formats,
+    // but does provide a mechanism to obtain symbolic constants
+    // for such formats provided by extensions. The number of compressed
+    // texture formats supported can be obtained by querying the value of
+    // GL_NUM_COMPRESSED_TEXTURE_FORMATS. The list of specific compressed
+    // texture formats supported can be obtained by querying the value of
+    // GL_COMPRESSED_TEXTURE_FORMATS.
 
-pub fn gl_delete_textures(textures: &[GLuint]) {
-    unsafe { ffi::glDeleteTextures(textures.len() as GLsizei, textures.as_ptr()) }
-}
+    pub fn gl_compressed_tex_image_2d<T>(
+        &mut self,
+        target: TextureTarget,
+        level: i32,
+        internal_format: GLenum,
+        width: u32,
+        height: u32,
+        border: u32,
+        image_size: u32,
+        buffer: &[T],
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glCompressedTexImage2D(
+                target as GLenum,
+                level as GLint,
+                internal_format,
+                width as GLsizei,
+                height as GLsizei,
+                border as GLint,
+                image_size as GLsizei,
+                buffer.as_ptr() as *const GLvoid,
+            )
+        }
 
-pub fn gl_depth_func(func: GLenum) {
-    unsafe { ffi::glDepthFunc(func) }
+        Ok(())
+    }
+
+    pub fn gl_compressed_tex_sub_image_2d<T>(
+        &mut self,
+        target: TextureTarget,
+        level: u32,
+        x_offset: u32,
+        y_offset: u32,
+        width: u32,
+        height: u32,
+        format: GLenum,
+        image_size: u32,
+        buffer: &[T],
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glCompressedTexSubImage2D(
+                target as GLenum,
+                level as GLint,
+                x_offset as GLint,
+                y_offset as GLint,
+                width as GLsizei,
+                height as GLsizei,
+                format,
+                image_size as GLsizei,
+                buffer.as_ptr() as *const GLvoid,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_copy_tex_image_2d(
+        &mut self,
+        target: TextureTarget,
+        level: u32,
+        internal_format: GLenum,
+        x: u32,
+        y: u32,
+        width: u32,
+        height: u32,
+        border: u32,
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glCopyTexImage2D(target as GLenum,
+                                  level as GLint,
+                                  internal_format,
+                                  x as GLint, y as GLint,
+                                  width as GLsizei, height as GLsizei, border as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_copy_tex_sub_image_2d(
+        &mut self,
+        target: TextureTarget,
+        level: u32,
+        x_offset: u32,
+        y_offset: u32,
+        x: u32,
+        y: u32,
+        width: u32,
+        height: u32,
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glCopyTexSubImage2D(target as GLenum,
+                                     level as GLint,
+                                     x_offset as GLint, y_offset as GLint,
+                                     x as GLint, y as GLint,
+                                     width as GLsizei, height as GLsizei)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_create_program(&mut self) -> Result<u32, Error> {
+        unsafe {
+            let program_id = ffi::glCreateProgram();
+
+            Ok(program_id as u32)
+        }
+    }
+
+    pub fn gl_create_shader(&mut self, type_: ShaderType) -> Result<u32, Error> {
+        unsafe {
+            let shader_id = ffi::glCreateShader(type_ as GLenum);
+
+            Ok(shader_id as u32)
+        }
+    }
+
+    pub fn gl_cull_face(&mut self, mode: CullFaceMode) -> Result<(), Error> {
+        unsafe {
+            ffi::glCullFace(mode as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_buffers(&mut self, buffers: &[u32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteBuffers(buffers.len() as GLsizei, buffers.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_framebuffers(&mut self, framebuffers: &[u32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteFramebuffers(framebuffers.len() as GLsizei, framebuffers.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_program(&mut self, program: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteProgram(program as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_renderbuffers(&mut self, renderbuffers: &[u32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteRenderbuffers(renderbuffers.len() as GLsizei,
+                                       renderbuffers.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_shader(&mut self, shader: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteShader(shader as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_delete_textures(&mut self, textures: &[u32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glDeleteTextures(textures.len() as GLsizei, textures.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_depth_func(&mut self, func: DepthFunc) -> Result<(), Error> {
+        unsafe {
+            ffi::glDepthFunc(func as GLenum)
+        }
+
+        Ok(())
+    }
+
+
 }
 
 pub fn gl_depth_mask(flag: bool) {

@@ -143,6 +143,18 @@ pub enum RenderBufferBindTarget {
 pub enum TextureBindTarget {
     TEXTURE_2D = GL_TEXTURE_BINDING_2D as isize,
     TEXTURE_CUBE_MAP = GL_TEXTURE_BINDING_CUBE_MAP as isize
+
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum TextureTarget {
+    TEXTURE_2D = GL_TEXTURE_2D as isize,
+    TEXTURE_CUBE_MAP_POSITIVE_X = GL_TEXTURE_CUBE_MAP_POSITIVE_X as isize,
+    TEXTURE_CUBE_MAP_NEGATIVE_X = GL_TEXTURE_CUBE_MAP_NEGATIVE_X as isize,
+    TEXTURE_CUBE_MAP_POSITIVE_Y = GL_TEXTURE_CUBE_MAP_POSITIVE_Y as isize,
+    TEXTURE_CUBE_MAP_NEGATIVE_Y = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y as isize,
+    TEXTURE_CUBE_MAP_POSITIVE_Z = GL_TEXTURE_CUBE_MAP_POSITIVE_Z as isize,
+    TEXTURE_CUBE_MAP_NEGATIVE_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -176,4 +188,50 @@ pub enum BufferUsage {
     STREAM_DRAW = GL_STREAM_DRAW as isize,
     STATIC_DRAW = GL_STATIC_DRAW as isize,
     DYNAMIC_DRAW = GL_DYNAMIC_DRAW as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrameBufferStatus {
+    FRAMEBUFFER_COMPLETE = GL_FRAMEBUFFER_COMPLETE as isize,
+    FRAMEBUFFER_INCOMPLETE_ATTACHMENT = GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT as isize,
+    FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT as isize,
+    FRAMEBUFFER_INCOMPLETE_DIMENSIONS = GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS as isize,
+    FRAMEBUFFER_UNSUPPORTED = GL_FRAMEBUFFER_UNSUPPORTED as isize
+}
+
+impl From<GLuint> for FrameBufferStatus {
+    fn from(id: GLuint) -> Self {
+        match id {
+            GL_FRAMEBUFFER_COMPLETE => FrameBufferStatus::FRAMEBUFFER_COMPLETE,
+            GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT => FrameBufferStatus::FRAMEBUFFER_INCOMPLETE_ATTACHMENT,
+            GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT => FrameBufferStatus::FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT,
+            GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS => FrameBufferStatus::FRAMEBUFFER_INCOMPLETE_DIMENSIONS,
+            _ => FrameBufferStatus::FRAMEBUFFER_UNSUPPORTED
+        }
+    }
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ShaderType {
+    FRAGMENT_SHADER = GL_FRAGMENT_SHADER as isize,
+    VERTEX_SHADER = GL_VERTEX_SHADER as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum CullFaceMode {
+    FRONT = GL_FRONT as isize,
+    BACK = GL_BACK as isize,
+    FRONT_AND_BACK= GL_FRONT_AND_BACK as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum DepthFunc {
+    NEVER = GL_NEVER as isize,
+    LESS = GL_LESS as isize,
+    EQUAL = GL_EQUAL as isize,
+    LEQUAL = GL_LEQUAL as isize,
+    GREATER = GL_GREATER as isize,
+    NOTEQUAL = GL_NOTEQUAL as isize,
+    GEQUAL = GL_GEQUAL as isize,
+    ALWAYS = GL_ALWAYS as isize
 }

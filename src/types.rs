@@ -259,3 +259,16 @@ pub enum BeginMode {
     TRIANGLE_STRIP = GL_TRIANGLE_STRIP as isize,
     TRIANGLE_FAN = GL_TRIANGLE_FAN as isize
 }
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrameBufferAttachmentType {
+    COLOR_ATTACHMENT0 = GL_COLOR_ATTACHMENT0 as isize,
+    DEPTH_ATTACHMENT = GL_DEPTH_ATTACHMENT as isize,
+    STENCIL_ATTACHMENT = GL_STENCIL_ATTACHMENT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrontFaceDirection {
+    CW = GL_CW as isize,
+    CCW = GL_CCW as isize
+}

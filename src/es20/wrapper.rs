@@ -16,6 +16,8 @@ use types::CullFaceMode;
 use types::DepthFunc;
 use types::Feature;
 use types::BeginMode;
+use types::FrameBufferAttachmentType;
+use types::FrontFaceDirection;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -525,77 +527,105 @@ impl Wrapper {
 
         Ok(())
     }
-}
 
-pub fn gl_framebuffer_renderbuffer(
-    target: GLenum,
-    attachment: GLenum,
-    renderbuffer_target: GLenum,
-    renderbuffer: GLuint,
-) {
-    unsafe { ffi::glFramebufferRenderbuffer(target, attachment, renderbuffer_target, renderbuffer) }
-}
+    pub fn gl_framebuffer_renderbuffer(
+        &mut self,
+        target: FrameBufferBindTarget,
+        attachment: FrameBufferAttachmentType,
+        renderbuffer_target: RenderBufferBindTarget,
+        renderbuffer: u32,
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glFramebufferRenderbuffer(target as GLenum,
+                                                attachment as GLenum,
+                                                renderbuffer_target as GLenum,
+                                                renderbuffer as GLuint)
+        }
 
-pub fn gl_framebuffer_texture_2d(
-    target: GLenum,
-    attachment: GLenum,
-    texture_target: GLenum,
-    texture: GLuint,
-    level: GLint,
-) {
-    unsafe { ffi::glFramebufferTexture2D(target, attachment, texture_target, texture, level) }
-}
-
-pub fn gl_front_face(mode: GLenum) {
-    unsafe { ffi::glFrontFace(mode) }
-}
-
-pub fn gl_gen_buffers(count: GLsizei) -> Vec<GLuint> {
-    unsafe {
-        let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
-
-        ffi::glGenBuffers(count, vec.as_mut_ptr());
-
-        vec.set_len(count as usize);
-        vec
+        Ok(())
     }
-}
 
-pub fn gl_generate_mipmap(target: GLenum) {
-    unsafe { ffi::glGenerateMipmap(target) }
-}
+    pub fn gl_framebuffer_texture_2d(
+        &mut self,
+        target: FrameBufferBindTarget,
+        attachment: FrameBufferAttachmentType,
+        texture_target: TextureTarget,
+        texture: u32,
+        level: i32,
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glFramebufferTexture2D(target as GLenum,
+                                        attachment as GLenum,
+                                        texture_target as GLenum,
+                                        texture as GLuint,
+                                        level as GLint)
+        }
 
-pub fn gl_gen_framebuffers(count: GLsizei) -> Vec<GLuint> {
-    unsafe {
-        let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
-
-        ffi::glGenFramebuffers(count, vec.as_mut_ptr());
-
-        vec.set_len(count as usize);
-        vec
+        Ok(())
     }
-}
 
-pub fn gl_gen_renderbuffers(count: GLsizei) -> Vec<GLuint> {
-    unsafe {
-        let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
+    pub fn gl_front_face(&mut self, mode: FrontFaceDirection) -> Result<(), Error> {
+        unsafe {
+            ffi::glFrontFace(mode as GLenum)
+        }
 
-        ffi::glGenRenderbuffers(count, vec.as_mut_ptr());
-
-        vec.set_len(count as usize);
-        vec
+        Ok(())
     }
-}
 
-pub fn gl_gen_textures(count: GLsizei) -> Vec<GLuint> {
-    unsafe {
-        let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
+    pub fn gl_gen_buffers(&mut self, count: u32) -> Result<Vec<u32>, Error> {
+        unsafe {
+            let mut vec: Vec<u32> = Vec::with_capacity(count as usize);
 
-        ffi::glGenTextures(count, vec.as_mut_ptr());
+            ffi::glGenBuffers(count as GLsizei, vec.as_mut_ptr());
 
-        vec.set_len(count as usize);
-        vec
+            vec.set_len(count as usize);
+
+            Ok(vec)
+        }
     }
+
+    pub fn gl_generate_mipmap(&mut self, target: TextureBindTarget) -> Result<(), Error> {
+        unsafe {
+            ffi::glGenerateMipmap(target as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_gen_framebuffers(&mut self, count: u32) -> Result<Vec<u32>, Error> {
+        unsafe {
+            let mut vec: Vec<u32> = Vec::with_capacity(count as usize);
+
+            ffi::glGenFramebuffers(count as GLsizei, vec.as_mut_ptr());
+
+            vec.set_len(count as usize);
+            Ok(vec)
+        }
+    }
+
+    pub fn gl_gen_renderbuffers(&mut self, count: u32) -> Result<Vec<u32>, Error> {
+        unsafe {
+            let mut vec: Vec<u32> = Vec::with_capacity(count as usize);
+
+            ffi::glGenRenderbuffers(count as GLsizei, vec.as_mut_ptr());
+
+            vec.set_len(count as usize);
+            Ok(vec)
+        }
+    }
+
+    pub fn gl_gen_textures(&mut self, count: u32) -> Result<Vec<u32>, Error> {
+        unsafe {
+            let mut vec: Vec<u32> = Vec::with_capacity(count as usize);
+
+            ffi::glGenTextures(count as GLsizei, vec.as_mut_ptr());
+
+            vec.set_len(count as usize);
+            Ok(vec)
+        }
+    }
+
+
 }
 
 pub fn gl_get_active_attrib(program: GLuint, index: GLuint) -> Option<Active> {

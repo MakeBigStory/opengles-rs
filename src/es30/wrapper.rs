@@ -114,6 +114,38 @@ pub enum TransformFeedbackObjectTarget {
     GL_TRANSFORM_FEEDBACK,
 }
 
+pub enum FrameBufferTarget {
+    FrameBuffer = GL_FRAMEBUFFER as isize,
+}
+
+pub enum AttachmentTarget {
+    Color_Attachment_0 = GL_COLOR_ATTACHMENT0,
+    GL_COLOR_ATTACHMENT1,
+    GL_COLOR_ATTACHMENT2,
+    GL_COLOR_ATTACHMENT3,
+    GL_DEPTH_ATTACHMENT,
+    GL_STENCIL_ATTACHMENT,
+    GL_DEPTH_STENCIL_ATTACHMENT,
+}
+
+pub enum FilterMode {
+    GL_NEAREST,
+    GL_LINEAR,
+}
+
+pub enum BufferMask {
+    GL_COLOR_BUFFER_BIT,
+    GL_DEPTH_BUFFER_BIT,
+    GL_STENCIL_BUFFER_BIT,
+}
+
+pub enum FramebufferTarget {
+    GL_DRAW_FRAMEBUFFER,
+    GL_READ_FRAMEBUFFER,
+    /// GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER
+    GL_FRAMEBUFFER,
+}
+
 pub struct Wrapper {}
 
 impl Wrapper {
@@ -1164,7 +1196,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_sampler_parameterfv(&mut self, &self, sampler: GLuint, pname: SamplerParameter, param: &[GLfloat]) -> Result<(), Error> {
+    pub fn gl_sampler_parameterfv(&mut self, sampler: GLuint, pname: SamplerParameter, param: &[GLfloat]) -> Result<(), Error> {
         unsafe {
             ffi::glSamplerParameterfv(sampler, pname, param.as_ptr() as *const GLfloat);
         }
@@ -1253,38 +1285,6 @@ impl Wrapper {
     }
 
     /// Frame Buffers
-
-    pub enum FrameBufferTarget {
-    FrameBuffer = GL_FRAMEBUFFER as isize,
-    }
-
-    pub enum AttachmentTarget {
-    Color_Attachment_0 = GL_COLOR_ATTACHMENT0,
-    GL_COLOR_ATTACHMENT1,
-    GL_COLOR_ATTACHMENT2,
-    GL_COLOR_ATTACHMENT3,
-    GL_DEPTH_ATTACHMENT,
-    GL_STENCIL_ATTACHMENT,
-    GL_DEPTH_STENCIL_ATTACHMENT,
-    }
-
-    pub enum FilterMode {
-    GL_NEAREST,
-    GL_LINEAR,
-    }
-
-    pub enum BufferMask {
-    GL_COLOR_BUFFER_BIT,
-    GL_DEPTH_BUFFER_BIT,
-    GL_STENCIL_BUFFER_BIT,
-    }
-
-    pub enum FramebufferTarget {
-    GL_DRAW_FRAMEBUFFER,
-    GL_READ_FRAMEBUFFER,
-    /// GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER
-    GL_FRAMEBUFFER,
-    }
 
     pub fn gl_invalidate_framebuffer(&mut self,
         target: FrameBufferTarget,

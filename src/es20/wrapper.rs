@@ -18,6 +18,10 @@ use types::Feature;
 use types::BeginMode;
 use types::FrameBufferAttachmentType;
 use types::FrontFaceDirection;
+use types::StateType;
+use types::BufferParamName;
+use types::ErrorType;
+use types::FrameBufferAttachmentParamType;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -625,153 +629,168 @@ impl Wrapper {
         }
     }
 
+    pub fn gl_get_active_attrib(&mut self, program: u32, index: u32) -> Result<Active, Error> {
+        unsafe {
+            let mut length: GLsizei = 0;
+            let mut size: GLint = 0;
+            let mut type_: GLenum = 0;
 
-}
+            let mut name = String::with_capacity(256);
 
-pub fn gl_get_active_attrib(program: GLuint, index: GLuint) -> Option<Active> {
-    unsafe {
-        let mut length: GLsizei = 0;
-        let mut size: GLint = 0;
-        let mut type_: GLenum = 0;
+            ffi::glGetActiveAttrib(
+                program as GLuint,
+                index as GLuint,
+                256,
+                &mut length,
+                &mut size,
+                &mut type_,
+                name.as_mut_vec().as_mut_ptr() as *mut GLchar,
+            );
 
-        let mut name = String::with_capacity(256);
+            if length > 0 {
+                name.as_mut_vec().set_len(length as usize);
+                name.truncate(length as usize);
 
-        ffi::glGetActiveAttrib(
-            program,
-            index,
-            256,
-            &mut length,
-            &mut size,
-            &mut type_,
-            name.as_mut_vec().as_mut_ptr() as *mut GLchar,
-        );
-
-        if length > 0 {
-            name.as_mut_vec().set_len(length as usize);
-            name.truncate(length as usize);
-
-            Some(Active {
-                name,
-                size,
-                type_,
-                length,
-            })
-        } else {
-            None
+                Ok(Active {
+                    name,
+                    size,
+                    type_,
+                    length,
+                })
+            } else {
+                // TODO: error desc
+                Err(Error{})
+            }
         }
     }
-}
 
-pub fn gl_get_active_uniform(program: GLuint, index: GLuint) -> Option<Active> {
-    unsafe {
-        let mut length: GLsizei = 0;
-        let mut size: GLint = 0;
-        let mut type_: GLenum = 0;
+    pub fn gl_get_active_uniform(&mut self, program: u32, index: u32) -> Result<Active, Error> {
+        unsafe {
+            let mut length: GLsizei = 0;
+            let mut size: GLint = 0;
+            let mut type_: GLenum = 0;
 
-        let mut name = String::with_capacity(256);
+            let mut name = String::with_capacity(256);
 
-        ffi::glGetActiveUniform(
-            program,
-            index,
-            256,
-            &mut length,
-            &mut size,
-            &mut type_,
-            name.as_mut_vec().as_mut_ptr() as *mut GLchar,
-        );
+            ffi::glGetActiveUniform(
+                program as GLuint,
+                index as GLuint,
+                256,
+                &mut length,
+                &mut size,
+                &mut type_,
+                name.as_mut_vec().as_mut_ptr() as *mut GLchar,
+            );
 
-        if length > 0 {
-            name.as_mut_vec().set_len(length as usize);
-            name.truncate(length as usize);
+            if length > 0 {
+                name.as_mut_vec().set_len(length as usize);
+                name.truncate(length as usize);
 
-            Some(Active {
-                name,
-                size,
-                type_,
-                length,
-            })
-        } else {
-            None
+                Ok(Active {
+                    name,
+                    size,
+                    type_,
+                    length,
+                })
+            } else {
+                // TODO: error desc
+                Err(Error{})
+            }
         }
     }
-}
 
-pub fn gl_get_attached_shaders(program: GLuint, max_count: GLsizei) -> Vec<GLuint> {
-    unsafe {
-        let mut count: GLsizei = 0;
-        let mut vec: Vec<GLuint> = Vec::with_capacity(max_count as usize);
+    pub fn gl_get_attached_shaders(&mut self, program: u32, max_count: i32) -> Result<Vec<u32>, Error> {
+        unsafe {
+            let mut count: GLsizei = 0;
+            let mut vec: Vec<u32> = Vec::with_capacity(max_count as usize);
 
-        ffi::glGetAttachedShaders(program, max_count, &mut count, vec.as_mut_ptr());
+            ffi::glGetAttachedShaders(program as GLuint,
+                                      max_count as GLsizei, &mut count,
+                                      vec.as_mut_ptr());
 
-        vec.set_len(count as usize);
-        vec.truncate(count as usize);
-        vec
+            vec.set_len(count as usize);
+            vec.truncate(count as usize);
+            Ok(vec)
+        }
     }
-}
 
-pub fn gl_get_attrib_location(program: GLuint, name: &str) -> GLint {
-    unsafe {
-        let c_str = CString::new(name).unwrap();
+    pub fn gl_get_attrib_location(&mut self, program: u32, name: &str) -> Result<i32, Error> {
+        unsafe {
+            let c_str = CString::new(name).unwrap();
 
-        ffi::glGetAttribLocation(program, c_str.as_ptr() as *const c_char)
+            let loc = ffi::glGetAttribLocation(program as GLuint, c_str.as_ptr() as *const c_char);
+
+            Ok(loc as i32)
+        }
     }
-}
 
-pub fn gl_get_booleanv(name: GLenum) -> bool {
-    unsafe {
+    pub fn gl_get_booleanv(&mut self, name: StateType) -> Result<bool, Error> {
         let mut value: GLboolean = 0;
 
-        ffi::glGetBooleanv(name, &mut value);
+        unsafe {
+            ffi::glGetBooleanv(name as GLenum, &mut value);
+        }
 
-        value == GL_TRUE
+        Ok(value == GL_TRUE)
     }
-}
 
-pub fn gl_get_buffer_parameteriv(target: GLenum, name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_buffer_parameteriv(&mut self, target: BufferBindTarget, name: BufferParamName) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetBufferParameteriv(target, name, &mut value);
+        unsafe {
+            ffi::glGetBufferParameteriv(target as GLenum, name as GLenum,
+                                        &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_error() -> GLenum {
-    unsafe { ffi::glGetError() }
-}
 
-pub fn gl_get_floatv(name: GLenum) -> GLfloat {
-    unsafe {
+    pub fn gl_get_error(&mut self) -> ErrorType {
+        let mut error = GL_NO_ERROR;
+
+        unsafe {
+            error = ffi::glGetError();
+        }
+
+        ErrorType::from(error)
+    }
+
+    pub fn gl_get_floatv(&mut self, name: StateType) -> Result<f32, Error> {
         let mut value: GLfloat = 0.0;
 
-        ffi::glGetFloatv(name, &mut value);
+        unsafe {
+            ffi::glGetFloatv(name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as f32)
     }
-}
 
-pub fn gl_get_framebuffer_attachment_parameteriv(
-    target: GLenum,
-    attachment: GLenum,
-    name: GLenum,
-) -> GLint {
-    unsafe {
+    pub fn gl_get_framebuffer_attachment_parameteriv(
+        target: FrameBufferBindTarget,
+        attachment: FrameBufferAttachmentType,
+        name: FrameBufferAttachmentParamType,
+    ) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetFramebufferAttachmentParameteriv(target, attachment, name, &mut value);
+        unsafe {
+            ffi::glGetFramebufferAttachmentParameteriv(target as GLenum,
+                                                       attachment as GLenum,
+                                                       name as GLenum,
+                                                       &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_integerv(name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_integerv(name: StateType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetIntegerv(name, &mut value);
+        unsafe {
+            ffi::glGetIntegerv(name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
 }
 

@@ -965,16 +965,16 @@ impl Wrapper {
                 index = index + 1;
             }
 
-            let mut uniformIndices: Vec<GLuint> = Vec::with_capacity(uniform_count as usize);
+            let mut uniform_indices: Vec<GLuint> = Vec::with_capacity(uniform_count as usize);
 
-            ffi::glGetUniformIndices(
+            ffi::glGetuniform_indices(
                 program,
                 uniform_count,
                 names_ptr.as_ptr() as *const *const GLchar,
-                uniformIndices.as_ptr() as *mut GLuint,
+                uniform_indices.as_ptr() as *mut GLuint,
             );
 
-            uniformIndices
+            uniform_indices
         }
         Ok(())
     }
@@ -982,7 +982,7 @@ impl Wrapper {
     pub fn gl_get_active_uniformsiv(&mut self,
         program: GLuint,
         uniform_count: GLsizei,
-        uniformIndices: &[GLuint],
+        uniform_indices: &[GLuint],
         pname: GLenum,
         params: &mut [GLint],
     ) -> Result<(), Error> {
@@ -990,7 +990,7 @@ impl Wrapper {
             ffi::glGetActiveUniformsiv(
                 program,
                 uniform_count,
-                uniformIndices.as_ptr() as *const GLuint,
+                uniform_indices.as_ptr() as *const GLuint,
                 pname,
                 params.as_mut_ptr() as *mut GLint,
             );
@@ -998,24 +998,24 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniform_block_index(&mut self, program: GLuint, uniformBlockName: &str) -> GLuint {
+    pub fn gl_get_uniform_block_index(&mut self, program: GLuint, uniform_block_name: &str) -> GLuint {
         unsafe {
-            let c_str = CString::new(uniformBlockName).unwrap();
-            ffi::glGetUniformBlockIndex(program, c_str.as_ptr() as *const GLchar)
+            let c_str = CString::new(uniform_block_name).unwrap();
+            ffi::glGetuniform_block_index(program, c_str.as_ptr() as *const GLchar)
         }
         Ok(())
     }
 
     pub fn gl_get_active_uniform_blockiv(&mut self,
         program: GLuint,
-        uniformBlockIndex: GLuint,
+        uniform_block_index: GLuint,
         pname: GLenum,
     ) -> GLint {
         unsafe {
             let mut value = 0 as GLint;
             ffi::glGetActiveUniformBlockiv(
                 program,
-                uniformBlockIndex,
+                uniform_block_index,
                 pname,
                 &mut value,
             );
@@ -1026,14 +1026,14 @@ impl Wrapper {
 
     pub fn gl_uniform_block_binding(&mut self,
         program: GLuint,
-        uniformBlockIndex: GLuint,
-        uniformBlockBinding: GLuint,
+        uniform_block_index: GLuint,
+        uniform_block_binding: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glUniformBlockBinding(
+            ffi::gluniform_block_binding(
                 program,
-                uniformBlockIndex,
-                uniformBlockBinding,
+                uniform_block_index,
+                uniform_block_binding,
             );
         }
         Ok(())

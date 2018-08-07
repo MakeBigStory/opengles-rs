@@ -12,9 +12,9 @@ use types::BufferUsage;
 use types::FrameBufferStatus;
 use types::TextureTarget;
 use types::ShaderType;
-use types::CullFaceMode;
-use types::DepthFunc;
-use types::Feature;
+use types::FaceMode;
+use types::FuncType;
+use types::FeatureType;
 use types::BeginMode;
 use types::FrameBufferAttachmentType;
 use types::FrontFaceDirection;
@@ -31,6 +31,10 @@ use types::TextureParamType;
 use types::VertexAttributeParamType;
 use types::HintTargetType;
 use types::HintBehaviorType;
+use types::PackParamType;
+use types::PixelFormat;
+use types::PixelDataType;
+use types::ActionType;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -385,7 +389,7 @@ impl Wrapper {
         }
     }
 
-    pub fn gl_cull_face(&mut self, mode: CullFaceMode) -> Result<(), Error> {
+    pub fn gl_cull_face(&mut self, mode: FaceMode) -> Result<(), Error> {
         unsafe {
             ffi::glCullFace(mode as GLenum)
         }
@@ -442,7 +446,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_depth_func(&mut self, func: DepthFunc) -> Result<(), Error> {
+    pub fn gl_depth_func(&mut self, func: FuncType) -> Result<(), Error> {
         unsafe {
             ffi::glDepthFunc(func as GLenum)
         }
@@ -475,7 +479,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_disable(&mut self, feature: Feature) -> Result<(), Error> {
+    pub fn gl_disable(&mut self, feature: FeatureType) -> Result<(), Error> {
         unsafe {
             ffi::glDisable(feature as GLenum)
         }
@@ -509,7 +513,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_enable(&mut self, feature: Feature) -> Result<(), Error> {
+    pub fn gl_enable(&mut self, feature: FeatureType) -> Result<(), Error> {
         unsafe {
             ffi::glEnable(feature as GLenum)
         }
@@ -1041,183 +1045,288 @@ impl Wrapper {
         Ok(())
     }
 
-    
-}
+    pub fn gl_is_buffer(&mut self, buffer: u32) -> Result<bool, Error> {
+        let mut res = false;
 
-pub fn gl_is_buffer(buffer: GLuint) -> bool {
-    unsafe { ffi::glIsBuffer(buffer) == GL_TRUE }
-}
+        unsafe {
+            res = (ffi::glIsBuffer(buffer as GLuint) == GL_TRUE);
+        }
 
-pub fn gl_is_enabled(feature: GLenum) -> bool {
-    unsafe { ffi::glIsEnabled(feature) == GL_TRUE }
-}
-
-pub fn gl_is_framebuffer(framebuffer: GLuint) -> bool {
-    unsafe { ffi::glIsFramebuffer(framebuffer) == GL_TRUE }
-}
-
-pub fn gl_is_program(program: GLuint) -> bool {
-    unsafe { ffi::glIsProgram(program) == GL_TRUE }
-}
-
-pub fn gl_is_renderbuffer(renderbuffer: GLuint) -> bool {
-    unsafe { ffi::glIsRenderbuffer(renderbuffer) == GL_TRUE }
-}
-
-pub fn gl_is_shader(shader: GLuint) -> bool {
-    unsafe { ffi::glIsShader(shader) == GL_TRUE }
-}
-
-pub fn gl_is_texture(texture: GLuint) -> bool {
-    unsafe { ffi::glIsTexture(texture) == GL_TRUE }
-}
-
-pub fn gl_line_width(width: GLfloat) {
-    unsafe { ffi::glLineWidth(width) }
-}
-
-pub fn gl_link_program(program: GLuint) {
-    unsafe { ffi::glLinkProgram(program) }
-}
-
-pub fn gl_pixel_storei(name: GLenum, param: GLint) {
-    unsafe { ffi::glPixelStorei(name, param) }
-}
-
-pub fn gl_polygon_offset(factor: GLfloat, units: GLfloat) {
-    unsafe { ffi::glPolygonOffset(factor, units) }
-}
-
-pub fn gl_read_pixels<T>(
-    x: GLint,
-    y: GLint,
-    width: GLsizei,
-    height: GLsizei,
-    format: GLenum,
-    type_: GLenum,
-    buffer: &mut [T],
-) {
-    unsafe {
-        ffi::glReadPixels(
-            x,
-            y,
-            width,
-            height,
-            format,
-            type_,
-            buffer.as_mut_ptr() as *mut GLvoid,
-        )
+        Ok(res)
     }
-}
 
-pub fn gl_read_pixels_rgba(x: GLint, y: GLint, width: GLsizei, height: GLsizei) -> Vec<u8> {
-    unsafe {
-        let mut buffer: Vec<u8> = Vec::with_capacity((width * height * 4) as usize);
+    pub fn gl_is_enabled(&mut self, feature: FeatureType) -> Result<bool, Error> {
+        let mut res = false;
 
-        ffi::glReadPixels(
-            x,
-            y,
-            width,
-            height,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            buffer.as_mut_ptr() as *mut GLvoid,
-        );
+        unsafe {
+            res = (ffi::glIsEnabled(feature as GLenum) == GL_TRUE);
+        }
 
-        buffer.set_len((width * height * 4) as usize);
-        buffer
+        Ok(res)
     }
-}
 
-pub fn gl_release_shader_compiler() {
-    unsafe { ffi::glReleaseShaderCompiler() }
-}
+    pub fn gl_is_framebuffer(&mut self, framebuffer: u32) -> Result<bool, Error> {
+        let mut res = false;
 
-pub fn gl_renderbuffer_storage(
-    target: GLenum,
-    internal_format: GLenum,
-    width: GLsizei,
-    height: GLsizei,
-) {
-    unsafe { ffi::glRenderbufferStorage(target, internal_format, width, height) }
-}
+        unsafe {
+            res = (ffi::glIsFramebuffer(framebuffer as GLuint) == GL_TRUE);
+        }
 
-pub fn gl_sample_coverage(value: GLclampf, invert: bool) {
-    unsafe { ffi::glSampleCoverage(value, invert as GLboolean) }
-}
-
-pub fn gl_scissor(x: GLint, y: GLint, width: GLsizei, height: GLsizei) {
-    unsafe { ffi::glScissor(x, y, width, height) }
-}
-
-pub fn gl_shader_binary<T>(shaders: &[GLuint], data_format: GLenum, data: &[T], length: GLsizei) {
-    unsafe {
-        ffi::glShaderBinary(
-            shaders.len() as GLsizei,
-            shaders.as_ptr(),
-            data_format,
-            data.as_ptr() as *const GLvoid,
-            length,
-        )
+        Ok(res)
     }
-}
 
-pub fn gl_shader_source(shader: GLuint, source: &[u8]) {
-    unsafe {
-        let length: GLsizei = source.len() as GLsizei;
+    pub fn gl_is_program(&mut self, program: u32) -> Result<bool, Error> {
+        let mut res = false;
 
-        ffi::glShaderSource(shader, 1, &(source.as_ptr() as *const GLchar), &length)
+        unsafe {
+            res = (ffi::glIsProgram(program as GLuint) == GL_TRUE);
+        }
+
+        Ok(res)
     }
-}
 
-pub fn gl_stencil_func(func: GLenum, ref_: GLint, mask: GLuint) {
-    unsafe { ffi::glStencilFunc(func, ref_, mask) }
-}
+    pub fn gl_is_renderbuffer(&mut self, renderbuffer: u32) -> Result<bool, Error> {
+        let mut res = false;
 
-pub fn gl_stencil_func_separate(face: GLenum, func: GLenum, ref_: GLint, mask: GLuint) {
-    unsafe { ffi::glStencilFuncSeparate(face, func, ref_, mask) }
-}
+        unsafe {
+            res = (ffi::glIsRenderbuffer(renderbuffer as u32) == GL_TRUE);
+        }
 
-pub fn gl_stencil_mask(mask: GLuint) {
-    unsafe { ffi::glStencilMask(mask) }
-}
-
-pub fn gl_stencil_mask_separate(face: GLenum, mask: GLuint) {
-    unsafe { ffi::glStencilMaskSeparate(face, mask) }
-}
-
-pub fn gl_stencil_op(fail: GLenum, z_fail: GLenum, z_pass: GLenum) {
-    unsafe { ffi::glStencilOp(fail, z_fail, z_pass) }
-}
-
-pub fn gl_stencil_op_separate(face: GLenum, fail: GLenum, z_fail: GLenum, z_pass: GLenum) {
-    unsafe { ffi::glStencilOpSeparate(face, fail, z_fail, z_pass) }
-}
-
-pub fn gl_tex_image_2d<T>(
-    target: GLenum,
-    level: GLint,
-    internal_format: GLint,
-    width: GLsizei,
-    height: GLsizei,
-    border: GLint,
-    format: GLenum,
-    type_: GLenum,
-    buffer: &[T],
-) {
-    unsafe {
-        ffi::glTexImage2D(
-            target,
-            level,
-            internal_format,
-            width,
-            height,
-            border,
-            format,
-            type_,
-            buffer.as_ptr() as *const GLvoid,
-        )
+        Ok(res)
     }
+
+    pub fn gl_is_shader(&mut self, shader: u32) -> Result<bool, Error> {
+        let mut res = false;
+
+        unsafe {
+            res = (ffi::glIsShader(shader as u32) == GL_TRUE);
+        }
+
+        Ok(res)
+    }
+
+    pub fn gl_is_texture(&mut self, texture: u32) -> Result<bool, Error> {
+        let mut res = false;
+
+        unsafe {
+            res = (ffi::glIsTexture(texture as u32) == GL_TRUE);
+        }
+
+        Ok(res)
+    }
+
+    pub fn gl_line_width(&mut self, width: f32) -> Result<(), Error>  {
+        unsafe {
+            ffi::glLineWidth(width as GLfloat);
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_link_program(&mut self, program: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glLinkProgram(program as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_pixel_storei(&mut self, name: PackParamType, param: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glPixelStorei(name as GLenum, param as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_polygon_offset(&mut self, factor: f32, units: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glPolygonOffset(factor as GLfloat, units as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    // TODO: buffer size calculate automatically?
+    pub fn gl_read_pixels<T>(
+        &mut self,
+        x: i32,
+        y: i32,
+        width: i32,
+        height: i32,
+        format: PixelFormat,
+        type_: PixelDataType,
+        buffer: &mut [T],
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glReadPixels(
+                x as GLint,
+                y as GLint,
+                width as GLsizei,
+                height as GLsizei,
+                format as GLenum,
+                type_ as GLenum,
+                buffer.as_mut_ptr() as *mut GLvoid,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_release_shader_compiler(&mut self) -> Result<(), Error> {
+        unsafe {
+            ffi::glReleaseShaderCompiler()
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_renderbuffer_storage(
+        &mut self,
+        target: RenderBufferBindTarget,
+        internal_format: PixelFormat,
+        width: i32,
+        height: i32,
+    )-> Result<(), Error>  {
+        unsafe {
+            ffi::glRenderbufferStorage(target as GLenum, internal_format as GLenum,
+                                       width as GLsizei, height as GLsizei)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_sample_coverage(
+        &mut self,
+        value: f32,
+        invert: bool) -> Result<(), Error> {
+        unsafe {
+            ffi::glSampleCoverage(value as GLclampf, invert as GLboolean)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_scissor(&mut self, x: i32, y: i32, width: i32, height: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glScissor(x as GLint, y as GLint,
+                           width as GLsizei, height as GLsizei)
+        }
+
+        Ok(())
+    }
+
+    // TODO: data_format
+    // TODO: length's unit should be byte or T ?
+    pub fn gl_shader_binary<T>(&mut self, shaders: &[u32], data_format: GLenum,
+                               data: &[T], length: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glShaderBinary(
+                shaders.len() as GLsizei,
+                shaders.as_ptr(),
+                data_format,
+                data.as_ptr() as *const GLvoid,
+                length as GLsizei,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_shader_source(&mut self, shader: u32, source: &str) -> Result<(), Error> {
+        unsafe {
+            let length: GLsizei = source.len() as GLsizei;
+
+            ffi::glShaderSource(shader as GLuint, 1,
+                                &(source.as_ptr() as *const GLchar), &length)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_func(&mut self, func: FuncType, ref_: i32, mask: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilFunc(func as GLenum, ref_ as GLint, mask as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_func_separate(&mut self, face: FaceMode, func: FuncType,
+                                    ref_: i32, mask: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilFuncSeparate(face as GLenum, func as GLenum,
+                                       ref_ as GLint, mask as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_mask(mask: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilMask(mask as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_mask_separate(&mut self, face: FaceMode, mask: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilMaskSeparate(face as GLenum, mask as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_op(&mut self, s_fail: ActionType, dp_fail: ActionType, dp_pass: ActionType) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilOp(s_fail as GLenum, dp_fail as GLenum, dp_pass as GLenum)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_stencil_op_separate(&mut self, face: FaceMode, s_fail: ActionType,
+                                  dp_fail: ActionType, dp_pass: ActionType) -> Result<(), Error> {
+        unsafe {
+            ffi::glStencilOpSeparate(face as GLenum, s_fail as GLenum, dp_fail as GLenum,
+                                     dp_pass as GLenum)
+        }
+
+        Ok(())
+    }
+
+    // TODO: internal_format should be enum, but why GLint?
+    pub fn gl_tex_image_2d<T>(
+        &mut self,
+        target: TextureTarget,
+        level: i32,
+        internal_format: GLint,
+        width: i32,
+        height: i32,
+        border: i32,
+        format: PixelFormat,
+        type_: PixelDataType,
+        buffer: &[T],
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexImage2D(
+                target as GLenum,
+                level as GLint,
+                internal_format,
+                width as GLsizei,
+                height as GLsizei,
+                border as GLint,
+                format as GLenum,
+                type_ as GLenum,
+                buffer.as_ptr() as *const GLvoid,
+            )
+        }
+
+        Ok(())
+    }
+
+
 }
 
 pub fn gl_tex_parameterf(target: GLenum, name: GLenum, value: GLfloat) {

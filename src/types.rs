@@ -218,14 +218,14 @@ pub enum ShaderType {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum CullFaceMode {
+pub enum FaceMode {
     FRONT = GL_FRONT as isize,
     BACK = GL_BACK as isize,
     FRONT_AND_BACK= GL_FRONT_AND_BACK as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum DepthFunc {
+pub enum FuncType {
     NEVER = GL_NEVER as isize,
     LESS = GL_LESS as isize,
     EQUAL = GL_EQUAL as isize,
@@ -237,7 +237,7 @@ pub enum DepthFunc {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Feature {
+pub enum FeatureType {
     BLEND = GL_BLEND as isize,
     CULL_FACE = GL_CULL_FACE as isize,
     DEPTH_TEST = GL_DEPTH_TEST as isize,
@@ -483,4 +483,44 @@ pub enum HintBehaviorType {
     FASTEST = GL_FASTEST as isize,
     NICEST = GL_NICEST as isize,
     DONT_CARE = GL_DONT_CARE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PackParamType {
+    PACK_ALIGNMENT = GL_PACK_ALIGNMENT as isize,
+    UNPACK_ALIGNMENT = GL_UNPACK_ALIGNMENT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PixelFormat {
+    ALPHA = GL_ALPHA as isize,
+    RGB = GL_RGB as isize,
+    RGBA = GL_RGBA as isize,
+    RGBA4 = GL_RGBA4 as isize,
+    RGB565 = GL_RGB565 as isize,
+    RGB5_A1 = GL_RGB5_A1 as isize,
+    DEPTH_COMPONENT16 = GL_DEPTH_COMPONENT16 as isize,
+    STENCIL_INDEX8 = GL_STENCIL_INDEX8 as isize,
+    LUMINANCE = GL_LUMINANCE as isize,
+    LUMINANCE_ALPHA = GL_LUMINANCE_ALPHA as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PixelDataType {
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE as isize,
+    UNSIGNED_SHORT_5_6_5 = GL_UNSIGNED_SHORT_5_6_5 as isize,
+    UNSIGNED_SHORT_4_4_4_4 = GL_UNSIGNED_SHORT_4_4_4_4 as isize,
+    UNSIGNED_SHORT_5_5_5_1 = GL_UNSIGNED_SHORT_5_5_5_1 as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ActionType {
+    KEEP = GL_KEEP as isize,
+    ZERO = GL_ZERO as isize,
+    REPLACE = GL_REPLACE as isize,
+    INCR = GL_INCR as isize,
+    INCR_WRAP = GL_INCR_WRAP as isize,
+    DECR = GL_DECR as isize,
+    DECR_WRAP = GL_DECR_WRAP as isize,
+    INVERT = GL_INVERT as isize
 }

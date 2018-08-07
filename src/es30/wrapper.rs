@@ -945,31 +945,31 @@ impl Wrapper {
     //todo:
     pub fn gl_get_uniform_indices(&mut self,
         program: GLuint,
-        uniformCount: GLsizei,
-        uniformNames: &Vec<String>,
+        uniform_count: GLsizei,
+        uniform_names: &Vec<String>,
     ) -> Vec<GLuint>
     {
         unsafe {
-            let mut names: Vec<CString> = Vec::with_capacity(uniformCount as usize);
+            let mut names: Vec<CString> = Vec::with_capacity(uniform_count as usize);
             let mut index = 0 as usize;
-            while index < uniformCount as usize {
-                names.push(CString::new(&(uniformNames[index])[..]).unwrap());
+            while index < uniform_count as usize {
+                names.push(CString::new(&(uniform_names[index])[..]).unwrap());
                 index = index + 1;
             }
             index = 0;
             let ptr = names[index].as_ptr();
-            let mut names_ptr: Vec<usize> = Vec::with_capacity(uniformCount as usize);
+            let mut names_ptr: Vec<usize> = Vec::with_capacity(uniform_count as usize);
 
-            while index < uniformCount as usize {
+            while index < uniform_count as usize {
                 names_ptr.push(names[index].as_ptr() as usize);
                 index = index + 1;
             }
 
-            let mut uniformIndices: Vec<GLuint> = Vec::with_capacity(uniformCount as usize);
+            let mut uniformIndices: Vec<GLuint> = Vec::with_capacity(uniform_count as usize);
 
             ffi::glGetUniformIndices(
                 program,
-                uniformCount,
+                uniform_count,
                 names_ptr.as_ptr() as *const *const GLchar,
                 uniformIndices.as_ptr() as *mut GLuint,
             );
@@ -981,7 +981,7 @@ impl Wrapper {
 
     pub fn gl_get_active_uniformsiv(&mut self,
         program: GLuint,
-        uniformCount: GLsizei,
+        uniform_count: GLsizei,
         uniformIndices: &[GLuint],
         pname: GLenum,
         params: &mut [GLint],
@@ -989,7 +989,7 @@ impl Wrapper {
         unsafe {
             ffi::glGetActiveUniformsiv(
                 program,
-                uniformCount,
+                uniform_count,
                 uniformIndices.as_ptr() as *const GLuint,
                 pname,
                 params.as_mut_ptr() as *mut GLint,

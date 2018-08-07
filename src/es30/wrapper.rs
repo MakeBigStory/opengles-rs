@@ -1258,14 +1258,14 @@ impl Wrapper {
     {
         unsafe {
             let mut length = 0 as GLsizei;
-            let mut binaryFormat = GL_NONE as GLenum;
+            let mut binary_format = GL_NONE as GLenum;
             let mut binary: Vec<u8> = Vec::with_capacity(buffer_size as usize);
 
             ffi::glGetProgramBinary(
                 program,
                 buffer_size,
                 &mut length as *mut GLsizei,
-                &mut binaryFormat as *mut GLenum,
+                &mut binary_format as *mut GLenum,
                 binary.as_mut_ptr() as *mut GLvoid,
             );
 
@@ -1274,7 +1274,7 @@ impl Wrapper {
             } else {
                 Some(ProgramBinary {
                     length,
-                    binaryFormat,
+                    binary_format,
                     binary,
                 })
             }
@@ -1284,14 +1284,14 @@ impl Wrapper {
 
     pub fn gl_program_binary(&mut self,
         program: GLuint,
-        binaryFormat: GLenum,
+        binary_format: GLenum,
         binary: &[u8],
         length: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glProgramBinary(
                 program,
-                binaryFormat,
+                binary_format,
                 binary.as_ptr() as *const GLvoid,
                 length,
             );

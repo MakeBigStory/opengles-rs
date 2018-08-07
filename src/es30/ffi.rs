@@ -269,6 +269,15 @@ extern "C" {
 
     pub fn glGetStringi(name: GLenum, index: GLuint) -> *const GLubyte;
 
+    /// copy part of the data store of a buffer object to the data store of another buffer object
+    ///
+    /// # argument
+    ///
+    /// - `readtarget` Specifies the target from whose data store data should be read.
+    /// - `writetarget` Specifies the target to whose data store data should be written.
+    /// - `readoffset` Specifies the offset, in basic machine units, within the data store of readtarget from which data should be read.
+    /// - `writeoffset` Specifies the offset, in basic machine units, within the data store of writetarget to which data should be written.
+    /// - `size` Specifies the size, in basic machine units, of the data to be copied from readtarget to writetarget.
     pub fn glCopyBufferSubData(
         readTarget: GLenum,
         writeTarget: GLenum,

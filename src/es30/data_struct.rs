@@ -4,7 +4,7 @@ use super::*;
 //STRUCT
 pub struct ProgramBinary{
     pub length: GLsizei,
-    pub binaryFormat: GLenum,
+    pub binary_format: GLenum,
     pub binary: Vec<u8>
 }
 

@@ -39,18 +39,18 @@ impl Wrapper {
     }
 
     pub fn gl_copy_buffer_sub_data(&mut self,
-        readTarget: BufferObjectTarget,
-        writeTarget: BufferObjectTarget,
-        readOffset: GLintptr,
-        writeOffset: GLintptr,
+        read_target: BufferObjectTarget,
+        write_target: BufferObjectTarget,
+        read_offset: GLintptr,
+        write_offset: GLintptr,
         size: GLsizeiptr,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glCopyBufferSubData(
-                readTarget,
-                writeTarget,
-                readOffset,
-                writeOffset,
+                read_target as GLenum,
+                write_target as GLenum,
+                read_offset,
+                write_offset,
                 size,
             );
         }
@@ -60,7 +60,7 @@ impl Wrapper {
     //todo : *mut *mut GLvoid
     pub fn gl_get_buffer_pointerv<T>(&mut self, target: BufferObjectTarget, pname: BufferMapTarget, params: *mut *mut GLvoid) -> Result<(), Error> {
         unsafe {
-            ffi::glGetBufferPointerv(target, pname, params);
+            ffi::glGetBufferPointerv(target as GLenum, pname as GLenum, params);
         }
         Ok(())
     }
@@ -74,10 +74,10 @@ impl Wrapper {
     ) -> &'a [T] {
         unsafe {
             let ptr = ffi::glMapBufferRange(
-                target,
+                target as GLenum,
                 offset,
                 length,
-                access,
+                access as GLenum,
             );
 
             let count = length as usize / std::mem::size_of::<T>();
@@ -88,7 +88,7 @@ impl Wrapper {
 
     pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferObjectTarget, offset: i32, length: i32) -> Result<(), Error> {
         unsafe {
-            ffi::glFlushMappedBufferRange(target, offset as GLintptr, length as GLsizeiptr);
+            ffi::glFlushMappedBufferRange(target as GLenum, offset as GLintptr, length as GLsizeiptr);
         }
         Ok(())
     }
@@ -103,7 +103,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glBindBufferRange(
-                target,
+                target as GLenum,
                 index as GLuint,
                 buffer as GLuint,
                 offset as GLintptr,
@@ -153,7 +153,7 @@ impl Wrapper {
     pub fn gl_get_buffer_parameteri64v(&mut self, target: GLenum, pname: GLenum) -> GLint64 {
         unsafe {
             let mut params = 0 as GLint64;
-            ffi::glGetBufferParameteri64v(target, pname, &mut params);
+            ffi::glGetBufferParameteri64v(target as GLenum, pname as GLenum, &mut params);
             params
         }
         Ok(())
@@ -231,7 +231,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             glCopyTexSubImage3D(
-                target,
+                target as GLenum,
                 level,
                 xoffset,
                 yoffset,
@@ -258,7 +258,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glCompressedTexImage3D(
-                target,
+                target as GLenum,
                 level,
                 internal_format,
                 width,
@@ -288,7 +288,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glCompressedTexSubImage3D(
-                target,
+                target as GLenum,
                 level,
                 xoffset,
                 yoffset,
@@ -330,7 +330,7 @@ impl Wrapper {
 
     pub fn gl_begin_query(&mut self, target: GLenum, id: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glBeginQuery(target, id);
+            ffi::glBeginQuery(target as GLenum, id);
         }
         Ok(())
     }
@@ -344,14 +344,14 @@ impl Wrapper {
 
     pub fn gl_get_queryiv(&mut self, target: GLenum, pname: GLenum, params: &mut [GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetQueryiv(target, pname, params.as_ptr() as *mut GLint);
+            ffi::glGetQueryiv(target as GLenum, pname as GLenum, params.as_ptr() as *mut GLint);
         }
         Ok(())
     }
 
     pub fn gl_get_query_objectuiv(&mut self, id: GLuint, pname: GLenum, params: &mut [GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetQueryObjectuiv(id, pname, params.as_mut_ptr() as *mut GLuint);
+            ffi::glGetQueryObjectuiv(id, pname as GLenum, params.as_mut_ptr() as *mut GLuint);
         }
         Ok(())
     }
@@ -467,7 +467,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glRenderbufferStorageMultisample(
-                target,
+                target as GLenum,
                 samples,
                 internal_format,
                 width,
@@ -515,7 +515,7 @@ impl Wrapper {
     pub fn gl_get_integeri_v(&mut self, target: GLenum, index: GLuint) -> GLint {
         unsafe {
             let mut value: GLint = 0;
-            ffi::glGetIntegeri_v(target, index, &mut value);
+            ffi::glGetIntegeri_v(target as GLenum, index, &mut value);
             value
         }
         Ok(())
@@ -603,7 +603,7 @@ impl Wrapper {
 
     pub fn gl_bind_transform_feedback(&mut self, target: TransformFeedbackObjectTarget, id: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glBindTransformFeedback(target, id);
+            ffi::glBindTransformFeedback(target as GLenum, id);
         }
         Ok(())
     }
@@ -666,7 +666,7 @@ impl Wrapper {
     pub fn gl_get_vertex_attrib_iiv(&mut self, index: GLuint, pname: GLenum) -> GLint {
         unsafe {
             let mut params: GLint = 0;
-            ffi::glGetVertexAttribIiv(index, pname, &mut params);
+            ffi::glGetVertexAttribIiv(index, pname as GLenum, &mut params);
             params
         }
         Ok(())
@@ -675,7 +675,7 @@ impl Wrapper {
     pub fn gl_get_vertex_attrib_iuiv(&mut self, index: GLuint, pname: GLenum) -> GLuint {
         unsafe {
             let mut params: GLuint = 0;
-            ffi::glGetVertexAttribIuiv(index, pname, &mut params);
+            ffi::glGetVertexAttribIuiv(index, pname as GLenum, &mut params);
             params
         }
         Ok(())
@@ -845,7 +845,7 @@ impl Wrapper {
                 program,
                 uniform_count,
                 uniform_indices.as_ptr() as *const GLuint,
-                pname,
+                pname as GLenum,
                 params.as_mut_ptr() as *mut GLint,
             );
         }
@@ -870,7 +870,7 @@ impl Wrapper {
             ffi::glGetActiveUniformBlockiv(
                 program,
                 uniform_block_index,
-                pname,
+                pname as GLenum,
                 &mut value,
             );
             value
@@ -982,7 +982,7 @@ impl Wrapper {
     pub fn gl_get_integer64v(&mut self, pname: GLenum) -> GLint64 {
         unsafe {
             let mut value = 0 as GLint64;
-            ffi::glGetInteger64v(pname, &mut value);
+            ffi::glGetInteger64v(pname as GLenum, &mut value);
             value
         }
         Ok(())
@@ -999,7 +999,7 @@ impl Wrapper {
             let mut values: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             ffi::glGetSynciv(
                 sync,
-                pname,
+                pname as GLenum,
                 buffer_size,
                 length as *mut GLsizei,
                 values.as_mut_ptr() as *mut GLint,
@@ -1012,7 +1012,7 @@ impl Wrapper {
     pub fn gl_get_integer64i_v(&mut self, target: GLenum, index: GLuint) -> GLint64 {
         unsafe {
             let mut value = 0 as GLint64;
-            ffi::glGetInteger64i_v(target, index, &mut value);
+            ffi::glGetInteger64i_v(target as GLenum, index, &mut value);
             value
         }
         Ok(())
@@ -1053,28 +1053,28 @@ impl Wrapper {
 
     pub fn gl_sampler_parameteri(&mut self, sampler: GLuint, pname: SamplerParameter, param: GLint) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameteri(sampler, pname, param);
+            ffi::glSamplerParameteri(sampler, pname as GLenum, param);
         }
         Ok(())
     }
 
     pub fn gl_sampler_parameteriv(&mut self, sampler: GLuint, pname: SamplerParameter, param: &[GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameteriv(sampler, pname, param.as_ptr() as *const GLint);
+            ffi::glSamplerParameteriv(sampler, pname as GLenum, param.as_ptr() as *const GLint);
         }
         Ok(())
     }
 
     pub fn gl_sampler_parameterf(&mut self, sampler: GLuint, pname: SamplerParameter, param: GLfloat) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameterf(sampler, pname, param);
+            ffi::glSamplerParameterf(sampler, pname as GLenum, param);
         }
         Ok(())
     }
 
     pub fn gl_sampler_parameterfv(&mut self, sampler: GLuint, pname: SamplerParameter, param: &[GLfloat]) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameterfv(sampler, pname, param.as_ptr() as *const GLfloat);
+            ffi::glSamplerParameterfv(sampler, pname as GLenum, param.as_ptr() as *const GLfloat);
         }
         Ok(())
     }
@@ -1082,7 +1082,7 @@ impl Wrapper {
     //todo : 我怀疑是返回一个，这里需要用slice?
     pub fn gl_get_sampler_parameteriv(&mut self, sampler: GLuint, pname: SamplerParameter, params: &mut [GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetSamplerParameteriv(sampler, pname, params.as_mut_ptr() as *mut GLint);
+            ffi::glGetSamplerParameteriv(sampler, pname as GLenum, params.as_mut_ptr() as *mut GLint);
         }
         Ok(())
     }
@@ -1090,7 +1090,7 @@ impl Wrapper {
     //todo : 我怀疑是返回一个，这里需要用slice?
     pub fn gl_get_sampler_parameterfv(&mut self, sampler: GLuint, pname: SamplerParameter, params: &mut [GLfloat]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetSamplerParameterfv(sampler, pname, params.as_mut_ptr() as *mut GLfloat);
+            ffi::glGetSamplerParameterfv(sampler, pname as GLenum, params.as_mut_ptr() as *mut GLfloat);
         }
         Ok(())
     }
@@ -1155,7 +1155,7 @@ impl Wrapper {
 
     pub fn gl_program_parameteri(&mut self, program: GLuint, pname: GLenum, value: GLint) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramParameteri(program, pname, value);
+            ffi::glProgramParameteri(program, pname as GLenum, value);
         }
         Ok(())
     }
@@ -1169,7 +1169,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glInvalidateFramebuffer(
-                target,
+                target as GLenum,
                 num_attachments,
                 attachments.as_ptr() as *const GLenum,
             );
@@ -1188,7 +1188,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glInvalidateSubFramebuffer(
-                target,
+                target as GLenum,
                 num_attachments,
                 attachments.as_ptr() as *const GLenum,
                 x,
@@ -1228,7 +1228,7 @@ impl Wrapper {
         layer: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glFramebufferTextureLayer(target, attachment, texture, level, layer);
+            ffi::glFramebufferTextureLayer(target as GLenum, attachment, texture, level, layer);
         }
         Ok(())
     }
@@ -1242,7 +1242,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glTexStorage2D(
-                target,
+                target as GLenum,
                 levels,
                 internal_format,
                 width,
@@ -1262,7 +1262,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glTexStorage3D(
-                target,
+                target as GLenum,
                 levels,
                 internal_format,
                 width,
@@ -1282,9 +1282,9 @@ impl Wrapper {
         unsafe {
             let mut params: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             glGetinternal_formativ(
-                target,
+                target as GLenum,
                 internal_format,
-                pname,
+                pname as GLenum,
                 buffer_size,
                 params.as_mut_ptr() as *mut GLint,
             );

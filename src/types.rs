@@ -389,15 +389,15 @@ pub enum FramebufferTarget {
 }
 
 pub struct ShaderPrecisionFormat {
-pub precision: GLint,
-pub range: [GLint; 2],
+    pub precision: GLint,
+    pub range: [GLint; 2],
 }
 
 pub struct Active {
-pub name: String,
-pub size: GLint,
-pub type_: GLenum,
-pub length: GLsizei,
+    pub name: String,
+    pub size: GLint,
+    pub type_: GLenum,
+    pub length: GLsizei,
 }
 
 pub enum PixelDataFormat {

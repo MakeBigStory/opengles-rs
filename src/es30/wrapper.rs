@@ -193,7 +193,6 @@ impl Wrapper {
     //todo : *mut *mut GLvoid
     pub fn gl_get_buffer_pointerv<T>(&mut self, target: GLenum, pname: GLenum, params: *mut *mut GLvoid) -> Result<(), Error> {
         unsafe {
-            //ffi::glGetBufferPointerv(target, pname, params: *mut *mut GLvoid);
             ffi::glGetBufferPointerv(target, pname, params);
         }
         Ok(())

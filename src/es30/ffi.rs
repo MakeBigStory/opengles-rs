@@ -96,6 +96,13 @@ extern "C" {
 
     pub fn glUnmapBuffer(target: GLenum) -> GLboolean;
 
+    /// glGetBufferPointerv returns pointer information. pname is a symbolic constant indicating the pointer to be returned, which must be GL_BUFFER_MAP_POINTER, the pointer to which the buffer object's data store is mapped. If the data store is not currently mapped, NULL is returned. params is a pointer to a location in which to place the returned pointer value.
+    ///
+    /// # argument
+    ///
+    /// - `target` Specifies the target buffer object. The symbolic constant must be GL_ARRAY_BUFFER, GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, GL_ELEMENT_ARRAY_BUFFER, GL_PIXEL_PACK_BUFFER, GL_PIXEL_UNPACK_BUFFER, GL_TRANSFORM_FEEDBACK_BUFFER, or GL_UNIFORM_BUFFER.
+    /// - `pname` Specifies the pointer to be returned. The symbolic constant must be GL_BUFFER_MAP_POINTER.
+    /// - `params` Returns the pointer value specified by pname.
     pub fn glGetBufferPointerv(target: GLenum, pname: GLenum, params: *mut *mut GLvoid);
 
     pub fn glDrawBuffers(n: GLsizei, bufs: *const GLenum);

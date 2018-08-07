@@ -1310,13 +1310,13 @@ impl Wrapper {
 
     pub fn gl_invalidate_framebuffer(&mut self,
         target: FrameBufferTarget,
-        numAttachments: GLsizei,
+        num_attachments: GLsizei,
         attachments: &[AttachmentTarget],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glInvalidateFramebuffer(
                 target,
-                numAttachments,
+                num_attachments,
                 attachments.as_ptr() as *const GLenum,
             );
         }
@@ -1325,7 +1325,7 @@ impl Wrapper {
 
     pub fn gl_invalidate_sub_framebuffer(&mut self,
         target: FrameBufferTarget,
-        numAttachments: GLsizei,
+        num_attachments: GLsizei,
         attachments: &[AttachmentTarget],
         x: GLint,
         y: GLint,
@@ -1335,7 +1335,7 @@ impl Wrapper {
         unsafe {
             ffi::glInvalidateSubFramebuffer(
                 target,
-                numAttachments,
+                num_attachments,
                 attachments.as_ptr() as *const GLenum,
                 x,
                 y,

@@ -124,18 +124,18 @@ pub enum TextureUnit {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum BufferBindTarget {
+pub enum BufferTarget {
     ARRAY_BUFFER = GL_ARRAY_BUFFER_BINDING as isize,
     ELEMENT_ARRAY_BUFFER = GL_ELEMENT_ARRAY_BUFFER_BINDING as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum FrameBufferBindTarget {
+pub enum FrameBufferTarget {
     FRAMEBUFFER = GL_FRAMEBUFFER as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum RenderBufferBindTarget {
+pub enum RenderBufferTarget {
     RENDERBUFFER = GL_RENDERBUFFER as isize
 }
 
@@ -532,5 +532,51 @@ pub enum DataType {
     SHORT = GL_SHORT as isize,
     UNSIGNED_SHORT = GL_UNSIGNED_SHORT as isize,
     FIXED = GL_FIXED as isize,
-    FLOAT = GL_FLOAT as isize
+    FLOAT = GL_FLOAT as isize,
+    FLOAT_VEC2 = GL_FLOAT_VEC2 as isize,
+    FLOAT_VEC3 = GL_FLOAT_VEC3 as isize,
+    FLOAT_VEC4 = GL_FLOAT_VEC4 as isize,
+    FLOAT_MAT2 = GL_FLOAT_MAT2 as isize,
+    FLOAT_MAT3 = GL_FLOAT_MAT3 as isize,
+    FLOAT_MAT4 = GL_FLOAT_MAT4 as isize,
+    INT = GL_INT as isize,
+    INT_VEC2 = GL_INT_VEC2 as isize,
+    INT_VEC3 = GL_INT_VEC3 as isize,
+    INT_VEC4 = GL_INT_VEC4 as isize,
+    BOOL = GL_BOOL as isize,
+    BOOL_VEC2 = GL_BOOL_VEC2 as isize,
+    BOOL_VEC3 = GL_BOOL_VEC3 as isize,
+    BOOL_VEC4 = GL_BOOL_VEC4 as isize,
+    SAMPLER_2D = GL_SAMPLER_2D as isize,
+    SAMPLER_CUBE = GL_SAMPLER_CUBE as isize
+}
+
+impl From<GLenum> for DataType {
+    fn from(data_type: GLenum) -> Self {
+        match data_type {
+            GL_BYTE => DataType::BYTE,
+            GL_UNSIGNED_BYTE => DataType::UNSIGNED_BYTE,
+            GL_SHORT => DataType::SHORT,
+            GL_UNSIGNED_SHORT => DataType::UNSIGNED_SHORT,
+            GL_FIXED => DataType::FIXED,
+            GL_FLOAT => DataType::FLOAT,
+            GL_FLOAT_VEC2 => DataType::FLOAT_VEC2,
+            GL_FLOAT_VEC3 => DataType::FLOAT_VEC3,
+            GL_FLOAT_VEC4 => DataType::FLOAT_VEC4,
+            GL_FLOAT_MAT2 => DataType::FLOAT_MAT2,
+            GL_FLOAT_MAT3 => DataType::FLOAT_MAT3,
+            GL_FLOAT_MAT4 => DataType::FLOAT_MAT4,
+            GL_INT => DataType::INT,
+            GL_INT_VEC2 => DataType::INT_VEC2,
+            GL_INT_VEC3 => DataType::INT_VEC3,
+            GL_INT_VEC4 => DataType::INT_VEC4,
+            GL_BOOL => DataType::BOOL,
+            GL_BOOL_VEC2 => DataType::BOOL_VEC2,
+            GL_BOOL_VEC3 => DataType::BOOL_VEC3,
+            GL_BOOL_VEC4 => DataType::BOOL_VEC4,
+            GL_SAMPLER_2D => DataType::SAMPLER_2D,
+            GL_SAMPLER_CUBE => DataType::SAMPLER_CUBE,
+            _ => DataType::BYTE
+        }
+    }
 }

@@ -2,9 +2,9 @@ use super::data_struct::*;
 use super::ffi::*;
 use super::*;
 use types::TextureUnit;
-use types::BufferBindTarget;
-use types::FrameBufferBindTarget;
-use types::RenderBufferBindTarget;
+use types::BufferTarget;
+use types::FrameBufferTarget;
+use types::RenderBufferTarget;
 use types::TextureBindTarget;
 use types::BlendEquationMode;
 use types::BlendFactor;
@@ -43,14 +43,14 @@ use types::DataType;
 
 pub struct Active {
     pub name: String,
-    pub size: GLint,
-    pub type_: GLenum,
-    pub length: GLsizei,
+    pub size: i32,
+    pub type_: DataType,
+    pub length: i32,
 }
 
 pub struct ShaderPrecisionFormat {
-    pub precision: GLint,
-    pub range: [GLint; 2],
+    pub precision: i32,
+    pub range: [i32; 2],
 }
 
 pub struct Error {
@@ -92,7 +92,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_bind_buffer(&mut self, target: BufferBindTarget, buffer: GLuint) -> Result<(), Error> {
+    pub fn gl_bind_buffer(&mut self, target: BufferTarget, buffer: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glBindBuffer(target as GLenum, buffer as GLuint);
         }
@@ -100,7 +100,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_bind_framebuffer(&mut self, target: FrameBufferBindTarget, framebuffer: GLuint) -> Result<(), Error> {
+    pub fn gl_bind_framebuffer(&mut self, target: FrameBufferTarget, framebuffer: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glBindFramebuffer(target as GLenum, framebuffer as GLuint);
         }
@@ -108,7 +108,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_bind_renderbuffer(&mut self, target: RenderBufferBindTarget, renderbuffer: u32) -> Result<(), Error> {
+    pub fn gl_bind_renderbuffer(&mut self, target: RenderBufferTarget, renderbuffer: u32) -> Result<(), Error> {
         unsafe {
             ffi::glBindRenderbuffer(target as GLenum, renderbuffer as GLuint);
         }
@@ -169,7 +169,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_buffer_data<T>(&mut self, target: BufferBindTarget,
+    pub fn gl_buffer_data<T>(&mut self, target: BufferTarget,
                              buffer: &[T], usage: BufferUsage) -> Result<(), Error> {
         unsafe {
             let t_size = size_of::<T>();
@@ -185,7 +185,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_buffer_sub_data<T>(&mut self, target: BufferBindTarget, offset: u32, buffer: &[T])
+    pub fn gl_buffer_sub_data<T>(&mut self, target: BufferTarget, offset: u32, buffer: &[T])
                                  -> Result<(), Error> {
         unsafe {
             let t_size = size_of::<T>();
@@ -201,7 +201,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_check_framebuffer_status(&mut self, target: FrameBufferBindTarget) -> Result<FrameBufferStatus, Error> {
+    pub fn gl_check_framebuffer_status(&mut self, target: FrameBufferTarget) -> Result<FrameBufferStatus, Error> {
         unsafe {
             let status = ffi::glCheckFramebufferStatus(target as GLenum);
 
@@ -548,9 +548,9 @@ impl Wrapper {
 
     pub fn gl_framebuffer_renderbuffer(
         &mut self,
-        target: FrameBufferBindTarget,
+        target: FrameBufferTarget,
         attachment: FrameBufferAttachmentType,
-        renderbuffer_target: RenderBufferBindTarget,
+        renderbuffer_target: RenderBufferTarget,
         renderbuffer: u32,
     ) -> Result<(), Error> {
         unsafe {
@@ -565,7 +565,7 @@ impl Wrapper {
 
     pub fn gl_framebuffer_texture_2d(
         &mut self,
-        target: FrameBufferBindTarget,
+        target: FrameBufferTarget,
         attachment: FrameBufferAttachmentType,
         texture_target: TextureTarget,
         texture: u32,
@@ -647,7 +647,7 @@ impl Wrapper {
         unsafe {
             let mut length: GLsizei = 0;
             let mut size: GLint = 0;
-            let mut type_: GLenum = 0;
+            let mut attrib_type: GLenum = 0;
 
             let mut name = String::with_capacity(256);
 
@@ -657,13 +657,15 @@ impl Wrapper {
                 256,
                 &mut length,
                 &mut size,
-                &mut type_,
+                &mut attrib_type,
                 name.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
 
             if length > 0 {
                 name.as_mut_vec().set_len(length as usize);
                 name.truncate(length as usize);
+
+                let type_ = DataType::from(attrib_type);
 
                 Ok(Active {
                     name,
@@ -682,7 +684,7 @@ impl Wrapper {
         unsafe {
             let mut length: GLsizei = 0;
             let mut size: GLint = 0;
-            let mut type_: GLenum = 0;
+            let mut uniform_data_type: GLenum = 0;
 
             let mut name = String::with_capacity(256);
 
@@ -692,13 +694,15 @@ impl Wrapper {
                 256,
                 &mut length,
                 &mut size,
-                &mut type_,
+                &mut uniform_data_type,
                 name.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
 
             if length > 0 {
                 name.as_mut_vec().set_len(length as usize);
                 name.truncate(length as usize);
+
+                let type_ = DataType::from(uniform_data_type);
 
                 Ok(Active {
                     name,
@@ -748,7 +752,7 @@ impl Wrapper {
         Ok(value == GL_TRUE)
     }
 
-    pub fn gl_get_buffer_parameteriv(&mut self, target: BufferBindTarget, name: BufferParamName) -> Result<i32, Error> {
+    pub fn gl_get_buffer_parameteriv(&mut self, target: BufferTarget, name: BufferParamName) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
         unsafe {
@@ -782,7 +786,7 @@ impl Wrapper {
 
     pub fn gl_get_framebuffer_attachment_parameteriv(
         &mut self,
-        target: FrameBufferBindTarget,
+        target: FrameBufferTarget,
         attachment: FrameBufferAttachmentType,
         name: FrameBufferAttachmentParamType,
     ) -> Result<i32, Error> {
@@ -850,7 +854,7 @@ impl Wrapper {
         }
     }
 
-    pub fn gl_get_renderbuffer_parameteriv(&mut self, target: RenderBufferBindTarget,
+    pub fn gl_get_renderbuffer_parameteriv(&mut self, target: RenderBufferTarget,
                                            name: RenderBufferParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
@@ -1184,11 +1188,11 @@ impl Wrapper {
 
     pub fn gl_renderbuffer_storage(
         &mut self,
-        target: RenderBufferBindTarget,
+        target: RenderBufferTarget,
         internal_format: PixelFormat,
         width: i32,
         height: i32,
-    )-> Result<(), Error>  {
+    ) -> Result<(), Error>  {
         unsafe {
             ffi::glRenderbufferStorage(target as GLenum, internal_format as GLenum,
                                        width as GLsizei, height as GLsizei)

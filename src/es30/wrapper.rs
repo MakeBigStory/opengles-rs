@@ -164,11 +164,11 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> GLboolean {
+    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<(GLboolean), Error> {
         unsafe {
             ffi::glUnmapBuffer(target as GLenum)
         }
-        Ok(())
+        Ok((GL_TRUE))
     }
 
     pub fn gl_copy_buffer_sub_data(&mut self,

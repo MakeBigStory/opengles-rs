@@ -712,7 +712,7 @@ impl Wrapper {
     pub fn gl_get_transform_feedback_varying(&mut self,
         program: GLuint,
         index: GLuint,
-        bufSize: GLsizei,
+        buffer_size: GLsizei,
     ) -> Option<Active> {
         unsafe {
             let mut length: GLsizei = 0;
@@ -723,7 +723,7 @@ impl Wrapper {
             ffi::glGetTransformFeedbackVarying(
                 program,
                 index,
-                bufSize,
+                buffer_size,
                 &mut length,
                 &mut size,
                 &mut type_,
@@ -1138,15 +1138,15 @@ impl Wrapper {
     pub fn gl_get_synciv(&mut self,
         sync: GLsync,
         pname: GLenum,
-        bufSize: GLsizei,
+        buffer_size: GLsizei,
         length: &mut GLsizei,
     ) -> Vec<GLint> {
         unsafe {
-            let mut values: Vec<GLint> = Vec::with_capacity(bufSize as usize);
+            let mut values: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             ffi::glGetSynciv(
                 sync,
                 pname,
-                bufSize,
+                buffer_size,
                 length as *mut GLsizei,
                 values.as_mut_ptr() as *mut GLint,
             );
@@ -1253,17 +1253,17 @@ impl Wrapper {
 //todo:
     pub fn gl_get_program_binary(&mut self,
         program: GLuint,
-        bufSize: GLsizei,
+        buffer_size: GLsizei,
     ) -> Option<ProgramBinary>
     {
         unsafe {
             let mut length = 0 as GLsizei;
             let mut binaryFormat = GL_NONE as GLenum;
-            let mut binary: Vec<u8> = Vec::with_capacity(bufSize as usize);
+            let mut binary: Vec<u8> = Vec::with_capacity(buffer_size as usize);
 
             ffi::glGetProgramBinary(
                 program,
-                bufSize,
+                buffer_size,
                 &mut length as *mut GLsizei,
                 &mut binaryFormat as *mut GLenum,
                 binary.as_mut_ptr() as *mut GLvoid,
@@ -1423,15 +1423,15 @@ impl Wrapper {
         target: GLenum,
         internal_format: GLenum,
         pname: GLenum,
-        bufSize: GLsizei,
+        buffer_size: GLsizei,
     ) -> Vec<GLint> {
         unsafe {
-            let mut params: Vec<GLint> = Vec::with_capacity(bufSize as usize);
+            let mut params: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             glGetinternal_formativ(
                 target,
                 internal_format,
                 pname,
-                bufSize,
+                buffer_size,
                 params.as_mut_ptr() as *mut GLint,
             );
             params

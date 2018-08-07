@@ -264,9 +264,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_clear_bufferiv(&mut self, buffer: GLenum, drawbuffer: GLint, value: &[GLint]) -> Result<(), Error> {
+    pub fn gl_clear_bufferiv(&mut self, buffer: GLenum, draw_buffer: i32, value: &[GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glClearBufferiv(buffer, drawbuffer, value.as_ptr() as *const GLint);
+            ffi::glClearBufferiv(buffer, draw_buffer as GLint, value.as_ptr() as *const GLint);
         }
         Ok(())
     }

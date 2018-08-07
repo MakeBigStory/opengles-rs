@@ -894,7 +894,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_range_elements<T>(&mut self,
-        mode: GLenum,
+        mode: BeginMode,
         start: GLuint,
         end: GLuint,
         count: GLsizei,
@@ -902,21 +902,21 @@ impl Wrapper {
         indices: &[T],
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glDrawRangeElements(mode, start, end, count, type_,
+            ffi::glDrawRangeElements(mode as GLenum, start, end, count, type_,
                                      indices.as_ptr() as *const GLvoid);
         }
         Ok(())
     }
 
     pub fn gl_draw_arrays_instanced(&mut self,
-        mode: GLenum,
+        mode: BeginMode,
         first: GLint,
         count: GLsizei,
         instance_count: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glDrawArraysInstanced(
-                mode,
+                mode as GLenum,
                 first,
                 count,
                 instance_count,
@@ -926,7 +926,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_elements_instanced<T>(&mut self,
-        mode: GLenum,
+        mode: BeginMode,
         count: GLsizei,
         type_: GLenum,
         indices: &[T],
@@ -934,7 +934,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glDrawElementsInstanced(
-                mode,
+                mode as GLenum,
                 count,
                 type_,
                 indices.as_ptr() as *const GLvoid,

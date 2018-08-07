@@ -353,7 +353,7 @@ pub enum TransformFeedbackMode {
 }
 
 pub enum TransformFeedbackObjectTarget {
-    GL_TRANSFORM_FEEDBACK as isize,
+    TransformFeedback = GL_TRANSFORM_FEEDBACK as isize,
 }
 
 pub enum FrameBufferTarget {

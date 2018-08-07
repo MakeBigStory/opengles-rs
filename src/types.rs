@@ -399,3 +399,19 @@ pub size: GLint,
 pub type_: GLenum,
 pub length: GLsizei,
 }
+
+pub enum PixelDataFormat {
+    Red = GL_RED as isize,
+    RedInteger = GL_RED_INTEGER as isize,
+    RedGreeen = GL_RG as isize,
+    RedGreenInteger = GL_RG_INTEGER as isize,
+    RedGreenBlue = GL_RGB as isize,
+    RedGreenBlueInteget = GL_RGB_INTEGER as isize,
+    RedGreenBlueAlpha = GL_RGBA as isize,
+    RedGreenBlueAlphaInteger = GL_RGBA_INTEGER as isize,
+    DepthComponent = GL_DEPTH_COMPONENT as isize,
+    DepthStencil = GL_DEPTH_STENCIL as isize,
+    LuminanceAlpha = GL_LUMINANCE_ALPHA as isize,
+    Lumniance = GL_LUMINANCE as isize,
+    Alpha = GL_ALPHA as isize,
+}

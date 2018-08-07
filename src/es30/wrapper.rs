@@ -167,7 +167,7 @@ impl Wrapper {
         height: GLsizei,
         depth: GLsizei,
         border: i32,
-        format: GLenum,
+        format: PixelDataFormat,
         type_: GLenum,
         opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
@@ -191,7 +191,7 @@ impl Wrapper {
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
-        format: GLenum,
+        format: PixelDataFormat,
         type_: GLenum,
                                  opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
@@ -248,7 +248,7 @@ impl Wrapper {
     pub fn gl_compressed_tex_image3d<T>(&mut self,
         target: GLenum,
         level: GLint,
-        internal_format: GLenum,
+        internal_format: PixelDataFormat,
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
@@ -282,7 +282,7 @@ impl Wrapper {
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
-        format: GLenum,
+        format: PixelDataFormat,
         image_size: GLsizei,
         data: &[T],
     ) -> Result<(), Error> {

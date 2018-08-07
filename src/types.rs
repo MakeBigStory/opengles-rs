@@ -400,3 +400,87 @@ pub enum FrameBufferAttachmentParamType {
     FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL as isize,
     FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE as isize
 }
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ProgramParamType {
+    DELETE_STATUS = GL_DELETE_STATUS as isize,
+    LINK_STATUS = GL_LINK_STATUS as isize,
+    VALIDATE_STATUS = GL_VALIDATE_STATUS as isize,
+    INFO_LOG_LENGTH = GL_INFO_LOG_LENGTH as isize,
+    ATTACHED_SHADERS = GL_ATTACHED_SHADERS as isize,
+    ACTIVE_ATTRIBUTES = GL_ACTIVE_ATTRIBUTES as isize,
+    ACTIVE_ATTRIBUTE_MAX_LENGTH = GL_ACTIVE_ATTRIBUTE_MAX_LENGTH as isize,
+    ACTIVE_UNIFORMS = GL_ACTIVE_UNIFORMS as isize,
+    ACTIVE_UNIFORM_MAX_LENGTH = GL_ACTIVE_UNIFORM_MAX_LENGTH as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum RenderBufferParamType {
+    RENDERBUFFER_WIDTH = GL_RENDERBUFFER_WIDTH as isize,
+    RENDERBUFFER_HEIGHT = GL_RENDERBUFFER_HEIGHT as isize,
+    RENDERBUFFER_INTERNAL_FORMAT = GL_RENDERBUFFER_INTERNAL_FORMAT as isize,
+    RENDERBUFFER_RED_SIZE = GL_RENDERBUFFER_RED_SIZE as isize,
+    RENDERBUFFER_GREEN_SIZE = GL_RENDERBUFFER_GREEN_SIZE as isize,
+    RENDERBUFFER_BLUE_SIZE = GL_RENDERBUFFER_BLUE_SIZE as isize,
+    RENDERBUFFER_ALPHA_SIZE = GL_RENDERBUFFER_ALPHA_SIZE as isize,
+    RENDERBUFFER_DEPTH_SIZE = GL_RENDERBUFFER_DEPTH_SIZE as isize,
+    RENDERBUFFER_STENCIL_SIZE = GL_RENDERBUFFER_STENCIL_SIZE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ShaderParamType {
+    SHADER_TYPE = GL_SHADER_TYPE as isize,
+    DELETE_STATUS = GL_DELETE_STATUS as isize,
+    COMPILE_STATUS = GL_COMPILE_STATUS as isize,
+    INFO_LOG_LENGTH = GL_INFO_LOG_LENGTH as isize,
+    SHADER_SOURCE_LENGTH = GL_SHADER_SOURCE_LENGTH as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ShaderPrecisionType {
+    LOW_FLOAT = GL_LOW_FLOAT as isize,
+    MEDIUM_FLOAT = GL_MEDIUM_FLOAT as isize,
+    HIGH_FLOAT = GL_HIGH_FLOAT as isize,
+    LOW_INT = GL_LOW_INT as isize,
+    MEDIUM_INT = GL_MEDIUM_INT as isize,
+    HIGH_INT = GL_HIGH_INT as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ConstantType {
+    VENDOR = GL_VENDOR as isize,
+    RENDERER = GL_RENDERER as isize,
+    VERSION = GL_VERSION as isize,
+    SHADING_LANGUAGE_VERSION = GL_SHADING_LANGUAGE_VERSION as isize,
+    EXTENSIONS = GL_EXTENSIONS as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum TextureParamType {
+    TEXTURE_MAG_FILTER = GL_TEXTURE_MAG_FILTER as isize,
+    TEXTURE_MIN_FILTER = GL_TEXTURE_MIN_FILTER as isize,
+    TEXTURE_WRAP_S = GL_TEXTURE_WRAP_S as isize,
+    TEXTURE_WRAP_T = GL_TEXTURE_WRAP_T as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum VertexAttributeParamType {
+    VERTEX_ATTRIB_ARRAY_BUFFER_BINDING = GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING as isize,
+    VERTEX_ATTRIB_ARRAY_ENABLED = GL_VERTEX_ATTRIB_ARRAY_ENABLED as isize,
+    VERTEX_ATTRIB_ARRAY_SIZE = GL_VERTEX_ATTRIB_ARRAY_SIZE as isize,
+    VERTEX_ATTRIB_ARRAY_STRIDE = GL_VERTEX_ATTRIB_ARRAY_STRIDE as isize,
+    VERTEX_ATTRIB_ARRAY_TYPE = GL_VERTEX_ATTRIB_ARRAY_TYPE as isize,
+    VERTEX_ATTRIB_ARRAY_NORMALIZED = GL_VERTEX_ATTRIB_ARRAY_NORMALIZED as isize,
+    CURRENT_VERTEX_ATTRIB = GL_CURRENT_VERTEX_ATTRIB as isize,
+}
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum HintTargetType {
+    GENERATE_MIPMAP_HINT = GL_GENERATE_MIPMAP_HINT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum HintBehaviorType {
+    FASTEST = GL_FASTEST as isize,
+    NICEST = GL_NICEST as isize,
+    DONT_CARE = GL_DONT_CARE as isize
+}

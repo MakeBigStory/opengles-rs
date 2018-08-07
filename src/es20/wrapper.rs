@@ -22,6 +22,15 @@ use types::StateType;
 use types::BufferParamName;
 use types::ErrorType;
 use types::FrameBufferAttachmentParamType;
+use types::ProgramParamType;
+use types::RenderBufferParamType;
+use types::ShaderParamType;
+use types::ShaderPrecisionType;
+use types::ConstantType;
+use types::TextureParamType;
+use types::VertexAttributeParamType;
+use types::HintTargetType;
+use types::HintBehaviorType;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -767,6 +776,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_framebuffer_attachment_parameteriv(
+        &mut self,
         target: FrameBufferBindTarget,
         attachment: FrameBufferAttachmentType,
         name: FrameBufferAttachmentParamType,
@@ -783,7 +793,7 @@ impl Wrapper {
         Ok(value as i32)
     }
 
-    pub fn gl_get_integerv(name: StateType) -> Result<i32, Error> {
+    pub fn gl_get_integerv(&mut self, name: StateType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
         unsafe {
@@ -792,228 +802,246 @@ impl Wrapper {
 
         Ok(value as i32)
     }
-}
 
-pub fn gl_get_programiv(program: GLuint, name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_programiv(&mut self, program: u32, name: ProgramParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetProgramiv(program, name, &mut value);
+        unsafe {
+            ffi::glGetProgramiv(program as GLuint, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_program_info_log(program: GLuint, max_length: GLsizei) -> Option<String> {
-    unsafe {
-        let mut length: GLsizei = 0;
-        let mut log = String::with_capacity(max_length as usize);
+    pub fn gl_get_program_info_log(&mut self, program: u32, max_length: i32) -> Result<String, Error> {
+        unsafe {
+            let mut length: GLsizei = 0;
+            let mut log = String::with_capacity(max_length as usize);
 
-        #[cfg(target_os = "ios")]
-        ffi::glGetProgramInfoLog(
-            program,
-            max_length,
-            &mut length,
-            log.as_mut_vec().as_mut_ptr() as *mut i8,
-        );
+            #[cfg(target_os = "ios")]
+                ffi::glGetProgramInfoLog(
+                program,
+                max_length as GLsizei,
+                &mut length,
+                log.as_mut_vec().as_mut_ptr() as *mut i8,
+            );
 
-        #[cfg(target_os = "android")]
-        ffi::glGetProgramInfoLog(
-            program,
-            max_length,
-            &mut length,
-            log.as_mut_vec().as_mut_ptr() as *mut u8,
-        );
+            #[cfg(target_os = "android")]
+                ffi::glGetProgramInfoLog(
+                program,
+                max_length as GLsizei,
+                &mut length,
+                log.as_mut_vec().as_mut_ptr() as *mut u8,
+            );
 
-        if length > 0 {
-            log.as_mut_vec().set_len(length as usize);
-            log.truncate(length as usize);
+            if length > 0 {
+                log.as_mut_vec().set_len(length as usize);
+                log.truncate(length as usize);
 
-            Some(log)
-        } else {
-            None
+                Ok(log)
+            } else {
+                Ok("".to_string())
+            }
         }
     }
-}
 
-pub fn gl_get_renderbuffer_parameteriv(target: GLenum, name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_renderbuffer_parameteriv(&mut self, target: RenderBufferBindTarget,
+                                           name: RenderBufferParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetRenderbufferParameteriv(target, name, &mut value);
+        unsafe {
+            ffi::glGetRenderbufferParameteriv(target as GLenum,
+                                              name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_shaderiv(shader: GLuint, name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_shaderiv(&mut self, shader: u32, name: ShaderParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetShaderiv(shader, name, &mut value);
+        unsafe {
+            ffi::glGetShaderiv(shader as GLuint, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-#[warn(unused_variables)]
-pub fn gl_get_shader_info_log(shader: GLuint, max_length: GLsizei) -> Option<String> {
-    unsafe {
-        let mut length: GLsizei = 0;
-        let mut log = String::with_capacity(max_length as usize);
+    #[warn(unused_variables)]
+    pub fn gl_get_shader_info_log(&mut self, shader: u32, max_length: i32) -> Result<String, Error> {
+        unsafe {
+            let mut length: GLsizei = 0;
+            let mut log = String::with_capacity(max_length as usize);
 
-        #[cfg(target_os = "ios")]
-        ffi::glGetShaderInfoLog(
-            shader,
-            max_length,
-            &mut length,
-            log.as_mut_vec().as_mut_ptr() as *mut i8,
-        );
-        #[cfg(target_os = "android")]
-        ffi::glGetShaderInfoLog(
-            shader,
-            max_length,
-            &mut length,
-            log.as_mut_vec().as_mut_ptr() as *mut u8,
-        );
+            #[cfg(target_os = "ios")]
+                ffi::glGetShaderInfoLog(
+                shader as GLuint,
+                max_length as GLsizei,
+                &mut length,
+                log.as_mut_vec().as_mut_ptr() as *mut i8,
+            );
+            #[cfg(target_os = "android")]
+                ffi::glGetShaderInfoLog(
+                shader as GLuint,
+                max_length as GLsizei,
+                &mut length,
+                log.as_mut_vec().as_mut_ptr() as *mut u8,
+            );
 
-        if length > 0 {
-            log.as_mut_vec().set_len(length as usize);
-            log.truncate(length as usize);
+            if length > 0 {
+                log.as_mut_vec().set_len(length as usize);
+                log.truncate(length as usize);
 
-            Some(log)
-        } else {
-            None
+                Ok(log)
+            } else {
+                Ok("".to_string())
+            }
         }
     }
-}
 
-pub fn gl_get_shader_precision_format(
-    shader_type: GLenum,
-    precision_type: GLenum,
-) -> ShaderPrecisionFormat {
-    unsafe {
+    pub fn gl_get_shader_precision_format(
+        &mut self,
+        shader_type: ShaderType,
+        precision_type: ShaderPrecisionType,
+    ) -> Result<ShaderPrecisionFormat, Error> {
         let mut precision: GLint = 0;
         let mut range: [GLint; 2] = [0, 0];
 
-        ffi::glGetShaderPrecisionFormat(
-            shader_type,
-            precision_type,
-            range.as_mut_ptr(),
-            &mut precision,
-        );
+        unsafe {
+            ffi::glGetShaderPrecisionFormat(
+                shader_type as GLenum,
+                precision_type as GLenum,
+                range.as_mut_ptr(),
+                &mut precision,
+            );
+        }
 
-        ShaderPrecisionFormat {
+        Ok(ShaderPrecisionFormat {
             precision: precision,
             range: range,
-        }
+        })
     }
-}
 
-pub fn gl_get_shader_source(shader: GLuint, max_length: GLsizei) -> Option<String> {
-    unsafe {
-        let mut length: GLsizei = 0;
-        let mut source = String::with_capacity(max_length as usize);
+    pub fn gl_get_shader_source(&mut self, shader: u32, max_length: i32) -> Result<String, Error> {
+        unsafe {
+            let mut length: GLsizei = 0;
+            let mut source = String::with_capacity(max_length as usize);
 
-        ffi::glGetShaderSource(
-            shader,
-            max_length,
-            &mut length,
-            source.as_mut_vec().as_mut_ptr() as *mut GLchar,
-        );
+            ffi::glGetShaderSource(
+                shader as GLuint,
+                max_length as GLsizei,
+                &mut length,
+                source.as_mut_vec().as_mut_ptr() as *mut GLchar,
+            );
 
-        if length > 0 {
-            source.as_mut_vec().set_len(length as usize);
-            source.truncate(length as usize);
+            if length > 0 {
+                source.as_mut_vec().set_len(length as usize);
+                source.truncate(length as usize);
 
-            Some(source)
-        } else {
-            None
-        }
-    }
-}
-
-pub fn gl_get_string(name: GLenum) -> Option<String> {
-    unsafe {
-        let c_str = ffi::glGetString(name);
-        //todo : can't guarantee the lifetime, because the memory is allocated by C
-        if !c_str.is_null() {
-            match from_utf8(CStr::from_ptr(c_str as *const c_char).to_bytes()) {
-                Ok(s) => Some(s.to_string()),
-                Err(_) => None,
+                Ok(source)
+            } else {
+                Ok("".to_string())
             }
-        } else {
-            None
         }
     }
-}
 
-pub fn gl_get_tex_parameterfv(target: GLenum, name: GLenum) -> GLfloat {
-    unsafe {
+    pub fn gl_get_string(&mut self, name: ConstantType) -> Result<String, Error> {
+        unsafe {
+            let c_str = ffi::glGetString(name as GLenum);
+            //todo : can't guarantee the lifetime, because the memory is allocated by C
+            if !c_str.is_null() {
+                match from_utf8(CStr::from_ptr(c_str as *const c_char).to_bytes()) {
+                    Ok(s) => Ok(s.to_string()),
+                    // TODO: error desc
+                    Err(_) => Err(Error{}),
+                }
+            } else {
+                // TODO: Ok is not proper ?
+                Ok("".to_string())
+            }
+        }
+    }
+
+    pub fn gl_get_tex_parameterfv(&mut self, target: TextureTarget, name: TextureParamType) -> Result<f32, Error> {
         let mut value: GLfloat = 0.0;
 
-        ffi::glGetTexParameterfv(target, name, &mut value);
+        unsafe {
+            ffi::glGetTexParameterfv(target as GLenum, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as f32)
     }
-}
 
-pub fn gl_get_tex_parameteriv(target: GLenum, name: GLenum) -> GLint {
-    unsafe {
+    pub fn gl_get_tex_parameteriv(&mut self, target: TextureTarget, name: TextureParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetTexParameteriv(target, name, &mut value);
+        unsafe {
+            ffi::glGetTexParameteriv(target as GLenum, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_uniformfv(program: GLuint, location: GLint) -> GLfloat {
-    unsafe {
+    pub fn gl_get_uniformfv(&mut self, program: u32, location: i32) -> Result<f32, Error> {
+        let mut value: GLfloat = 0.0;
+        unsafe {
+            ffi::glGetUniformfv(program as GLuint, location as GLint, &mut value);
+        }
+
+        Ok(value as f32)
+    }
+
+    pub fn gl_get_uniformiv(&mut self, program: u32, location: i32) -> Result<i32, Error> {
+        let mut value: GLint = 0;
+
+        unsafe {
+            ffi::glGetUniformiv(program as GLuint, location as GLint, &mut value);
+        }
+
+        Ok(value as i32)
+    }
+
+    pub fn gl_get_uniform_location(&mut self, program: u32, name: &str) -> Result<i32, Error> {
+        let mut loc: GLint = 0;
+
+        unsafe {
+            let name_c_str = CString::new(name).unwrap();
+
+            loc = ffi::glGetUniformLocation(program as GLuint, name_c_str.as_ptr() as *const c_char);
+        }
+
+        Ok(loc as i32)
+    }
+
+    pub fn gl_get_vertex_attribfv(&mut self, index: u32, name: VertexAttributeParamType) -> Result<f32, Error> {
         let mut value: GLfloat = 0.0;
 
-        ffi::glGetUniformfv(program, location, &mut value);
+        unsafe {
+            ffi::glGetVertexAttribfv(index as GLuint, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as f32)
     }
-}
 
-pub fn gl_get_uniformiv(program: GLuint, location: GLint) -> GLint {
-    unsafe {
+    pub fn gl_get_vertex_attribiv(&mut self, index: u32, name: VertexAttributeParamType) -> Result<i32, Error> {
         let mut value: GLint = 0;
 
-        ffi::glGetUniformiv(program, location, &mut value);
+        unsafe {
+            ffi::glGetVertexAttribiv(index as GLuint, name as GLenum, &mut value);
+        }
 
-        value
+        Ok(value as i32)
     }
-}
 
-pub fn gl_get_uniform_location(program: GLuint, name: &GLchar) -> GLint {
-    unsafe { ffi::glGetUniformLocation(program, name) }
-}
+    pub fn gl_hint(&mut self, target: HintTargetType, mode: HintBehaviorType) -> Result<(), Error> {
+        unsafe {
+            ffi::glHint(target as GLenum, mode as GLenum)
+        }
 
-pub fn gl_get_vertex_attribfv(index: GLuint, name: GLenum) -> GLfloat {
-    unsafe {
-        let mut value: GLfloat = 0.0;
-
-        ffi::glGetVertexAttribfv(index, name, &mut value);
-
-        value
+        Ok(())
     }
-}
 
-pub fn gl_get_vertex_attribiv(index: GLuint, name: GLenum) -> GLint {
-    unsafe {
-        let mut value: GLint = 0;
-
-        ffi::glGetVertexAttribiv(index, name, &mut value);
-
-        value
-    }
-}
-
-pub fn gl_hint(target: GLenum, mode: GLenum) {
-    unsafe { ffi::glHint(target, mode) }
+    
 }
 
 pub fn gl_is_buffer(buffer: GLuint) -> bool {

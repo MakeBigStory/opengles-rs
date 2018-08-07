@@ -208,7 +208,7 @@ impl Wrapper {
         Ok(())
     }
 
-    //todo :
+    //todo : reference to program binary
     pub fn gl_map_buffer_range<'a, T>(&mut self,
         target: BufferBindingTarget,
         offset: GLintptr,
@@ -229,9 +229,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferBindingTarget, offset: GLintptr, length: GLsizeiptr) -> Result<(), Error> {
+    pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferBindingTarget, offset: i32, length: i32) -> Result<(), Error> {
         unsafe {
-            ffi::glFlushMappedBufferRange(target, offset, length);
+            ffi::glFlushMappedBufferRange(target, offset as GLintptr, length as GLsizeiptr);
         }
         Ok(())
     }

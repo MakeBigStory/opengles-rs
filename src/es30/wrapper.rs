@@ -219,7 +219,7 @@ impl Wrapper {
     }
 
     pub fn gl_copy_tex_sub_image3d(&mut self,
-        target: GLenum,
+        target: TextureTarget,
         level: GLint,
         xoffset: GLint,
         yoffset: GLint,
@@ -246,7 +246,7 @@ impl Wrapper {
     }
 
     pub fn gl_compressed_tex_image3d<T>(&mut self,
-        target: GLenum,
+        target: TextureTarget,
         level: GLint,
         internal_format: PixelDataFormat,
         width: GLsizei,
@@ -274,7 +274,7 @@ impl Wrapper {
     }
 
     pub fn gl_compressed_tex_sub_image3d<T>(&mut self,
-        target: GLenum,
+        target: TextureTarget,
         level: GLint,
         xoffset: GLint,
         yoffset: GLint,

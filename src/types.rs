@@ -5,6 +5,8 @@ pub use std::os::raw::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void
 
 use super::es20::data_struct::*;
 use super::es30::data_struct::*;
+use super::es31::data_struct::*;
+use super::es32::data_struct::*;
 
 // -------------------------------------------------------------------------------------------------
 // TYPES
@@ -239,49 +241,38 @@ pub enum ColorBufferMode {
 }
 
 pub enum BufferObjectTarget {
+    /// Vertex attributes
     ArrayBuffer = GL_ARRAY_BUFFER as isize,
+    /// Atomic counter storage
+    AtomicCounterBuffer = GL_ATOMIC_COUNTER_BUFFER as isize,
+    /// Buffer copy source
     CopyReadBuffer = GL_COPY_READ_BUFFER  as isize,
+    /// Buffer copy destination
     CopyWriteBuffer = GL_COPY_WRITE_BUFFER  as isize,
+    /// Indirect compute dispatch commands
+    DispatchIndirectBuffer = GL_DISPATCH_INDIRECT_BUFFER as isize,
+    /// Indirect command arguments
+    DrawIndirectBuffer = GL_DRAW_INDIRECT_BUFFER as isize,
+    /// Vertex array indices
     ElementArrayBuffer = GL_ELEMENT_ARRAY_BUFFER  as isize,
+    /// Pixel read target
     PixelPackBuffer = GL_PIXEL_PACK_BUFFER  as isize,
+    /// Texture data source
     PixelUnpackBuffer = GL_PIXEL_UNPACK_BUFFER  as isize,
+    /// Query result buffer
+    QueryBuffer = GL_QUERY_BUFFER as isize,
+    /// Read-write storage for shaders
+    ShaderStorageBuffer = GL_SHADER_STORAGE_BUFFER as isize,
+    /// Texture data buffer
+    TextureBuffer = GL_TEXTURE_BUFFER as isize,
+    /// Transform feedback buffer
     TransformFeedbackBuffer = GL_TRANSFORM_FEEDBACK_BUFFER  as isize,
+    /// Uniform block storage
     UniformBuffer = GL_UNIFORM_BUFFER  as isize,
 }
 
-pub enum BufferBindingTarget {
-    /// Vertex attributes
-    GL_ARRAY_BUFFER,
-    /// Atomic counter storage
-    GL_ATOMIC_COUNTER_BUFFER,
-    /// Buffer copy source
-    GL_COPY_READ_BUFFER,
-    /// Buffer copy destination
-    GL_COPY_WRITE_BUFFER,
-    /// Indirect compute dispatch commands
-    GL_DISPATCH_INDIRECT_BUFFER,
-    /// Indirect command arguments
-    GL_DRAW_INDIRECT_BUFFER,
-    /// Vertex array indices
-    GL_ELEMENT_ARRAY_BUFFER,
-    /// Pixel read target
-    GL_PIXEL_PACK_BUFFER,
-    /// Texture data source
-    GL_PIXEL_UNPACK_BUFFER,
-    /// Query result buffer
-    GL_QUERY_BUFFER,
-    /// Read-write storage for shaders
-    GL_SHADER_STORAGE_BUFFER,
-    /// Texture data buffer
-    GL_TEXTURE_BUFFER,
-    /// Transform feedback buffer
-    GL_TRANSFORM_FEEDBACK_BUFFER,
-    /// Uniform block storage
-    GL_UNIFORM_BUFFER,
-}
-
 pub enum BufferMapTarget {
-    BufferMapPointer = GL_BUFFER_MAP_POINTER,
+    BufferMapPointer = GL_BUFFER_MAP_POINTER as isize,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -319,7 +310,7 @@ pub enum Feature {
     SAMPLE_ALPHA_TO_COVERAGE = GL_SAMPLE_ALPHA_TO_COVERAGE as isize,
     SAMPLE_COVERAGE = GL_SAMPLE_COVERAGE as isize,
     SCISSOR_TEST = GL_SCISSOR_TEST as isize,
-    STENCIL_TEST = GL_STENCIL_TEST as isize
+    STENCIL_TEST = GL_STENCIL_TEST as isize,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -330,5 +321,69 @@ pub enum BeginMode {
     LINE_STRIP = GL_LINE_STRIP as isize,
     TRIANGLES = GL_TRIANGLES as isize,
     TRIANGLE_STRIP = GL_TRIANGLE_STRIP as isize,
-    TRIANGLE_FAN = GL_TRIANGLE_FAN as isize
+    TRIANGLE_FAN = GL_TRIANGLE_FAN as isize,
+}
+
+pub enum MappingBit {
+    InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT as isize,
+    InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT as isize,
+    FlushExplicit = GL_MAP_FLUSH_EXPLICIT_BIT as isize,
+    Unsynchronized = GL_MAP_UNSYNCHRONIZED_BIT as isize,
+}
+
+/// Samplers
+
+pub enum SamplerParameter {
+    WrapS = GL_TEXTURE_WRAP_S as isize,
+    WrapT = GL_TEXTURE_WRAP_T as isize,
+    WrapR = GL_TEXTURE_WRAP_R as isize,
+    MinFilter = GL_TEXTURE_MIN_FILTER as isize,
+    MagFilter = GL_TEXTURE_MAG_FILTER as isize,
+    BorderColor = GL_TEXTURE_BORDER_COLOR as isize,
+    MinLod = GL_TEXTURE_MIN_LOD as isize,
+    MaxLod = GL_TEXTURE_MAX_LOD as isize,
+    LodBias = GL_TEXTURE_LOD_BIAS as isize,
+    CompareMode = GL_TEXTURE_COMPARE_MODE as isize,
+    CompareFunc = GL_TEXTURE_COMPARE_FUNC as isize,
+}
+
+pub enum TransformFeedbackMode {
+    InterleavedAttributes = GL_INTERLEAVED_ATTRIBS as isize,
+    SeparatedAttributes = GL_SEPARATE_ATTRIBS as isize,
+}
+
+pub enum TransformFeedbackObjectTarget {
+    GL_TRANSFORM_FEEDBACK as isize,
+}
+
+pub enum FrameBufferTarget {
+    FrameBuffer = GL_FRAMEBUFFER as isize as isize,
+}
+
+pub enum AttachmentTarget {
+    Color_Attachment_0 = GL_COLOR_ATTACHMENT0 as isize,
+    Color_Attachment_1 = GL_COLOR_ATTACHMENT1 as isize,
+    Color_Attachment_2 = GL_COLOR_ATTACHMENT2 as isize,
+    Color_Attachment_3 = GL_COLOR_ATTACHMENT3 as isize,
+    Color_Attachment = GL_DEPTH_ATTACHMENT as isize,
+    StencilAttachment = GL_STENCIL_ATTACHMENT as isize,
+    DepthStencilAttachment = GL_DEPTH_STENCIL_ATTACHMENT as isize,
+}
+
+pub enum FilterMode {
+    GL_NEAREST as isize,
+    GL_LINEAR as isize,
+}
+
+pub enum BufferMask {
+    Color = GL_COLOR_BUFFER_BIT as isize,
+    Depth = GL_DEPTH_BUFFER_BIT as isize,
+    Stencil = GL_STENCIL_BUFFER_BIT as isize,
+}
+
+pub enum FramebufferTarget {
+    Draw = GL_DRAW_FRAMEBUFFER as isize,
+    Read = GL_READ_FRAMEBUFFER as isize,
+    /// GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER
+    Framebuffer = GL_FRAMEBUFFER as isize,
 }

@@ -25,70 +25,6 @@ pub struct ShaderPrecisionFormat {
     pub range: [GLint; 2],
 }
 
-pub enum MappingBit {
-    InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT,
-    InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT,
-    FlushExplicit = GL_MAP_FLUSH_EXPLICIT_BIT,
-    Unsynchronized = GL_MAP_UNSYNCHRONIZED_BIT,
-}
-
-/// Samplers
-
-pub enum SamplerParameter {
-    GL_TEXTURE_WRAP_S,
-    GL_TEXTURE_WRAP_T,
-    GL_TEXTURE_WRAP_R,
-    GL_TEXTURE_MIN_FILTER,
-    GL_TEXTURE_MAG_FILTER,
-    GL_TEXTURE_BORDER_COLOR,
-    GL_TEXTURE_MIN_LOD,
-    GL_TEXTURE_MAX_LOD,
-    GL_TEXTURE_LOD_BIAS,
-    GL_TEXTURE_COMPARE_MODE,
-    GL_TEXTURE_COMPARE_FUNC,
-}
-
-pub enum TransformFeedbackMode {
-    GL_INTERLEAVED_ATTRIBS,
-    GL_SEPARATE_ATTRIBS,
-}
-
-pub enum TransformFeedbackObjectTarget {
-    GL_TRANSFORM_FEEDBACK,
-}
-
-pub enum FrameBufferTarget {
-    FrameBuffer = GL_FRAMEBUFFER as isize,
-}
-
-pub enum AttachmentTarget {
-    Color_Attachment_0 = GL_COLOR_ATTACHMENT0,
-    GL_COLOR_ATTACHMENT1,
-    GL_COLOR_ATTACHMENT2,
-    GL_COLOR_ATTACHMENT3,
-    GL_DEPTH_ATTACHMENT,
-    GL_STENCIL_ATTACHMENT,
-    GL_DEPTH_STENCIL_ATTACHMENT,
-}
-
-pub enum FilterMode {
-    GL_NEAREST,
-    GL_LINEAR,
-}
-
-pub enum BufferMask {
-    GL_COLOR_BUFFER_BIT,
-    GL_DEPTH_BUFFER_BIT,
-    GL_STENCIL_BUFFER_BIT,
-}
-
-pub enum FramebufferTarget {
-    GL_DRAW_FRAMEBUFFER,
-    GL_READ_FRAMEBUFFER,
-    /// GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER
-    GL_FRAMEBUFFER,
-}
-
 pub struct Wrapper {}
 
 impl Wrapper {
@@ -143,7 +79,7 @@ impl Wrapper {
 
     //todo : reference to program binary
     pub fn gl_map_buffer_range<'a, T>(&mut self,
-        target: BufferBindingTarget,
+        target: BufferObjectTarget,
         offset: GLintptr,
         length: GLsizeiptr,
         access: MappingBit,
@@ -162,7 +98,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferBindingTarget, offset: i32, length: i32) -> Result<(), Error> {
+    pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferObjectTarget, offset: i32, length: i32) -> Result<(), Error> {
         unsafe {
             ffi::glFlushMappedBufferRange(target, offset as GLintptr, length as GLsizeiptr);
         }
@@ -171,7 +107,7 @@ impl Wrapper {
 
     // todo: target范围变小
     pub fn gl_bind_buffer_range(&mut self,
-        target: BufferBindingTarget,
+        target: BufferObjectTarget,
         index: u32,
         buffer: u32,
         offset: i32,
@@ -190,7 +126,7 @@ impl Wrapper {
     }
 
     // todo: target范围变小
-    pub fn gl_bind_buffer_base(&mut self, target: BufferBindingTarget, index: u32, buffer: u32) -> Result<(), Error> {
+    pub fn gl_bind_buffer_base(&mut self, target: BufferObjectTarget, index: u32, buffer: u32) -> Result<(), Error> {
         unsafe {
             ffi::glBindBufferBase(target as GLenum, index as GLuint, buffer as GLuint);
         }

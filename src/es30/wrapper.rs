@@ -1214,7 +1214,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glBlitFramebuffer(
-                srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter,
+                srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter as GLenum,
             );
         }
         Ok(())
@@ -1228,13 +1228,13 @@ impl Wrapper {
         layer: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glFramebufferTextureLayer(target as GLenum, attachment, texture, level, layer);
+            ffi::glFramebufferTextureLayer(target as GLenum, attachment as GLenum, texture, level, layer);
         }
         Ok(())
     }
 
     pub fn gl_tex_storage2d(&mut self,
-        target: GLenum,
+        target: TextureTarget,
         levels: GLsizei,
         internal_format: GLenum,
         width: GLsizei,
@@ -1253,7 +1253,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_storage3d(&mut self,
-        target: GLenum,
+        target: TextureTarget,
         levels: GLsizei,
         internal_format: GLenum,
         width: GLsizei,

@@ -4,6 +4,7 @@
 pub use std::os::raw::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void, c_float};
 
 use super::es20::data_struct::*;
+use super::es30::data_struct::*;
 
 // -------------------------------------------------------------------------------------------------
 // TYPES
@@ -154,7 +155,9 @@ pub enum TextureTarget {
     TEXTURE_CUBE_MAP_POSITIVE_Y = GL_TEXTURE_CUBE_MAP_POSITIVE_Y as isize,
     TEXTURE_CUBE_MAP_NEGATIVE_Y = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y as isize,
     TEXTURE_CUBE_MAP_POSITIVE_Z = GL_TEXTURE_CUBE_MAP_POSITIVE_Z as isize,
-    TEXTURE_CUBE_MAP_NEGATIVE_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z as isize
+    TEXTURE_CUBE_MAP_NEGATIVE_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z as isize,
+    Texture3D = GL_TEXTURE_3D as isize,
+    Texture2DArray = GL_TEXTURE_2D_ARRAY as isize,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]

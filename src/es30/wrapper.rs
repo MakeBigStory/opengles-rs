@@ -2,6 +2,9 @@ use super::es20::data_struct::*;
 use super::data_struct::*;
 use super::ffi::*;
 use super::*;
+use super::types::*;
+
+use std::mem;
 
 use std::ptr;
 use std::slice;
@@ -25,8 +28,8 @@ pub struct ShaderPrecisionFormat {
 /// Buffer Objects
 
 pub enum ColorBufferMode {
-    Back = GL_BACK,
-    None = GL_NONE,
+    Back = GL_BACK as isize,
+    None = GL_NONE as isize,
     ColorAttachment0 = GL_COLOR_ATTACHMENT0,
     ColorAttachment1 = GL_COLOR_ATTACHMENT1,
     ColorAttachment2 = GL_COLOR_ATTACHMENT2,
@@ -264,6 +267,7 @@ impl Wrapper {
         Ok(())
     }
 
+    // todo: [GLint]
     pub fn gl_clear_bufferiv(&mut self, buffer: GLenum, draw_buffer: i32, value: &[GLint]) -> Result<(), Error> {
         unsafe {
             ffi::glClearBufferiv(buffer, draw_buffer as GLint, value.as_ptr() as *const GLint);
@@ -301,27 +305,31 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_tex_image3d<T>(&mut self,
-        target: GLenum,
-        level: GLint,
-        internal_format: GLint,
+    pub fn gl_tex_image3d(&mut self,
+        target: TextureTarget,
+        level: i32,
+        internal_format: i32,
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
-        border: GLint,
+        border: i32,
         format: GLenum,
         type_: GLenum,
-        pixels: &[T],
+        opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
+        let pdata = match opt_data {
+            Some(data) => mem::transmute(data.as_ptr()),
+            None => ptr::null(),
+        };
+
         unsafe {
-            ffi::glTexImage3D(target, level, internal_format, width, height, depth, border, format, type_,
-                              pixels.as_ptr() as *const GLvoid);
+            ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width, height, depth, border as GLint, format, type_, pdata);
         }
         Ok(())
     }
 
-    pub fn gl_tex_sub_image3d<T>(&mut self,
-        target: GLenum,
+    pub fn gl_tex_sub_image3d(&mut self,
+        target: TextureTarget,
         level: GLint,
         xoffset: GLint,
         yoffset: GLint,
@@ -331,11 +339,16 @@ impl Wrapper {
         depth: GLsizei,
         format: GLenum,
         type_: GLenum,
-        pixels: &[T],
+                                 opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
+        let pdata = match opt_data {
+            Some(data) => mem::transmute(data.as_ptr()),
+            None => ptr::null(),
+        };
+
         unsafe {
             ffi::glTexSubImage3D(
-                target,
+                target as GLenum,
                 level,
                 xoffset,
                 yoffset,
@@ -345,7 +358,7 @@ impl Wrapper {
                 depth,
                 format,
                 type_,
-                pixels.as_ptr() as *const GLvoid,
+                pdata,
             );
         }
         Ok(())

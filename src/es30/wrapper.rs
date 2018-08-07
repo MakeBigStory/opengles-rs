@@ -260,7 +260,7 @@ impl Wrapper {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
                 level,
-                internal_format,
+                internal_format as GLenum
                 width,
                 height,
                 depth,
@@ -469,7 +469,7 @@ impl Wrapper {
             ffi::glRenderbufferStorageMultisample(
                 target as GLenum,
                 samples,
-                internal_format,
+                internal_format as GLenum,
                 width,
                 height,
             );
@@ -1236,7 +1236,7 @@ impl Wrapper {
     pub fn gl_tex_storage2d(&mut self,
         target: TextureTarget,
         levels: GLsizei,
-        internal_format: GLenum,
+        internal_format: TextureTarget,
         width: GLsizei,
         height: GLsizei,
     ) -> Result<(), Error> {
@@ -1244,7 +1244,7 @@ impl Wrapper {
             ffi::glTexStorage2D(
                 target as GLenum,
                 levels,
-                internal_format,
+                internal_format as GLenum,
                 width,
                 height,
             );
@@ -1255,7 +1255,7 @@ impl Wrapper {
     pub fn gl_tex_storage3d(&mut self,
         target: TextureTarget,
         levels: GLsizei,
-        internal_format: GLenum,
+        internal_format: TextureTarget,
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
@@ -1264,7 +1264,7 @@ impl Wrapper {
             ffi::glTexStorage3D(
                 target as GLenum,
                 levels,
-                internal_format,
+                internal_format as GLenum,
                 width,
                 height,
                 depth,
@@ -1275,7 +1275,7 @@ impl Wrapper {
 
     pub fn gl_get_internal_formativ(&mut self,
         target: GLenum,
-        internal_format: GLenum,
+        internal_format: TextureTarget,
         pname: GLenum,
         buffer_size: GLsizei,
     ) -> Vec<GLint> {
@@ -1283,7 +1283,7 @@ impl Wrapper {
             let mut params: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             glGetinternal_formativ(
                 target as GLenum,
-                internal_format,
+                internal_format as GLenum,
                 pname as GLenum,
                 buffer_size,
                 params.as_mut_ptr() as *mut GLint,

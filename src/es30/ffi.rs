@@ -178,6 +178,14 @@ extern "C" {
         layer: GLint,
     );
 
+    /// map a section of a buffer object's data store
+    ///
+    /// # argument
+    ///
+    /// - `target` Specifies a binding to which the target buffer is bound.
+    /// - `offset` Specifies the starting offset within the buffer of the range to be mapped.
+    /// - `length` Specifies the length of the range to be mapped.
+    /// - `access` Specifies a combination of access flags indicating the desired access to the range.
     pub fn glMapBufferRange(
         target: GLenum,
         offset: GLintptr,

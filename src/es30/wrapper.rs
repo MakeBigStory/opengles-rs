@@ -24,7 +24,6 @@ pub struct ShaderPrecisionFormat {
 
 /// Buffer Objects
 
-// todo: 补充GL_COLOR_ATTACHMENT n
 pub enum ColorBufferMode {
     Back = GL_BACK,
     None = GL_NONE,
@@ -87,6 +86,17 @@ pub enum BufferBindingTarget {
     GL_TRANSFORM_FEEDBACK_BUFFER,
     /// Uniform block storage
     GL_UNIFORM_BUFFER,
+}
+
+pub enum BufferMapTarget {
+    BufferMapPointer = GL_BUFFER_MAP_POINTER,
+}
+
+pub enum MappingBit {
+    InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT,
+    InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT,
+    FlushExplicit = GL_MAP_FLUSH_EXPLICIT_BIT,
+    Unsynchronized = GL_MAP_UNSYNCHRONIZED_BIT,
 }
 
 /// Samplers
@@ -191,7 +201,7 @@ impl Wrapper {
     }
 
     //todo : *mut *mut GLvoid
-    pub fn gl_get_buffer_pointerv<T>(&mut self, target: GLenum, pname: GLenum, params: *mut *mut GLvoid) -> Result<(), Error> {
+    pub fn gl_get_buffer_pointerv<T>(&mut self, target: BufferObjectTarget, pname: BufferMapTarget, params: *mut *mut GLvoid) -> Result<(), Error> {
         unsafe {
             ffi::glGetBufferPointerv(target, pname, params);
         }
@@ -203,7 +213,7 @@ impl Wrapper {
         target: BufferBindingTarget,
         offset: GLintptr,
         length: GLsizeiptr,
-        access: GLbitfield,
+        access: MappingBit,
     ) -> &'a [T] {
         unsafe {
             let ptr = ffi::glMapBufferRange(

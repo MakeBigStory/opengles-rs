@@ -257,9 +257,9 @@ impl Wrapper {
     }
 
     // todo: target范围变小
-    pub fn gl_bind_buffer_base(&mut self, target: GLenum, index: GLuint, buffer: GLuint) -> Result<(), Error> {
+    pub fn gl_bind_buffer_base(&mut self, target: BufferBindingTarget, index: u32, buffer: u32) -> Result<(), Error> {
         unsafe {
-            ffi::glBindBufferBase(target, index, buffer);
+            ffi::glBindBufferBase(target as GLenum, index as GLuint, buffer as GLuint);
         }
         Ok(())
     }

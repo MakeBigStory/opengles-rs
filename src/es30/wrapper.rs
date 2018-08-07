@@ -260,7 +260,7 @@ impl Wrapper {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
                 level,
-                internal_format as GLenum
+                internal_format as GLenum,
                 width,
                 height,
                 depth,

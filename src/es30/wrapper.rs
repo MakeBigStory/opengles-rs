@@ -27,7 +27,7 @@ pub struct ShaderPrecisionFormat {
 
 /// Buffer Objects
 
-pub enum ColorBufferMode {
+pub enum Colorbuffer_mode {
     Back = GL_BACK as isize,
     None = GL_NONE as isize,
     ColorAttachment0 = GL_COLOR_ATTACHMENT0,
@@ -162,14 +162,14 @@ pub enum FramebufferTarget {
 pub struct Wrapper {}
 
 impl Wrapper {
-    pub fn gl_read_buffer(&mut self, mode: ColorBufferMode) -> Result<(), Error> {
+    pub fn gl_read_buffer(&mut self, mode: Colorbuffer_mode) -> Result<(), Error> {
         unsafe {
             ffi::glReadBuffer(mode as GLenum);
         }
         Ok(())
     }
 
-    pub fn gl_draw_buffers(&mut self, bufs: &[ColorBufferMode]) -> Result<(), Error> {
+    pub fn gl_draw_buffers(&mut self, bufs: &[Colorbuffer_mode]) -> Result<(), Error> {
         unsafe {
             let n: GLsizei = bufs.len() as i32;
             ffi::glDrawBuffers(n, bufs.as_ptr() as *const GLenum);
@@ -682,7 +682,7 @@ impl Wrapper {
         program: GLuint,
         count: GLsizei,
         varyings: &Vec<String>,
-        bufferMode: TransformFeedbackMode,
+        buffer_mode: TransformFeedbackMode,
     ) -> Result<(), Error> {
         unsafe {
             let mut names: Vec<CString> = Vec::with_capacity(count as usize);
@@ -703,7 +703,7 @@ impl Wrapper {
                 program,
                 count,
                 names_ptr.as_ptr() as *const *const GLchar,
-                bufferMode,
+                buffer_mode as GLenum,
             );
         }
         Ok(())

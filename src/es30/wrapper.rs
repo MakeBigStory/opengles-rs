@@ -394,7 +394,7 @@ impl Wrapper {
     pub fn gl_compressed_tex_image3d<T>(&mut self,
         target: GLenum,
         level: GLint,
-        internalformat: GLenum,
+        internal_format: GLenum,
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
@@ -406,7 +406,7 @@ impl Wrapper {
             ffi::glCompressedTexImage3D(
                 target,
                 level,
-                internalformat,
+                internal_format,
                 width,
                 height,
                 depth,
@@ -429,7 +429,7 @@ impl Wrapper {
         height: GLsizei,
         depth: GLsizei,
         format: GLenum,
-        imageSize: GLsizei,
+        image_size: GLsizei,
         data: &[T],
     ) -> Result<(), Error> {
         unsafe {
@@ -443,7 +443,7 @@ impl Wrapper {
                 height,
                 depth,
                 format,
-                imageSize,
+                image_size,
                 data.as_ptr() as *const GLvoid,
             );
         }
@@ -607,7 +607,7 @@ impl Wrapper {
     pub fn gl_renderbuffer_storage_multisample(&mut self,
         target: GLenum,
         samples: GLsizei,
-        internalformat: GLenum,
+        internal_format: GLenum,
         width: GLsizei,
         height: GLsizei,
     ) -> Result<(), Error> {
@@ -615,7 +615,7 @@ impl Wrapper {
             ffi::glRenderbufferStorageMultisample(
                 target,
                 samples,
-                internalformat,
+                internal_format,
                 width,
                 height,
             );
@@ -1382,7 +1382,7 @@ impl Wrapper {
     pub fn gl_tex_storage2d(&mut self,
         target: GLenum,
         levels: GLsizei,
-        internalformat: GLenum,
+        internal_format: GLenum,
         width: GLsizei,
         height: GLsizei,
     ) -> Result<(), Error> {
@@ -1390,7 +1390,7 @@ impl Wrapper {
             ffi::glTexStorage2D(
                 target,
                 levels,
-                internalformat,
+                internal_format,
                 width,
                 height,
             );
@@ -1401,7 +1401,7 @@ impl Wrapper {
     pub fn gl_tex_storage3d(&mut self,
         target: GLenum,
         levels: GLsizei,
-        internalformat: GLenum,
+        internal_format: GLenum,
         width: GLsizei,
         height: GLsizei,
         depth: GLsizei,
@@ -1410,7 +1410,7 @@ impl Wrapper {
             ffi::glTexStorage3D(
                 target,
                 levels,
-                internalformat,
+                internal_format,
                 width,
                 height,
                 depth,
@@ -1419,17 +1419,17 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_internalformativ(&mut self,
+    pub fn gl_get_internal_formativ(&mut self,
         target: GLenum,
-        internalformat: GLenum,
+        internal_format: GLenum,
         pname: GLenum,
         bufSize: GLsizei,
     ) -> Vec<GLint> {
         unsafe {
             let mut params: Vec<GLint> = Vec::with_capacity(bufSize as usize);
-            glGetInternalformativ(
+            glGetinternal_formativ(
                 target,
-                internalformat,
+                internal_format,
                 pname,
                 bufSize,
                 params.as_mut_ptr() as *mut GLint,

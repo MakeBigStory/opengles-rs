@@ -214,6 +214,76 @@ impl From<GLuint> for FrameBufferStatus {
     }
 }
 
+/// Buffer Objects
+
+pub enum ColorBufferMode {
+    Back = GL_BACK as isize,
+    None = GL_NONE as isize,
+    ColorAttachment0 = GL_COLOR_ATTACHMENT0 as isize,
+    ColorAttachment1 = GL_COLOR_ATTACHMENT1 as isize,
+    ColorAttachment2 = GL_COLOR_ATTACHMENT2 as isize,
+    ColorAttachment3 = GL_COLOR_ATTACHMENT3 as isize,
+    ColorAttachment4 = GL_COLOR_ATTACHMENT4 as isize,
+    ColorAttachment5 = GL_COLOR_ATTACHMENT5 as isize,
+    ColorAttachment6 = GL_COLOR_ATTACHMENT6 as isize,
+    ColorAttachment7 = GL_COLOR_ATTACHMENT7 as isize,
+    ColorAttachment8 = GL_COLOR_ATTACHMENT8 as isize,
+    ColorAttachment9 = GL_COLOR_ATTACHMENT9 as isize,
+    ColorAttachment10 = GL_COLOR_ATTACHMENT10 as isize,
+    ColorAttachment11 = GL_COLOR_ATTACHMENT11 as isize,
+    ColorAttachment12 = GL_COLOR_ATTACHMENT12 as isize,
+    ColorAttachment13 = GL_COLOR_ATTACHMENT13 as isize,
+    ColorAttachment14 = GL_COLOR_ATTACHMENT14 as isize,
+    ColorAttachment15 = GL_COLOR_ATTACHMENT15 as isize,
+    MaxColorAttachments = GL_MAX_COLOR_ATTACHMENTS as isize,
+}
+
+pub enum BufferObjectTarget {
+    ArrayBuffer = GL_ARRAY_BUFFER as isize,
+    CopyReadBuffer = GL_COPY_READ_BUFFER  as isize,
+    CopyWriteBuffer = GL_COPY_WRITE_BUFFER  as isize,
+    ElementArrayBuffer = GL_ELEMENT_ARRAY_BUFFER  as isize,
+    PixelPackBuffer = GL_PIXEL_PACK_BUFFER  as isize,
+    PixelUnpackBuffer = GL_PIXEL_UNPACK_BUFFER  as isize,
+    TransformFeedbackBuffer = GL_TRANSFORM_FEEDBACK_BUFFER  as isize,
+    UniformBuffer = GL_UNIFORM_BUFFER  as isize,
+}
+
+pub enum BufferBindingTarget {
+    /// Vertex attributes
+    GL_ARRAY_BUFFER,
+    /// Atomic counter storage
+    GL_ATOMIC_COUNTER_BUFFER,
+    /// Buffer copy source
+    GL_COPY_READ_BUFFER,
+    /// Buffer copy destination
+    GL_COPY_WRITE_BUFFER,
+    /// Indirect compute dispatch commands
+    GL_DISPATCH_INDIRECT_BUFFER,
+    /// Indirect command arguments
+    GL_DRAW_INDIRECT_BUFFER,
+    /// Vertex array indices
+    GL_ELEMENT_ARRAY_BUFFER,
+    /// Pixel read target
+    GL_PIXEL_PACK_BUFFER,
+    /// Texture data source
+    GL_PIXEL_UNPACK_BUFFER,
+    /// Query result buffer
+    GL_QUERY_BUFFER,
+    /// Read-write storage for shaders
+    GL_SHADER_STORAGE_BUFFER,
+    /// Texture data buffer
+    GL_TEXTURE_BUFFER,
+    /// Transform feedback buffer
+    GL_TRANSFORM_FEEDBACK_BUFFER,
+    /// Uniform block storage
+    GL_UNIFORM_BUFFER,
+}
+
+pub enum BufferMapTarget {
+    BufferMapPointer = GL_BUFFER_MAP_POINTER,
+}
+
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ShaderType {
     FRAGMENT_SHADER = GL_FRAGMENT_SHADER as isize,

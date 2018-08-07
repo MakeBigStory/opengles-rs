@@ -25,76 +25,6 @@ pub struct ShaderPrecisionFormat {
     pub range: [GLint; 2],
 }
 
-/// Buffer Objects
-
-pub enum Colorbuffer_mode {
-    Back = GL_BACK as isize,
-    None = GL_NONE as isize,
-    ColorAttachment0 = GL_COLOR_ATTACHMENT0,
-    ColorAttachment1 = GL_COLOR_ATTACHMENT1,
-    ColorAttachment2 = GL_COLOR_ATTACHMENT2,
-    ColorAttachment3 = GL_COLOR_ATTACHMENT3,
-    ColorAttachment4 = GL_COLOR_ATTACHMENT4,
-    ColorAttachment5 = GL_COLOR_ATTACHMENT5,
-    ColorAttachment6 = GL_COLOR_ATTACHMENT6,
-    ColorAttachment7 = GL_COLOR_ATTACHMENT7,
-    ColorAttachment8 = GL_COLOR_ATTACHMENT8,
-    ColorAttachment9 = GL_COLOR_ATTACHMENT9,
-    ColorAttachment10 = GL_COLOR_ATTACHMENT10,
-    ColorAttachment11 = GL_COLOR_ATTACHMENT11,
-    ColorAttachment12 = GL_COLOR_ATTACHMENT12,
-    ColorAttachment13 = GL_COLOR_ATTACHMENT13,
-    ColorAttachment14 = GL_COLOR_ATTACHMENT14,
-    ColorAttachment15 = GL_COLOR_ATTACHMENT15,
-    MaxColorAttachments = GL_MAX_COLOR_ATTACHMENTS,
-}
-
-pub enum BufferObjectTarget {
-    ArrayBuffer = GL_ARRAY_BUFFER as GLenum,
-    CopyReadBuffer = GL_COPY_READ_BUFFER as GLenum,
-    CopyWriteBuffer = GL_COPY_WRITE_BUFFER as GLenum,
-    ElementArrayBuffer = GL_ELEMENT_ARRAY_BUFFER as GLenum,
-    PixelPackBuffer = GL_PIXEL_PACK_BUFFER as GLenum,
-    PixelUnpackBuffer = GL_PIXEL_UNPACK_BUFFER as GLenum,
-    TransformFeedbackBuffer = GL_TRANSFORM_FEEDBACK_BUFFER as GLenum,
-    UniformBuffer = GL_UNIFORM_BUFFER as GLenum,
-}
-
-pub enum BufferBindingTarget {
-    /// Vertex attributes
-    GL_ARRAY_BUFFER,
-    /// Atomic counter storage
-    GL_ATOMIC_COUNTER_BUFFER,
-    /// Buffer copy source
-    GL_COPY_READ_BUFFER,
-    /// Buffer copy destination
-    GL_COPY_WRITE_BUFFER,
-    /// Indirect compute dispatch commands
-    GL_DISPATCH_INDIRECT_BUFFER,
-    /// Indirect command arguments
-    GL_DRAW_INDIRECT_BUFFER,
-    /// Vertex array indices
-    GL_ELEMENT_ARRAY_BUFFER,
-    /// Pixel read target
-    GL_PIXEL_PACK_BUFFER,
-    /// Texture data source
-    GL_PIXEL_UNPACK_BUFFER,
-    /// Query result buffer
-    GL_QUERY_BUFFER,
-    /// Read-write storage for shaders
-    GL_SHADER_STORAGE_BUFFER,
-    /// Texture data buffer
-    GL_TEXTURE_BUFFER,
-    /// Transform feedback buffer
-    GL_TRANSFORM_FEEDBACK_BUFFER,
-    /// Uniform block storage
-    GL_UNIFORM_BUFFER,
-}
-
-pub enum BufferMapTarget {
-    BufferMapPointer = GL_BUFFER_MAP_POINTER,
-}
-
 pub enum MappingBit {
     InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT,
     InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT,
@@ -162,14 +92,14 @@ pub enum FramebufferTarget {
 pub struct Wrapper {}
 
 impl Wrapper {
-    pub fn gl_read_buffer(&mut self, mode: Colorbuffer_mode) -> Result<(), Error> {
+    pub fn gl_read_buffer(&mut self, mode: ColorBufferMode) -> Result<(), Error> {
         unsafe {
             ffi::glReadBuffer(mode as GLenum);
         }
         Ok(())
     }
 
-    pub fn gl_draw_buffers(&mut self, bufs: &[Colorbuffer_mode]) -> Result<(), Error> {
+    pub fn gl_draw_buffers(&mut self, bufs: &[ColorBufferMode]) -> Result<(), Error> {
         unsafe {
             let n: GLsizei = bufs.len() as i32;
             ffi::glDrawBuffers(n, bufs.as_ptr() as *const GLenum);

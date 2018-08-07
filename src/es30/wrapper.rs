@@ -239,18 +239,18 @@ impl Wrapper {
     // todo: target范围变小
     pub fn gl_bind_buffer_range(&mut self,
         target: BufferBindingTarget,
-        index: GLuint,
-        buffer: GLuint,
-        offset: GLintptr,
-        size: GLsizeiptr,
+        index: u32,
+        buffer: u32,
+        offset: i32,
+        size: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glBindBufferRange(
                 target,
-                index,
-                buffer,
-                offset,
-                size,
+                index as GLuint,
+                buffer as GLuint,
+                offset as GLintptr,
+                size as GLsizeiptr,
             );
         }
         Ok(())

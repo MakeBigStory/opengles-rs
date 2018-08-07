@@ -35,6 +35,7 @@ use types::PackParamType;
 use types::PixelFormat;
 use types::PixelDataType;
 use types::ActionType;
+use types::DataType;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -824,7 +825,7 @@ impl Wrapper {
 
             #[cfg(target_os = "ios")]
                 ffi::glGetProgramInfoLog(
-                program,
+                program as GLuint,
                 max_length as GLsizei,
                 &mut length,
                 log.as_mut_vec().as_mut_ptr() as *mut i8,
@@ -832,7 +833,7 @@ impl Wrapper {
 
             #[cfg(target_os = "android")]
                 ffi::glGetProgramInfoLog(
-                program,
+                program as GLuint,
                 max_length as GLsizei,
                 &mut length,
                 log.as_mut_vec().as_mut_ptr() as *mut u8,
@@ -1049,7 +1050,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsBuffer(buffer as GLuint) == GL_TRUE);
+            res = ffi::glIsBuffer(buffer as GLuint) == GL_TRUE;
         }
 
         Ok(res)
@@ -1059,7 +1060,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsEnabled(feature as GLenum) == GL_TRUE);
+            res = ffi::glIsEnabled(feature as GLenum) == GL_TRUE;
         }
 
         Ok(res)
@@ -1069,7 +1070,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsFramebuffer(framebuffer as GLuint) == GL_TRUE);
+            res = ffi::glIsFramebuffer(framebuffer as GLuint) == GL_TRUE;
         }
 
         Ok(res)
@@ -1079,7 +1080,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsProgram(program as GLuint) == GL_TRUE);
+            res = ffi::glIsProgram(program as GLuint) == GL_TRUE;
         }
 
         Ok(res)
@@ -1089,7 +1090,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsRenderbuffer(renderbuffer as u32) == GL_TRUE);
+            res = ffi::glIsRenderbuffer(renderbuffer as u32) == GL_TRUE;
         }
 
         Ok(res)
@@ -1099,7 +1100,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsShader(shader as u32) == GL_TRUE);
+            res = ffi::glIsShader(shader as u32) == GL_TRUE;
         }
 
         Ok(res)
@@ -1109,7 +1110,7 @@ impl Wrapper {
         let mut res = false;
 
         unsafe {
-            res = (ffi::glIsTexture(texture as u32) == GL_TRUE);
+            res = ffi::glIsTexture(texture as u32) == GL_TRUE;
         }
 
         Ok(res)
@@ -1326,239 +1327,385 @@ impl Wrapper {
         Ok(())
     }
 
+    pub fn gl_tex_parameterf(&mut self, target: TextureBindTarget, name: TextureParamType,
+                             value: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexParameterf(target as GLenum, name as GLenum, value as GLfloat)
+        }
 
-}
-
-pub fn gl_tex_parameterf(target: GLenum, name: GLenum, value: GLfloat) {
-    unsafe { ffi::glTexParameterf(target, name, value) }
-}
-
-pub fn gl_tex_parameterfv(target: GLenum, name: GLenum, value: &GLfloat) {
-    unsafe { ffi::glTexParameterfv(target, name, value) }
-}
-
-pub fn gl_tex_parameteri(target: GLenum, name: GLenum, value: GLint) {
-    unsafe { ffi::glTexParameteri(target, name, value) }
-}
-
-pub fn gl_tex_parameteriv(target: GLenum, name: GLenum, value: &GLint) {
-    unsafe { ffi::glTexParameteriv(target, name, value) }
-}
-
-pub fn gl_tex_sub_image_2d<T>(
-    target: GLenum,
-    level: GLint,
-    x_offset: GLint,
-    y_offset: GLint,
-    width: GLsizei,
-    height: GLsizei,
-    format: GLenum,
-    type_: GLenum,
-    buffer: &[T],
-) {
-    unsafe {
-        ffi::glTexSubImage2D(
-            target,
-            level,
-            x_offset,
-            y_offset,
-            width,
-            height,
-            format,
-            type_,
-            buffer.as_ptr() as *const GLvoid,
-        )
+        Ok(())
     }
-}
 
-pub fn gl_uniform1f(location: GLint, x: GLfloat) {
-    unsafe { ffi::glUniform1f(location, x) }
-}
+    pub fn gl_tex_parameterfv(&mut self, target: TextureBindTarget,
+                              name: TextureParamType, value: &f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexParameterfv(target as GLenum, name as GLenum, value)
+        }
 
-pub fn gl_uniform1fv(location: GLint, values: &[GLfloat]) {
-    unsafe { ffi::glUniform1fv(location, values.len() as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform1i(location: GLint, x: GLint) {
-    unsafe { ffi::glUniform1i(location, x) }
-}
-
-pub fn gl_uniform1iv(location: GLint, values: &[GLint]) {
-    unsafe { ffi::glUniform1iv(location, values.len() as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform2f(location: GLint, x: GLfloat, y: GLfloat) {
-    unsafe { ffi::glUniform2f(location, x, y) }
-}
-
-pub fn gl_uniform2fv(location: GLint, values: &[GLfloat]) {
-    unsafe { ffi::glUniform2fv(location, (values.len() / 2) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform2i(location: GLint, x: GLint, y: GLint) {
-    unsafe { ffi::glUniform2i(location, x, y) }
-}
-
-pub fn gl_uniform2iv(location: GLint, values: &[GLint]) {
-    unsafe { ffi::glUniform2iv(location, (values.len() / 2) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform3f(location: GLint, x: GLfloat, y: GLfloat, z: GLfloat) {
-    unsafe { ffi::glUniform3f(location, x, y, z) }
-}
-
-pub fn gl_uniform3fv(location: GLint, values: &[GLfloat]) {
-    unsafe { ffi::glUniform3fv(location, (values.len() / 3) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform3i(location: GLint, x: GLint, y: GLint, z: GLint) {
-    unsafe { ffi::glUniform3i(location, x, y, z) }
-}
-
-pub fn gl_uniform3iv(location: GLint, values: &[GLint]) {
-    unsafe { ffi::glUniform3iv(location, (values.len() / 3) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform4f(location: GLint, x: GLfloat, y: GLfloat, z: GLfloat, w: GLfloat) {
-    unsafe { ffi::glUniform4f(location, x, y, z, w) }
-}
-
-pub fn gl_uniform4fv(location: GLint, values: &[GLfloat]) {
-    unsafe { ffi::glUniform4fv(location, (values.len() / 4) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform4i(location: GLint, x: GLint, y: GLint, z: GLint, w: GLint) {
-    unsafe { ffi::glUniform4i(location, x, y, z, w) }
-}
-
-pub fn gl_uniform4iv(location: GLint, values: &[GLint]) {
-    unsafe { ffi::glUniform4iv(location, (values.len() / 4) as GLsizei, values.as_ptr()) }
-}
-
-pub fn gl_uniform_matrix2fv(location: GLint, transpose: bool, values: &[GLfloat]) {
-    unsafe {
-        ffi::glUniformMatrix2fv(
-            location,
-            (values.len() / 2) as GLsizei,
-            transpose as GLboolean,
-            values.as_ptr() as *const GLfloat,
-        )
+        Ok(())
     }
-}
 
-pub fn gl_uniform_matrix3fv(location: GLint, transpose: bool, values: &[GLfloat]) {
-    unsafe {
-        ffi::glUniformMatrix3fv(
-            location,
-            (values.len() / 3) as GLsizei,
-            transpose as GLboolean,
-            values.as_ptr() as *const GLfloat,
-        )
+    pub fn gl_tex_parameteri(&mut self, target: TextureBindTarget, name: TextureParamType,
+                             value: GLint) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexParameteri(target as GLenum, name as GLenum, value)
+        }
+
+        Ok(())
     }
-}
 
-pub fn gl_uniform_matrix4fv(location: GLint, transpose: bool, values: &[GLfloat]) {
-    unsafe {
-        ffi::glUniformMatrix4fv(
-            location,
-            (values.len() / 4) as GLsizei,
-            transpose as GLboolean,
-            values.as_ptr() as *const GLfloat,
-        )
+    pub fn gl_tex_parameteriv(&mut self, target: TextureBindTarget, name: TextureParamType,
+                              value: &GLint) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexParameteriv(target as GLenum, name as GLenum, value)
+        }
+
+        Ok(())
     }
-}
 
-pub fn gl_use_program(program: GLuint) {
-    unsafe { ffi::glUseProgram(program) }
-}
-
-pub fn gl_validate_program(program: GLuint) {
-    unsafe { ffi::glValidateProgram(program) }
-}
-
-pub fn gl_vertex_attrib1f(index: GLuint, x: GLfloat) {
-    unsafe { ffi::glVertexAttrib1f(index, x) }
-}
-
-pub fn gl_vertex_attrib1fv(index: GLuint, values: &[GLfloat]) {
-    unsafe { ffi::glVertexAttrib1fv(index, values.as_ptr()) }
-}
-
-pub fn gl_vertex_attrib2f(index: GLuint, x: GLfloat, y: GLfloat) {
-    unsafe { ffi::glVertexAttrib2f(index, x, y) }
-}
-
-pub fn gl_vertex_attrib2fv(index: GLuint, values: &[GLfloat]) {
-    unsafe { ffi::glVertexAttrib2fv(index, values.as_ptr()) }
-}
-
-pub fn gl_vertex_attrib3f(index: GLuint, x: GLfloat, y: GLfloat, z: GLfloat) {
-    unsafe { ffi::glVertexAttrib3f(index, x, y, z) }
-}
-
-pub fn gl_vertex_attrib3fv(index: GLuint, values: &[GLfloat]) {
-    unsafe { ffi::glVertexAttrib3fv(index, values.as_ptr()) }
-}
-
-pub fn gl_vertex_attrib4f(index: GLuint, x: GLfloat, y: GLfloat, z: GLfloat, w: GLfloat) {
-    unsafe { ffi::glVertexAttrib4f(index, x, y, z, w) }
-}
-
-pub fn gl_vertex_attrib4fv(index: GLuint, values: &[GLfloat]) {
-    unsafe { ffi::glVertexAttrib4fv(index, values.as_ptr()) }
-}
-
-pub fn gl_vertex_attrib_pointer<T>(
-    index: GLuint,
-    size: GLint,
-    type_: GLenum,
-    normalized: bool,
-    stride: GLsizei,
-    buffer: &[T],
-) {
-    unsafe {
-        if buffer.len() == 0 {
-            ffi::glVertexAttribPointer(
-                index,
-                size,
-                type_,
-                normalized as GLboolean,
-                stride,
-                &0 as *const i32 as *const GLvoid,
-            )
-        } else {
-            ffi::glVertexAttribPointer(
-                index,
-                size,
-                type_,
-                normalized as GLboolean,
-                stride,
+    pub fn gl_tex_sub_image_2d<T>(
+        &mut self,
+        target: TextureTarget,
+        level: i32,
+        x_offset: i32,
+        y_offset: i32,
+        width: i32,
+        height: i32,
+        format: PixelFormat,
+        type_: PixelDataType,
+        buffer: &[T],
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glTexSubImage2D(
+                target as GLenum,
+                level as GLint,
+                x_offset as GLint,
+                y_offset as GLint,
+                width as GLsizei,
+                height as GLsizei,
+                format as GLenum,
+                type_ as GLenum,
                 buffer.as_ptr() as *const GLvoid,
             )
         }
-    }
-}
 
-pub fn gl_vertex_attrib_pointer_offset(
-    index: GLuint,
-    size: GLint,
-    type_: GLenum,
-    normalized: bool,
-    stride: GLsizei,
-    offset: GLuint,
-) {
-    unsafe {
-        ffi::glVertexAttribPointer(
-            index,
-            size,
-            type_,
-            normalized as GLboolean,
-            stride,
-            offset as *const GLvoid,
-        )
+        Ok(())
     }
-}
 
-pub fn gl_viewport(x: GLint, y: GLint, width: GLsizei, height: GLsizei) {
-    unsafe { ffi::glViewport(x, y, width, height) }
+    pub fn gl_uniform1f(&mut self, location: i32, x: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform1f(location as GLint, x as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform1fv(&mut self, location: i32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform1fv(location as GLint, values.len() as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform1i(&mut self, location: i32, x: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform1i(location as GLint, x as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform1iv(&mut self, location: i32, values: &[i32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform1iv(location as GLint, values.len() as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform2f(&mut self, location: i32, x: f32, y: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform2f(location as GLint, x as GLfloat, y as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform2fv(&mut self, location: i32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform2fv(location as GLint, (values.len() / 2) as GLsizei,
+                              values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform2i(&mut self, location: i32, x: i32, y: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform2i(location as GLint, x as GLint, y as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform2iv(&mut self, location: i32, values: &[i32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform2iv(location as GLint, (values.len() / 2) as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform3f(&mut self, location: i32, x: f32, y: f32, z: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform3f(location as GLint, x as GLfloat, y as GLfloat, z as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform3fv(&mut self, location: i32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform3fv(location as GLint, (values.len() / 3) as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform3i(&mut self, location: i32, x: i32, y: i32, z: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform3i(location as GLint, x as GLint, y as GLint, z as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform3iv(&mut self, location: i32, values: &[i32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform3iv(location as GLint, (values.len() / 3) as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+
+    pub fn gl_uniform4f(&mut self, location: i32, x: f32, y: f32, z: f32,
+                        w: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform4f(location as GLint, x as GLfloat,
+                                  y as GLfloat, z as GLfloat, w as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform4fv(&mut self, location: i32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform4fv(location as GLint, (values.len() / 4) as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform4i(&mut self, location: i32, x: i32, y: i32, z: i32, w: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform4i(location as GLint, x as GLint, y as GLint, z as GLint, w as GLint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform4iv(&mut self, location: i32, values: &[i32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniform4iv(location as GLint, (values.len() / 4) as GLsizei, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform_matrix2fv(&mut self, location: i32, transpose: bool, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniformMatrix2fv(
+                location as i32,
+                (values.len() / 2*2) as GLsizei,
+                transpose as GLboolean,
+                values.as_ptr() as *const GLfloat,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform_matrix3fv(&mut self, location: i32, transpose: bool, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniformMatrix3fv(
+                location as GLint,
+                (values.len() / 3*3) as GLsizei,
+                transpose as GLboolean,
+                values.as_ptr() as *const GLfloat,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_uniform_matrix4fv(&mut self, location: i32, transpose: bool,
+                                values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glUniformMatrix4fv(
+                location as GLint,
+                (values.len() / 4*4) as GLsizei,
+                transpose as GLboolean,
+                values.as_ptr() as *const GLfloat,
+            )
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_use_program(&mut self, program: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glUseProgram(program as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_validate_program(&mut self, program: u32) -> Result<(), Error> {
+        unsafe {
+            ffi::glValidateProgram(program as GLuint)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib1f(&mut self, index: u32, x: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib1f(index as GLuint, x as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib1fv(&mut self, index: u32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib1fv(index as GLuint, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib2f(&mut self, index: u32, x: f32, y: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib2f(index as GLuint, x as GLfloat, y as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib2fv(&mut self, index: u32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib2fv(index as GLuint, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib3f(&mut self, index: u32, x: f32, y: f32, z: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib3f(index as GLuint, x as GLfloat, y as GLfloat, z as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib3fv(&mut self, index: u32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib3fv(index as GLuint, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib4f(&mut self, index: u32, x: f32, y: f32, z: f32, w: f32) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib4f(index as GLuint, x as GLfloat, y as GLfloat, z as GLfloat,
+                                  w as GLfloat)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib4fv(&mut self, index: u32, values: &[f32]) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttrib4fv(index as GLuint, values.as_ptr())
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib_pointer<T>(
+        &mut self,
+        index: u32,
+        size: i32,
+        type_: DataType,
+        normalized: bool,
+        stride: i32,
+        buffer: &[T],
+    ) -> Result<(), Error> {
+        unsafe {
+            if buffer.len() == 0 {
+                ffi::glVertexAttribPointer(
+                    index as GLuint,
+                    size as GLint,
+                    type_ as GLenum,
+                    normalized as GLboolean,
+                    stride as GLsizei,
+                    &0 as *const i32 as *const GLvoid,
+                )
+            } else {
+                ffi::glVertexAttribPointer(
+                    index as GLuint,
+                    size as GLint,
+                    type_ as GLenum,
+                    normalized as GLboolean,
+                    stride as GLsizei,
+                    buffer.as_ptr() as *const GLvoid,
+                )
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_vertex_attrib_pointer_offset(
+        &mut self,
+        index: u32,
+        size: i32,
+        type_: DataType,
+        normalized: bool,
+        stride: i32,
+        offset: u32,
+    ) -> Result<(), Error> {
+        unsafe {
+            ffi::glVertexAttribPointer(
+                index as GLuint,
+                size as GLint,
+                type_ as GLenum,
+                normalized as GLboolean,
+                stride as i32,
+                offset as *const GLvoid)
+        }
+
+        Ok(())
+    }
+
+    pub fn gl_viewport(&mut self, x: i32, y: i32, width: i32, height: i32) -> Result<(), Error> {
+        unsafe {
+            ffi::glViewport(x as GLint, y as GLint, width as GLsizei, height as GLsizei)
+        }
+
+        Ok(())
+    }
 }

@@ -524,3 +524,13 @@ pub enum ActionType {
     DECR_WRAP = GL_DECR_WRAP as isize,
     INVERT = GL_INVERT as isize
 }
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum DataType {
+    BYTE = GL_BYTE as isize,
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE as isize,
+    SHORT = GL_SHORT as isize,
+    UNSIGNED_SHORT = GL_UNSIGNED_SHORT as isize,
+    FIXED = GL_FIXED as isize,
+    FLOAT = GL_FLOAT as isize
+}

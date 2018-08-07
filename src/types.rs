@@ -387,3 +387,15 @@ pub enum FramebufferTarget {
     /// GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER
     Framebuffer = GL_FRAMEBUFFER as isize,
 }
+
+pub struct ShaderPrecisionFormat {
+pub precision: GLint,
+pub range: [GLint; 2],
+}
+
+pub struct Active {
+pub name: String,
+pub size: GLint,
+pub type_: GLenum,
+pub length: GLsizei,
+}

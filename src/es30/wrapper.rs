@@ -13,18 +13,6 @@ use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void};
 
 pub struct Error {}
 
-pub struct Active {
-    pub name: String,
-    pub size: GLint,
-    pub type_: GLenum,
-    pub length: GLsizei,
-}
-
-pub struct ShaderPrecisionFormat {
-    pub precision: GLint,
-    pub range: [GLint; 2],
-}
-
 pub struct Wrapper {}
 
 impl Wrapper {

@@ -734,23 +734,23 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_uniform2ui(&mut self, location: i32, v0: GLuint, v1: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform2ui(&mut self, location: i32, v0: u32, v1: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform2ui(location as GLint, v0, v1);
+            ffi::glUniform2ui(location as GLint, v0 as GLuint, v1);
         }
         Ok(())
     }
 
-    pub fn gl_uniform3ui(&mut self, location: i32, v0: GLuint, v1: GLuint, v2: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform3ui(&mut self, location: i32, v0: u32, v1: GLuint, v2: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform3ui(location as GLint, v0, v1, v2);
+            ffi::glUniform3ui(location as GLint, v0 as GLuint, v1, v2);
         }
         Ok(())
     }
 
-    pub fn gl_uniform4ui(&mut self, location: i32, v0: GLuint, v1: GLuint, v2: GLuint, v3: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform4ui(&mut self, location: i32, v0: u32, v1: GLuint, v2: GLuint, v3: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform4ui(location as GLint, v0, v1, v2, v3);
+            ffi::glUniform4ui(location as GLint, v0 as GLuint, v1, v2, v3);
         }
         Ok(())
     }

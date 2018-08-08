@@ -321,16 +321,16 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_is_query(&mut self, id: GLuint) -> GLboolean {
+    pub fn gl_is_query(&mut self, id: u32) -> GLboolean {
         unsafe {
-            ffi::glIsQuery(id)
+            ffi::glIsQuery(id as GLuint)
         }
         Ok(())
     }
 
-    pub fn gl_begin_query(&mut self, target: GLenum, id: GLuint) -> Result<(), Error> {
+    pub fn gl_begin_query(&mut self, target: GLenum, id: u32) -> Result<(), Error> {
         unsafe {
-            ffi::glBeginQuery(target as GLenum, id);
+            ffi::glBeginQuery(target as GLenum, id as GLuint);
         }
         Ok(())
     }
@@ -349,9 +349,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_query_objectuiv(&mut self, id: GLuint, pname: GLenum, params: &mut [GLuint]) -> Result<(), Error> {
+    pub fn gl_get_query_objectuiv(&mut self, id: u32, pname: GLenum, params: &mut [GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetQueryObjectuiv(id, pname as GLenum, params.as_mut_ptr() as *mut GLuint);
+            ffi::glGetQueryObjectuiv(id as GLuint, pname as GLenum, params.as_mut_ptr() as *mut GLuint);
         }
         Ok(())
     }
@@ -601,9 +601,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_bind_transform_feedback(&mut self, target: TransformFeedbackObjectTarget, id: GLuint) -> Result<(), Error> {
+    pub fn gl_bind_transform_feedback(&mut self, target: TransformFeedbackObjectTarget, id: u32) -> Result<(), Error> {
         unsafe {
-            ffi::glBindTransformFeedback(target as GLenum, id);
+            ffi::glBindTransformFeedback(target as GLenum, id as GLuint);
         }
         Ok(())
     }
@@ -626,8 +626,8 @@ impl Wrapper {
         // todo: replace with Option
     }
 
-    pub fn gl_is_transform_feedback(&mut self, id: GLuint) -> GLboolean {
-        unsafe { ffi::glIsTransformFeedback(id) }
+    pub fn gl_is_transform_feedback(&mut self, id: u32) -> GLboolean {
+        unsafe { ffi::glIsTransformFeedback(id as GLuint) }
         Ok(())
     }
 

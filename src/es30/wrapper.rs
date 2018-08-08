@@ -622,7 +622,8 @@ impl Wrapper {
             ffi::glGenTransformFeedbacks(size as GLsizei, ids.as_mut_ptr() as *mut GLuint);
             ids
         }
-        Ok(())
+//        Ok(())
+        // todo: replace with Option
     }
 
     pub fn gl_is_transform_feedback(&mut self, id: GLuint) -> GLboolean {

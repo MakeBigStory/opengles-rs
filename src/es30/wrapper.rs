@@ -51,7 +51,7 @@ impl Wrapper {
                 write_target as GLenum,
                 read_offset,
                 write_offset,
-                size,
+                size as GLsizei,
             );
         }
         Ok(())
@@ -304,10 +304,10 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_queries(&mut self, size: GLsizei) -> Vec<GLuint> {
+    pub fn gl_gen_queries(&mut self, size: i32) -> Vec<GLuint> {
         unsafe {
             let mut ids: Vec<GLuint> = Vec::with_capacity(size as usize);
-            ffi::glGenQueries(size, ids.as_ptr() as *mut GLuint);
+            ffi::glGenQueries(size as GLsizei, ids.as_ptr() as *mut GLuint);
             ids
         }
         Ok(())
@@ -570,7 +570,7 @@ impl Wrapper {
     ) -> Option<Active> {
         unsafe {
             let mut length: GLsizei = 0;
-            let mut size: GLsizei = 0;
+            let mut size: i32 = 0;
             let mut type_: GLenum = GL_NONE;
             let mut name = String::with_capacity(256);
 
@@ -579,7 +579,7 @@ impl Wrapper {
                 index,
                 buffer_size,
                 &mut length,
-                &mut size,
+                &mut size as GLsizei,
                 &mut type_,
                 name.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
@@ -590,7 +590,7 @@ impl Wrapper {
 
                 Some(Active {
                     name,
-                    size,
+                    size as GLsizei,
                     type_,
                     length,
                 })
@@ -616,10 +616,10 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_transform_feedbacks(&mut self, size: GLsizei) -> Vec<GLuint> {
+    pub fn gl_gen_transform_feedbacks(&mut self, size: i32) -> Vec<GLuint> {
         unsafe {
             let mut ids: Vec<GLuint> = Vec::with_capacity(size as usize);
-            ffi::glGenTransformFeedbacks(size, ids.as_mut_ptr() as *mut GLuint);
+            ffi::glGenTransformFeedbacks(size as GLsizei, ids.as_mut_ptr() as *mut GLuint);
             ids
         }
         Ok(())
@@ -654,7 +654,7 @@ impl Wrapper {
         unsafe {
             ffi::glVertexAttribIPointer(
                 index,
-                size,
+                size as GLsizei,
                 type_,
                 stride,
                 pointer.as_ptr() as *const GLvoid,

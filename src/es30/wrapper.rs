@@ -163,8 +163,8 @@ impl Wrapper {
         target: TextureTarget,
         level: i32,
         internal_format: i32,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
         depth: GLsizei,
         border: i32,
         format: PixelDataFormat,
@@ -177,7 +177,7 @@ impl Wrapper {
         };
 
         unsafe {
-            ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width, height, depth, border as GLint, format, type_, pdata);
+            ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width as GLsizei, height as GLsizei, depth, border as GLint, format, type_, pdata);
         }
         Ok(())
     }
@@ -188,8 +188,8 @@ impl Wrapper {
         x_offset: GLint,
         y_offset: GLint,
         z_offset: GLint,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
         depth: GLsizei,
         format: PixelDataFormat,
         type_: GLenum,
@@ -207,8 +207,8 @@ impl Wrapper {
                 x_offset,
                 y_offset,
                 z_offset,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
                 depth,
                 format,
                 type_,
@@ -226,8 +226,8 @@ impl Wrapper {
         z_offset: GLint,
         x: GLint,
         y: GLint,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
     ) -> Result<(), Error> {
         unsafe {
             glCopyTexSubImage3D(
@@ -238,8 +238,8 @@ impl Wrapper {
                 z_offset,
                 x,
                 y,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
             );
         }
         Ok(())
@@ -249,8 +249,8 @@ impl Wrapper {
         target: TextureTarget,
         level: GLint,
         internal_format: PixelDataFormat,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
         depth: GLsizei,
         border: GLint,
         imageSize: GLsizei,
@@ -261,8 +261,8 @@ impl Wrapper {
                 target as GLenum,
                 level,
                 internal_format as GLenum,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
                 depth,
                 border,
                 imageSize,
@@ -279,8 +279,8 @@ impl Wrapper {
         x_offset: GLint,
         y_offset: GLint,
         z_offset: GLint,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
         depth: GLsizei,
         format: PixelDataFormat,
         image_size: GLsizei,
@@ -293,8 +293,8 @@ impl Wrapper {
                 x_offset,
                 y_offset,
                 z_offset,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
                 depth,
                 format,
                 image_size,
@@ -358,14 +358,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix2x3fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x3fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -375,14 +375,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix3x2fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x2fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -392,14 +392,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix2x4fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x4fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -409,14 +409,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix4x2fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x2fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -426,14 +426,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix3x4fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x4fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -443,14 +443,14 @@ impl Wrapper {
 
     pub fn gl_uniform_matrix4x3fv(&mut self,
         location: i32,
-        count: GLsizei,
+        count: i32,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x3fv(
                 location as GLint,
-                count,
+                count as GLsizei,
                 transpose,
                 value.as_ptr() as *const GLfloat,
             );
@@ -462,16 +462,16 @@ impl Wrapper {
         target: GLenum,
         samples: GLsizei,
         internal_format: GLenum,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glRenderbufferStorageMultisample(
                 target as GLenum,
                 samples,
                 internal_format as GLenum,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
             );
         }
         Ok(())
@@ -498,7 +498,7 @@ impl Wrapper {
     pub fn gl_gen_vertex_arrays(&mut self, count: GLsizei) -> Vec<GLuint> {
         unsafe {
             let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
-            ffi::glGenVertexArrays(count, vec.as_mut_ptr());
+            ffi::glGenVertexArrays(count as GLsizei, vec.as_mut_ptr());
             vec.set_len(count as usize);
             vec
         }
@@ -534,7 +534,7 @@ impl Wrapper {
     //todo: count这么写是否对？
     pub fn gl_transform_feedback_varyings(&mut self,
         program: GLuint,
-        count: GLsizei,
+        count: i32,
         varyings: &Vec<String>,
         buffer_mode: TransformFeedbackMode,
     ) -> Result<(), Error> {
@@ -555,7 +555,7 @@ impl Wrapper {
             }
             ffi::glTransformFeedbackVaryings(
                 program,
-                count,
+                count as GLsizei,
                 names_ptr.as_ptr() as *const *const GLchar,
                 buffer_mode as GLenum,
             );
@@ -565,7 +565,7 @@ impl Wrapper {
 
     pub fn gl_get_transform_feedback_varying(&mut self,
         program: GLuint,
-        index: GLuint,
+        index: u32,
         buffer_size: GLsizei,
     ) -> Option<Active> {
         unsafe {
@@ -645,7 +645,7 @@ impl Wrapper {
     }
 
     pub fn gl_vertex_attrib_ipointer<T>(&mut self,
-        index: GLuint,
+        index: u32,
         size: GLint,
         type_: GLenum,
         stride: GLsizei,
@@ -663,7 +663,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_vertex_attrib_iiv(&mut self, index: GLuint, pname: GLenum) -> GLint {
+    pub fn gl_get_vertex_attrib_iiv(&mut self, index: u32, pname: GLenum) -> GLint {
         unsafe {
             let mut params: GLint = 0;
             ffi::glGetVertexAttribIiv(index, pname as GLenum, &mut params);
@@ -672,7 +672,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_vertex_attrib_iuiv(&mut self, index: GLuint, pname: GLenum) -> GLuint {
+    pub fn gl_get_vertex_attrib_iuiv(&mut self, index: u32, pname: GLenum) -> GLuint {
         unsafe {
             let mut params: GLuint = 0;
             ffi::glGetVertexAttribIuiv(index, pname as GLenum, &mut params);
@@ -681,28 +681,28 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_vertex_attrib_i4i(&mut self, index: GLuint, x: GLint, y: GLint, z: GLint, w: GLint) -> Result<(), Error> {
+    pub fn gl_vertex_attrib_i4i(&mut self, index: u32, x: GLint, y: GLint, z: GLint, w: GLint) -> Result<(), Error> {
         unsafe {
             ffi::glVertexAttribI4i(index, x, y, z, w);
         }
         Ok(())
     }
 
-    pub fn gl_vertex_attrib_i4ui(&mut self, index: GLuint, x: GLuint, y: GLuint, z: GLuint, w: GLuint) -> Result<(), Error> {
+    pub fn gl_vertex_attrib_i4ui(&mut self, index: u32, x: GLuint, y: GLuint, z: GLuint, w: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glVertexAttribI4ui(index, x, y, z, w);
         }
         Ok(())
     }
 
-    pub fn gl_vertex_attrib_i4iv(&mut self, index: GLuint, v: &[GLint]) -> Result<(), Error> {
+    pub fn gl_vertex_attrib_i4iv(&mut self, index: u32, v: &[GLint]) -> Result<(), Error> {
         unsafe {
             ffi::glVertexAttribI4iv(index, v.as_ptr() as *const GLint);
         }
         Ok(())
     }
 
-    pub fn gl_vertex_attrib_i4uiv(&mut self, index: GLuint, v: &[GLint]) -> Result<(), Error> {
+    pub fn gl_vertex_attrib_i4uiv(&mut self, index: u32, v: &[GLint]) -> Result<(), Error> {
         unsafe {
             ffi::glVertexAttribI4uiv(index, v.as_ptr() as *const GLuint);
         }
@@ -754,30 +754,30 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_uniform1uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform1uiv(&mut self, location: i32, count: i32, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform1uiv(location as GLint, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform1uiv(location as GLint, count as GLsizei, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform2uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform2uiv(&mut self, location: i32, count: i32, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform2uiv(location as GLint, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform2uiv(location as GLint, count as GLsizei, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform3uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform3uiv(&mut self, location: i32, count: i32, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform3uiv(location as GLint, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform3uiv(location as GLint, count as GLsizei, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform4uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform4uiv(&mut self, location: i32, count: i32, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform4uiv(location as GLint, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform4uiv(location as GLint, count as GLsizei, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
@@ -799,7 +799,7 @@ impl Wrapper {
     //todo:
     pub fn gl_get_uniform_indices(&mut self,
         program: GLuint,
-        uniform_count: GLsizei,
+        uniform_count: i32,
         uniform_names: &Vec<String>,
     ) -> Vec<GLuint>
     {
@@ -823,7 +823,7 @@ impl Wrapper {
 
             ffi::glGetuniform_indices(
                 program,
-                uniform_count,
+                uniform_count as GLsizei,
                 names_ptr.as_ptr() as *const *const GLchar,
                 uniform_indices.as_ptr() as *mut GLuint,
             );
@@ -835,7 +835,7 @@ impl Wrapper {
 
     pub fn gl_get_active_uniformsiv(&mut self,
         program: GLuint,
-        uniform_count: GLsizei,
+        uniform_count: i32,
         uniform_indices: &[GLuint],
         pname: GLenum,
         params: &mut [GLint],
@@ -843,7 +843,7 @@ impl Wrapper {
         unsafe {
             ffi::glGetActiveUniformsiv(
                 program,
-                uniform_count,
+                uniform_count as GLsizei,
                 uniform_indices.as_ptr() as *const GLuint,
                 pname as GLenum,
                 params.as_mut_ptr() as *mut GLint,
@@ -897,12 +897,12 @@ impl Wrapper {
         mode: BeginMode,
         start: GLuint,
         end: GLuint,
-        count: GLsizei,
+        count: i32,
         type_: GLenum,
         indices: &[T],
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glDrawRangeElements(mode as GLenum, start, end, count, type_,
+            ffi::glDrawRangeElements(mode as GLenum, start, end, count as GLsizei, type_,
                                      indices.as_ptr() as *const GLvoid);
         }
         Ok(())
@@ -911,15 +911,15 @@ impl Wrapper {
     pub fn gl_draw_arrays_instanced(&mut self,
         mode: BeginMode,
         first: GLint,
-        count: GLsizei,
-        instance_count: GLsizei,
+        count: i32,
+        instance_count: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glDrawArraysInstanced(
                 mode as GLenum,
                 first,
-                count,
-                instance_count,
+                count as GLsizei,
+                instance_count as GLsizei,
             );
         }
         Ok(())
@@ -927,18 +927,18 @@ impl Wrapper {
 
     pub fn gl_draw_elements_instanced<T>(&mut self,
         mode: BeginMode,
-        count: GLsizei,
+        count: i32,
         type_: GLenum,
         indices: &[T],
-        instance_count: GLsizei,
+        instance_count: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glDrawElementsInstanced(
                 mode as GLenum,
-                count,
+                count as GLsizei,
                 type_,
                 indices.as_ptr() as *const GLvoid,
-                instance_count,
+                instance_count as GLsizei,
             );
         }
         Ok(())
@@ -1023,7 +1023,7 @@ impl Wrapper {
     pub fn gl_gen_samplers(&mut self, count: GLsizei) -> Vec<GLuint> {
         unsafe {
             let mut sampler: Vec<GLuint> = Vec::with_capacity(count as usize);
-            ffi::glGenSamplers(count, sampler.as_mut_ptr() as *mut GLuint);
+            ffi::glGenSamplers(count as GLsizei, sampler.as_mut_ptr() as *mut GLuint);
             sampler
         }
         Ok(())
@@ -1032,7 +1032,7 @@ impl Wrapper {
     pub fn gl_delete_samplers(&mut self, samplers: &[GLuint]) -> Result<(), Error> {
         unsafe {
             let count = samplers.len() as i32;
-            ffi::glDeleteSamplers(count, samplers.as_ptr() as *const GLuint);
+            ffi::glDeleteSamplers(count as GLsizei, samplers.as_ptr() as *const GLuint);
         }
         Ok(())
     }
@@ -1095,9 +1095,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_vertex_attrib_divisor(&mut self, index: GLuint, divisor: GLuint) -> Result<(), Error> {
+    pub fn gl_vertex_attrib_divisor(&mut self, index: u32, divisor: u32) -> Result<(), Error> {
         unsafe {
-            ffi::glVertexAttribDivisor(index, divisor);
+            ffi::glVertexAttribDivisor(index, divisor as GLuint);
         }
         Ok(())
     }
@@ -1183,8 +1183,8 @@ impl Wrapper {
         attachments: &[AttachmentTarget],
         x: GLint,
         y: GLint,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glInvalidateSubFramebuffer(
@@ -1193,8 +1193,8 @@ impl Wrapper {
                 attachments.as_ptr() as *const GLenum,
                 x,
                 y,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
             );
         }
         Ok(())
@@ -1237,16 +1237,16 @@ impl Wrapper {
         target: TextureTarget,
         levels: GLsizei,
         internal_format: TextureTarget,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glTexStorage2D(
                 target as GLenum,
                 levels,
                 internal_format as GLenum,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
             );
         }
         Ok(())
@@ -1256,8 +1256,8 @@ impl Wrapper {
         target: TextureTarget,
         levels: GLsizei,
         internal_format: TextureTarget,
-        width: GLsizei,
-        height: GLsizei,
+        width: i32,
+        height: i32,
         depth: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
@@ -1265,8 +1265,8 @@ impl Wrapper {
                 target as GLenum,
                 levels,
                 internal_format as GLenum,
-                width,
-                height,
+                width as GLsizei,
+                height as GLsizei,
                 depth,
             );
         }

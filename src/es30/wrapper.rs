@@ -1281,7 +1281,7 @@ impl Wrapper {
     ) -> Vec<GLint> {
         unsafe {
             let mut params: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
-            glGetinternal_formativ(
+            glGetInternalformativ(
                 target as GLenum,
                 internal_format as GLenum,
                 pname as GLenum,

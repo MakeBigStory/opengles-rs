@@ -359,14 +359,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix2x3fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x3fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }
@@ -376,14 +376,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix3x2fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x2fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }
@@ -393,14 +393,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix2x4fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x4fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }
@@ -410,14 +410,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix4x2fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x2fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }
@@ -427,14 +427,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix3x4fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x4fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }
@@ -444,14 +444,14 @@ impl Wrapper {
     pub fn gl_uniform_matrix4x3fv(&mut self,
         location: i32,
         count: i32,
-        transpose: GLboolean,
+        transpose: bool,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x3fv(
                 location as GLint,
                 count as GLsizei,
-                transpose,
+                transpose as GLboolean,
                 value.as_ptr() as *const GLfloat,
             );
         }

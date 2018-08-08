@@ -127,18 +127,18 @@ pub enum TextureUnit {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum BufferBindTarget {
+pub enum BufferTarget {
     ARRAY_BUFFER = GL_ARRAY_BUFFER_BINDING as isize,
     ELEMENT_ARRAY_BUFFER = GL_ELEMENT_ARRAY_BUFFER_BINDING as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum FrameBufferBindTarget {
-    FRAMEBUFFER = GL_FRAMEBUFFER as isize
+pub enum FrameBufferTarget {
+    FrameBuffer = GL_FRAMEBUFFER as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum RenderBufferBindTarget {
+pub enum RenderBufferTarget {
     RENDERBUFFER = GL_RENDERBUFFER as isize
 }
 
@@ -282,14 +282,14 @@ pub enum ShaderType {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum CullFaceMode {
+pub enum FaceMode {
     FRONT = GL_FRONT as isize,
     BACK = GL_BACK as isize,
     FRONT_AND_BACK= GL_FRONT_AND_BACK as isize
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum DepthFunc {
+pub enum FuncType {
     NEVER = GL_NEVER as isize,
     LESS = GL_LESS as isize,
     EQUAL = GL_EQUAL as isize,
@@ -301,7 +301,7 @@ pub enum DepthFunc {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Feature {
+pub enum FeatureType {
     BLEND = GL_BLEND as isize,
     CULL_FACE = GL_CULL_FACE as isize,
     DEPTH_TEST = GL_DEPTH_TEST as isize,
@@ -356,10 +356,6 @@ pub enum TransformFeedbackObjectTarget {
     TransformFeedback = GL_TRANSFORM_FEEDBACK as isize,
 }
 
-pub enum FrameBufferTarget {
-    FrameBuffer = GL_FRAMEBUFFER as isize as isize,
-}
-
 pub enum AttachmentTarget {
     Color_Attachment_0 = GL_COLOR_ATTACHMENT0 as isize,
     Color_Attachment_1 = GL_COLOR_ATTACHMENT1 as isize,
@@ -371,8 +367,8 @@ pub enum AttachmentTarget {
 }
 
 pub enum FilterMode {
-    GL_NEAREST as isize,
-    GL_LINEAR as isize,
+    Nearst = GL_NEAREST as isize,
+    Linear = GL_LINEAR as isize,
 }
 
 pub enum BufferMask {
@@ -414,4 +410,325 @@ pub enum PixelDataFormat {
     LuminanceAlpha = GL_LUMINANCE_ALPHA as isize,
     Lumniance = GL_LUMINANCE as isize,
     Alpha = GL_ALPHA as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrameBufferAttachmentType {
+    COLOR_ATTACHMENT0 = GL_COLOR_ATTACHMENT0 as isize,
+    DEPTH_ATTACHMENT = GL_DEPTH_ATTACHMENT as isize,
+    STENCIL_ATTACHMENT = GL_STENCIL_ATTACHMENT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrontFaceDirection {
+    CW = GL_CW as isize,
+    CCW = GL_CCW as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum StateType {
+    ACTIVE_TEXTURE = GL_ACTIVE_TEXTURE as isize,
+    ALIASED_LINE_WIDTH_RANGE = GL_ALIASED_LINE_WIDTH_RANGE as isize,
+    ALIASED_POINT_SIZE_RANGE = GL_ALIASED_POINT_SIZE_RANGE as isize,
+    ALPHA_BITS = GL_ALPHA_BITS as isize,
+    ARRAY_BUFFER_BINDING = GL_ARRAY_BUFFER_BINDING as isize,
+    BLEND = GL_BLEND as isize,
+    BLEND_COLOR = GL_BLEND_COLOR as isize,
+    BLEND_DST_ALPHA = GL_BLEND_DST_ALPHA as isize,
+    BLEND_DST_RGB = GL_BLEND_DST_RGB as isize,
+    BLEND_EQUATION_ALPHA = GL_BLEND_EQUATION_ALPHA as isize,
+    BLEND_EQUATION_RGB = GL_BLEND_EQUATION_RGB as isize,
+    BLEND_SRC_ALPHA = GL_BLEND_SRC_ALPHA as isize,
+    BLEND_SRC_RGB = GL_BLEND_SRC_RGB as isize,
+    BLUE_BITS = GL_BLUE_BITS as isize,
+    COLOR_CLEAR_VALUE = GL_COLOR_CLEAR_VALUE as isize,
+    COLOR_WRITEMASK = GL_COLOR_WRITEMASK as isize,
+    COMPRESSED_TEXTURE_FORMATS = GL_COMPRESSED_TEXTURE_FORMATS as isize,
+    CULL_FACE = GL_CULL_FACE as isize,
+    CULL_FACE_MODE = GL_CULL_FACE_MODE as isize,
+    CURRENT_PROGRAM = GL_CURRENT_PROGRAM as isize,
+    DEPTH_BITS = GL_DEPTH_BITS as isize,
+    DEPTH_CLEAR_VALUE = GL_DEPTH_CLEAR_VALUE as isize,
+    DEPTH_FUNC = GL_DEPTH_FUNC as isize,
+    DEPTH_RANGE = GL_DEPTH_RANGE as isize,
+    DEPTH_TEST = GL_DEPTH_TEST as isize,
+    DEPTH_WRITEMASK = GL_DEPTH_WRITEMASK as isize,
+    DITHER = GL_DITHER as isize,
+    ELEMENT_ARRAY_BUFFER_BINDING = GL_ELEMENT_ARRAY_BUFFER_BINDING as isize,
+    FRAMEBUFFER_BINDING = GL_FRAMEBUFFER_BINDING as isize,
+    FRONT_FACE = GL_FRONT_FACE as isize,
+    GENERATE_MIPMAP_HINT = GL_GENERATE_MIPMAP_HINT as isize,
+    GREEN_BITS = GL_GREEN_BITS as isize,
+    IMPLEMENTATION_COLOR_READ_FORMAT = GL_IMPLEMENTATION_COLOR_READ_FORMAT as isize,
+    IMPLEMENTATION_COLOR_READ_TYPE = GL_IMPLEMENTATION_COLOR_READ_TYPE as isize,
+    LINE_WIDTH = GL_LINE_WIDTH as isize,
+    MAX_COMBINED_TEXTURE_IMAGE_UNITS = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS as isize,
+    MAX_CUBE_MAP_TEXTURE_SIZE = GL_MAX_CUBE_MAP_TEXTURE_SIZE as isize,
+    MAX_FRAGMENT_UNIFORM_VECTORS = GL_MAX_FRAGMENT_UNIFORM_VECTORS as isize,
+    MAX_RENDERBUFFER_SIZE = GL_MAX_RENDERBUFFER_SIZE as isize,
+    MAX_TEXTURE_IMAGE_UNITS = GL_MAX_TEXTURE_IMAGE_UNITS as isize,
+    MAX_TEXTURE_SIZE = GL_MAX_TEXTURE_SIZE as isize,
+    MAX_VARYING_VECTORS = GL_MAX_VARYING_VECTORS as isize,
+    MAX_VERTEX_ATTRIBS = GL_MAX_VERTEX_ATTRIBS as isize,
+    MAX_VERTEX_TEXTURE_IMAGE_UNITS = GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS as isize,
+    MAX_VERTEX_UNIFORM_VECTORS = GL_MAX_VERTEX_UNIFORM_VECTORS as isize,
+    MAX_VIEWPORT_DIMS = GL_MAX_VIEWPORT_DIMS as isize,
+    NUM_COMPRESSED_TEXTURE_FORMATS = GL_NUM_COMPRESSED_TEXTURE_FORMATS as isize,
+    NUM_SHADER_BINARY_FORMATS = GL_NUM_SHADER_BINARY_FORMATS as isize,
+    PACK_ALIGNMENT = GL_PACK_ALIGNMENT as isize,
+    POLYGON_OFFSET_FACTOR = GL_POLYGON_OFFSET_FACTOR as isize,
+    POLYGON_OFFSET_FILL = GL_POLYGON_OFFSET_FILL as isize,
+    POLYGON_OFFSET_UNITS = GL_POLYGON_OFFSET_UNITS as isize,
+    RED_BITS = GL_RED_BITS as isize,
+    RENDERBUFFER_BINDING = GL_RENDERBUFFER_BINDING as isize,
+    SAMPLE_ALPHA_TO_COVERAGE = GL_SAMPLE_ALPHA_TO_COVERAGE as isize,
+    SAMPLE_BUFFERS = GL_SAMPLE_BUFFERS as isize,
+    SAMPLE_COVERAGE = GL_SAMPLE_COVERAGE as isize,
+    SAMPLE_COVERAGE_INVERT = GL_SAMPLE_COVERAGE_INVERT as isize,
+    SAMPLE_COVERAGE_VALUE = GL_SAMPLE_COVERAGE_VALUE as isize,
+    SAMPLES = GL_SAMPLES as isize,
+    SCISSOR_BOX = GL_SCISSOR_BOX as isize,
+    SCISSOR_TEST = GL_SCISSOR_TEST as isize,
+    SHADER_BINARY_FORMATS = GL_SHADER_BINARY_FORMATS as isize,
+    SHADER_COMPILER = GL_SHADER_COMPILER as isize,
+    STENCIL_BACK_FAIL = GL_STENCIL_BACK_FAIL as isize,
+    STENCIL_BACK_FUNC = GL_STENCIL_BACK_FUNC as isize,
+    STENCIL_BACK_PASS_DEPTH_FAIL = GL_STENCIL_BACK_PASS_DEPTH_FAIL as isize,
+    STENCIL_BACK_PASS_DEPTH_PASS = GL_STENCIL_BACK_PASS_DEPTH_PASS as isize,
+    STENCIL_BACK_REF = GL_STENCIL_BACK_REF as isize,
+    STENCIL_BACK_VALUE_MASK = GL_STENCIL_BACK_VALUE_MASK as isize,
+    STENCIL_BACK_WRITEMASK = GL_STENCIL_BACK_WRITEMASK as isize,
+    STENCIL_BITS = GL_STENCIL_BITS as isize,
+    STENCIL_CLEAR_VALUE = GL_STENCIL_CLEAR_VALUE as isize,
+    STENCIL_FAIL = GL_STENCIL_FAIL as isize,
+    STENCIL_FUNC = GL_STENCIL_FUNC as isize,
+    STENCIL_PASS_DEPTH_FAIL  = GL_STENCIL_PASS_DEPTH_FAIL as isize,
+    STENCIL_PASS_DEPTH_PASS = GL_STENCIL_PASS_DEPTH_PASS as isize,
+    STENCIL_REF = GL_STENCIL_REF as isize,
+    STENCIL_TEST = GL_STENCIL_TEST as isize,
+    STENCIL_VALUE_MASK = GL_STENCIL_VALUE_MASK as isize,
+    STENCIL_WRITEMASK = GL_STENCIL_WRITEMASK as isize,
+    SUBPIXEL_BITS = GL_SUBPIXEL_BITS as isize,
+    TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D as isize,
+    TEXTURE_BINDING_CUBE_MAP = GL_TEXTURE_BINDING_CUBE_MAP as isize,
+    UNPACK_ALIGNMENT = GL_UNPACK_ALIGNMENT as isize,
+    VIEWPORT = GL_VIEWPORT as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BufferParamName {
+    BUFFER_SIZE = GL_BUFFER_SIZE as isize,
+    BUFFER_USAGE = GL_BUFFER_USAGE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ErrorType {
+    NO_ERROR = GL_NO_ERROR as isize,
+    INVALID_ENUM = GL_INVALID_ENUM as isize,
+    INVALID_VALUE = GL_INVALID_VALUE as isize,
+    INVALID_OPERATION = GL_INVALID_OPERATION as isize,
+    INVALID_FRAMEBUFFER_OPERATION = GL_INVALID_FRAMEBUFFER_OPERATION as isize,
+    OUT_OF_MEMORY = GL_OUT_OF_MEMORY as isize,
+}
+
+impl From<GLenum> for ErrorType {
+    fn from(error: GLenum) -> Self {
+        match error {
+            GL_NO_ERROR => ErrorType::NO_ERROR,
+            GL_INVALID_ENUM => ErrorType::INVALID_ENUM,
+            GL_INVALID_VALUE => ErrorType::INVALID_VALUE,
+            GL_INVALID_OPERATION => ErrorType::INVALID_OPERATION,
+            GL_INVALID_FRAMEBUFFER_OPERATION => ErrorType::INVALID_FRAMEBUFFER_OPERATION,
+            GL_OUT_OF_MEMORY => ErrorType::OUT_OF_MEMORY,
+            _ => ErrorType::NO_ERROR,
+        }
+    }
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum FrameBufferAttachmentParamType {
+    FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE = GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE as isize,
+    FRAMEBUFFER_ATTACHMENT_OBJECT_NAME = GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME as isize,
+    FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL as isize,
+    FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ProgramParamType {
+    DELETE_STATUS = GL_DELETE_STATUS as isize,
+    LINK_STATUS = GL_LINK_STATUS as isize,
+    VALIDATE_STATUS = GL_VALIDATE_STATUS as isize,
+    INFO_LOG_LENGTH = GL_INFO_LOG_LENGTH as isize,
+    ATTACHED_SHADERS = GL_ATTACHED_SHADERS as isize,
+    ACTIVE_ATTRIBUTES = GL_ACTIVE_ATTRIBUTES as isize,
+    ACTIVE_ATTRIBUTE_MAX_LENGTH = GL_ACTIVE_ATTRIBUTE_MAX_LENGTH as isize,
+    ACTIVE_UNIFORMS = GL_ACTIVE_UNIFORMS as isize,
+    ACTIVE_UNIFORM_MAX_LENGTH = GL_ACTIVE_UNIFORM_MAX_LENGTH as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum RenderBufferParamType {
+    RENDERBUFFER_WIDTH = GL_RENDERBUFFER_WIDTH as isize,
+    RENDERBUFFER_HEIGHT = GL_RENDERBUFFER_HEIGHT as isize,
+    RENDERBUFFER_INTERNAL_FORMAT = GL_RENDERBUFFER_INTERNAL_FORMAT as isize,
+    RENDERBUFFER_RED_SIZE = GL_RENDERBUFFER_RED_SIZE as isize,
+    RENDERBUFFER_GREEN_SIZE = GL_RENDERBUFFER_GREEN_SIZE as isize,
+    RENDERBUFFER_BLUE_SIZE = GL_RENDERBUFFER_BLUE_SIZE as isize,
+    RENDERBUFFER_ALPHA_SIZE = GL_RENDERBUFFER_ALPHA_SIZE as isize,
+    RENDERBUFFER_DEPTH_SIZE = GL_RENDERBUFFER_DEPTH_SIZE as isize,
+    RENDERBUFFER_STENCIL_SIZE = GL_RENDERBUFFER_STENCIL_SIZE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ShaderParamType {
+    SHADER_TYPE = GL_SHADER_TYPE as isize,
+    DELETE_STATUS = GL_DELETE_STATUS as isize,
+    COMPILE_STATUS = GL_COMPILE_STATUS as isize,
+    INFO_LOG_LENGTH = GL_INFO_LOG_LENGTH as isize,
+    SHADER_SOURCE_LENGTH = GL_SHADER_SOURCE_LENGTH as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ShaderPrecisionType {
+    LOW_FLOAT = GL_LOW_FLOAT as isize,
+    MEDIUM_FLOAT = GL_MEDIUM_FLOAT as isize,
+    HIGH_FLOAT = GL_HIGH_FLOAT as isize,
+    LOW_INT = GL_LOW_INT as isize,
+    MEDIUM_INT = GL_MEDIUM_INT as isize,
+    HIGH_INT = GL_HIGH_INT as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ConstantType {
+    VENDOR = GL_VENDOR as isize,
+    RENDERER = GL_RENDERER as isize,
+    VERSION = GL_VERSION as isize,
+    SHADING_LANGUAGE_VERSION = GL_SHADING_LANGUAGE_VERSION as isize,
+    EXTENSIONS = GL_EXTENSIONS as isize,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum TextureParamType {
+    TEXTURE_MAG_FILTER = GL_TEXTURE_MAG_FILTER as isize,
+    TEXTURE_MIN_FILTER = GL_TEXTURE_MIN_FILTER as isize,
+    TEXTURE_WRAP_S = GL_TEXTURE_WRAP_S as isize,
+    TEXTURE_WRAP_T = GL_TEXTURE_WRAP_T as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum VertexAttributeParamType {
+    VERTEX_ATTRIB_ARRAY_BUFFER_BINDING = GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING as isize,
+    VERTEX_ATTRIB_ARRAY_ENABLED = GL_VERTEX_ATTRIB_ARRAY_ENABLED as isize,
+    VERTEX_ATTRIB_ARRAY_SIZE = GL_VERTEX_ATTRIB_ARRAY_SIZE as isize,
+    VERTEX_ATTRIB_ARRAY_STRIDE = GL_VERTEX_ATTRIB_ARRAY_STRIDE as isize,
+    VERTEX_ATTRIB_ARRAY_TYPE = GL_VERTEX_ATTRIB_ARRAY_TYPE as isize,
+    VERTEX_ATTRIB_ARRAY_NORMALIZED = GL_VERTEX_ATTRIB_ARRAY_NORMALIZED as isize,
+    CURRENT_VERTEX_ATTRIB = GL_CURRENT_VERTEX_ATTRIB as isize,
+}
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum HintTargetType {
+    GENERATE_MIPMAP_HINT = GL_GENERATE_MIPMAP_HINT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum HintBehaviorType {
+    FASTEST = GL_FASTEST as isize,
+    NICEST = GL_NICEST as isize,
+    DONT_CARE = GL_DONT_CARE as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PackParamType {
+    PACK_ALIGNMENT = GL_PACK_ALIGNMENT as isize,
+    UNPACK_ALIGNMENT = GL_UNPACK_ALIGNMENT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PixelFormat {
+    ALPHA = GL_ALPHA as isize,
+    RGB = GL_RGB as isize,
+    RGBA = GL_RGBA as isize,
+    RGBA4 = GL_RGBA4 as isize,
+    RGB565 = GL_RGB565 as isize,
+    RGB5_A1 = GL_RGB5_A1 as isize,
+    DEPTH_COMPONENT16 = GL_DEPTH_COMPONENT16 as isize,
+    STENCIL_INDEX8 = GL_STENCIL_INDEX8 as isize,
+    LUMINANCE = GL_LUMINANCE as isize,
+    LUMINANCE_ALPHA = GL_LUMINANCE_ALPHA as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PixelDataType {
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE as isize,
+    UNSIGNED_SHORT_5_6_5 = GL_UNSIGNED_SHORT_5_6_5 as isize,
+    UNSIGNED_SHORT_4_4_4_4 = GL_UNSIGNED_SHORT_4_4_4_4 as isize,
+    UNSIGNED_SHORT_5_5_5_1 = GL_UNSIGNED_SHORT_5_5_5_1 as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ActionType {
+    KEEP = GL_KEEP as isize,
+    ZERO = GL_ZERO as isize,
+    REPLACE = GL_REPLACE as isize,
+    INCR = GL_INCR as isize,
+    INCR_WRAP = GL_INCR_WRAP as isize,
+    DECR = GL_DECR as isize,
+    DECR_WRAP = GL_DECR_WRAP as isize,
+    INVERT = GL_INVERT as isize
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum DataType {
+    BYTE = GL_BYTE as isize,
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE as isize,
+    SHORT = GL_SHORT as isize,
+    UNSIGNED_SHORT = GL_UNSIGNED_SHORT as isize,
+    FIXED = GL_FIXED as isize,
+    FLOAT = GL_FLOAT as isize,
+    FLOAT_VEC2 = GL_FLOAT_VEC2 as isize,
+    FLOAT_VEC3 = GL_FLOAT_VEC3 as isize,
+    FLOAT_VEC4 = GL_FLOAT_VEC4 as isize,
+    FLOAT_MAT2 = GL_FLOAT_MAT2 as isize,
+    FLOAT_MAT3 = GL_FLOAT_MAT3 as isize,
+    FLOAT_MAT4 = GL_FLOAT_MAT4 as isize,
+    INT = GL_INT as isize,
+    INT_VEC2 = GL_INT_VEC2 as isize,
+    INT_VEC3 = GL_INT_VEC3 as isize,
+    INT_VEC4 = GL_INT_VEC4 as isize,
+    BOOL = GL_BOOL as isize,
+    BOOL_VEC2 = GL_BOOL_VEC2 as isize,
+    BOOL_VEC3 = GL_BOOL_VEC3 as isize,
+    BOOL_VEC4 = GL_BOOL_VEC4 as isize,
+    SAMPLER_2D = GL_SAMPLER_2D as isize,
+    SAMPLER_CUBE = GL_SAMPLER_CUBE as isize
+}
+
+impl From<GLenum> for DataType {
+    fn from(data_type: GLenum) -> Self {
+        match data_type {
+            GL_BYTE => DataType::BYTE,
+            GL_UNSIGNED_BYTE => DataType::UNSIGNED_BYTE,
+            GL_SHORT => DataType::SHORT,
+            GL_UNSIGNED_SHORT => DataType::UNSIGNED_SHORT,
+            GL_FIXED => DataType::FIXED,
+            GL_FLOAT => DataType::FLOAT,
+            GL_FLOAT_VEC2 => DataType::FLOAT_VEC2,
+            GL_FLOAT_VEC3 => DataType::FLOAT_VEC3,
+            GL_FLOAT_VEC4 => DataType::FLOAT_VEC4,
+            GL_FLOAT_MAT2 => DataType::FLOAT_MAT2,
+            GL_FLOAT_MAT3 => DataType::FLOAT_MAT3,
+            GL_FLOAT_MAT4 => DataType::FLOAT_MAT4,
+            GL_INT => DataType::INT,
+            GL_INT_VEC2 => DataType::INT_VEC2,
+            GL_INT_VEC3 => DataType::INT_VEC3,
+            GL_INT_VEC4 => DataType::INT_VEC4,
+            GL_BOOL => DataType::BOOL,
+            GL_BOOL_VEC2 => DataType::BOOL_VEC2,
+            GL_BOOL_VEC3 => DataType::BOOL_VEC3,
+            GL_BOOL_VEC4 => DataType::BOOL_VEC4,
+            GL_SAMPLER_2D => DataType::SAMPLER_2D,
+            GL_SAMPLER_CUBE => DataType::SAMPLER_CUBE,
+            _ => DataType::BYTE
+        }
+    }
 }

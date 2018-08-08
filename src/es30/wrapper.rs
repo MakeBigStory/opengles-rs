@@ -129,23 +129,23 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_clear_bufferuiv(&mut self, buffer: GLenum, drawbuffer: GLint, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_clear_bufferuiv(&mut self, buffer: GLenum, drawbuffer: i32, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glClearBufferuiv(buffer, drawbuffer, value.as_ptr() as *const GLuint);
+            ffi::glClearBufferuiv(buffer, drawbuffer as i32, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_clear_bufferfv(&mut self, buffer: GLenum, drawbuffer: GLint, value: &[GLfloat]) -> Result<(), Error> {
+    pub fn gl_clear_bufferfv(&mut self, buffer: GLenum, drawbuffer: i32, value: &[GLfloat]) -> Result<(), Error> {
         unsafe {
-            ffi::glClearBufferfv(buffer, drawbuffer, value.as_ptr() as *const GLfloat);
+            ffi::glClearBufferfv(buffer, drawbuffer as i32, value.as_ptr() as *const GLfloat);
         }
         Ok(())
     }
 
-    pub fn gl_clear_bufferfi(&mut self, buffer: GLenum, drawbuffer: GLint, depth: GLfloat, stencil: GLint) -> Result<(), Error> {
+    pub fn gl_clear_bufferfi(&mut self, buffer: GLenum, drawbuffer: i32, depth: GLfloat, stencil: GLint) -> Result<(), Error> {
         unsafe {
-            ffi::glClearBufferfi(buffer, drawbuffer, depth, stencil);
+            ffi::glClearBufferfi(buffer, drawbuffer as i32, depth, stencil);
         }
         Ok(())
     }

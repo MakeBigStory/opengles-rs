@@ -1201,20 +1201,20 @@ impl Wrapper {
     }
 
     pub fn gl_blit_framebuffer(&mut self,
-        srcX0: GLint,
-        srcY0: GLint,
-        srcX1: GLint,
-        srcY1: GLint,
-        dstX0: GLint,
-        dstY0: GLint,
-        dstX1: GLint,
-        dstY1: GLint,
+        src_X0: GLint,
+        src_Y0: GLint,
+        src_X1: GLint,
+        src_Y1: GLint,
+        dst_X0: GLint,
+        dst_Y0: GLint,
+        dst_X1: GLint,
+        dst_Y1: GLint,
         mask: BufferMask,
         filter: FilterMode,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glBlitFramebuffer(
-                srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask as GLenum, filter as GLenum,
+                src_X0, src_Y0, src_X1, src_Y1, dst_X0, dst_Y0, dst_X1, dst_Y1, mask as GLenum, filter as GLenum,
             );
         }
         Ok(())

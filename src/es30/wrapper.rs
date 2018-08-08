@@ -177,7 +177,7 @@ impl Wrapper {
         };
 
         unsafe {
-            ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width as GLsizei, height as GLsizei, depth, border as GLint, format, type_, pdata);
+            ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width as GLsizei, height as GLsizei, depth, border as GLint, format as GLenum, type_, pdata);
         }
         Ok(())
     }
@@ -210,7 +210,7 @@ impl Wrapper {
                 width as GLsizei,
                 height as GLsizei,
                 depth,
-                format,
+                format as GLenum,
                 type_,
                 pdata,
             );
@@ -296,7 +296,7 @@ impl Wrapper {
                 width as GLsizei,
                 height as GLsizei,
                 depth,
-                format,
+                format as GLenum,
                 image_size,
                 data.as_ptr() as *const GLvoid,
             );
@@ -1214,7 +1214,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glBlitFramebuffer(
-                srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter as GLenum,
+                srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask as GLenum, filter as GLenum,
             );
         }
         Ok(())

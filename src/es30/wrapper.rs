@@ -533,7 +533,7 @@ impl Wrapper {
 
     //todo: count这么写是否对？
     pub fn gl_transform_feedback_varyings(&mut self,
-        program: GLuint,
+        program: u32,
         count: i32,
         varyings: &Vec<String>,
         buffer_mode: TransformFeedbackMode,
@@ -554,7 +554,7 @@ impl Wrapper {
                 index = index + 1;
             }
             ffi::glTransformFeedbackVaryings(
-                program,
+                program as GLuint,
                 count as GLsizei,
                 names_ptr.as_ptr() as *const *const GLchar,
                 buffer_mode as GLenum,
@@ -564,7 +564,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_transform_feedback_varying(&mut self,
-        program: GLuint,
+        program: u32,
         index: u32,
         buffer_size: GLsizei,
     ) -> Option<Active> {
@@ -575,7 +575,7 @@ impl Wrapper {
             let mut name = String::with_capacity(256);
 
             ffi::glGetTransformFeedbackVarying(
-                program,
+                program as GLuint,
                 index,
                 buffer_size,
                 &mut length,
@@ -710,19 +710,19 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniformuiv(&mut self, program: GLuint, location: i32) -> GLuint {
+    pub fn gl_get_uniformuiv(&mut self, program: u32, location: i32) -> GLuint {
         unsafe {
             let mut value: GLuint = 0;
-            glGetUniformuiv(program, location as GLint, &mut value);
+            glGetUniformuiv(program as GLuint, location as GLint, &mut value);
             value
         }
         Ok(())
     }
 
-    pub fn gl_get_frag_data_location(&mut self, program: GLuint, name: &str) -> GLint {
+    pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> GLint {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            ffi::glGetFragDataLocation(program, c_str.as_ptr() as *const GLchar)
+            ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar)
         }
         Ok(())
     }
@@ -799,7 +799,7 @@ impl Wrapper {
 
     //todo:
     pub fn gl_get_uniform_indices(&mut self,
-        program: GLuint,
+        program: u32,
         uniform_count: i32,
         uniform_names: &Vec<String>,
     ) -> Vec<GLuint>
@@ -823,7 +823,7 @@ impl Wrapper {
             let mut uniform_indices: Vec<GLuint> = Vec::with_capacity(uniform_count as usize);
 
             ffi::glGetuniform_indices(
-                program,
+                program as GLuint,
                 uniform_count as GLsizei,
                 names_ptr.as_ptr() as *const *const GLchar,
                 uniform_indices.as_ptr() as *mut GLuint,
@@ -835,7 +835,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_active_uniformsiv(&mut self,
-        program: GLuint,
+        program: u32,
         uniform_count: i32,
         uniform_indices: &[GLuint],
         pname: GLenum,
@@ -843,7 +843,7 @@ impl Wrapper {
     ) -> Result<(), Error> {
         unsafe {
             ffi::glGetActiveUniformsiv(
-                program,
+                program as GLuint,
                 uniform_count as GLsizei,
                 uniform_indices.as_ptr() as *const GLuint,
                 pname as GLenum,
@@ -853,23 +853,23 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniform_block_index(&mut self, program: GLuint, uniform_block_name: &str) -> GLuint {
+    pub fn gl_get_uniform_block_index(&mut self, program: u32, uniform_block_name: &str) -> GLuint {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            ffi::glGetuniform_block_index(program, c_str.as_ptr() as *const GLchar)
+            ffi::glGetuniform_block_index(program as GLuint, c_str.as_ptr() as *const GLchar)
         }
         Ok(())
     }
 
     pub fn gl_get_active_uniform_blockiv(&mut self,
-        program: GLuint,
+        program: u32,
         uniform_block_index: GLuint,
         pname: GLenum,
     ) -> GLint {
         unsafe {
             let mut value = 0 as GLint;
             ffi::glGetActiveUniformBlockiv(
-                program,
+                program as GLuint,
                 uniform_block_index,
                 pname as GLenum,
                 &mut value,
@@ -880,13 +880,13 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_block_binding(&mut self,
-        program: GLuint,
+        program: u32,
         uniform_block_index: GLuint,
         uniform_block_binding: GLuint,
     ) -> Result<(), Error> {
         unsafe {
             ffi::gluniform_block_binding(
-                program,
+                program as GLuint,
                 uniform_block_index,
                 uniform_block_binding,
             );
@@ -1107,7 +1107,7 @@ impl Wrapper {
 
 //todo:
     pub fn gl_get_program_binary(&mut self,
-        program: GLuint,
+        program: u32,
         buffer_size: GLsizei,
     ) -> Option<ProgramBinary>
     {
@@ -1117,7 +1117,7 @@ impl Wrapper {
             let mut binary: Vec<u8> = Vec::with_capacity(buffer_size as usize);
 
             ffi::glGetProgramBinary(
-                program,
+                program as GLuint,
                 buffer_size,
                 &mut length as *mut GLsizei,
                 &mut binary_format as *mut GLenum,
@@ -1138,14 +1138,14 @@ impl Wrapper {
     }
 
     pub fn gl_program_binary(&mut self,
-        program: GLuint,
+        program: u32,
         binary_format: GLenum,
         binary: &[u8],
         length: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glProgramBinary(
-                program,
+                program as GLuint,
                 binary_format,
                 binary.as_ptr() as *const GLvoid,
                 length,
@@ -1154,9 +1154,9 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_program_parameteri(&mut self, program: GLuint, pname: GLenum, value: GLint) -> Result<(), Error> {
+    pub fn gl_program_parameteri(&mut self, program: u32, pname: GLenum, value: GLint) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramParameteri(program, pname as GLenum, value);
+            ffi::glProgramParameteri(program as GLuint, pname as GLenum, value);
         }
         Ok(())
     }

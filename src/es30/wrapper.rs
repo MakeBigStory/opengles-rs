@@ -1052,46 +1052,46 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_sampler_parameteri(&mut self, sampler: GLuint, pname: SamplerParameter, param: GLint) -> Result<(), Error> {
+    pub fn gl_sampler_parameteri(&mut self, sampler: u32, pname: SamplerParameter, param: GLint) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameteri(sampler, pname as GLenum, param);
+            ffi::glSamplerParameteri(sampler as GLuint, pname as GLenum, param);
         }
         Ok(())
     }
 
-    pub fn gl_sampler_parameteriv(&mut self, sampler: GLuint, pname: SamplerParameter, param: &[GLint]) -> Result<(), Error> {
+    pub fn gl_sampler_parameteriv(&mut self, sampler: u32, pname: SamplerParameter, param: &[GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameteriv(sampler, pname as GLenum, param.as_ptr() as *const GLint);
+            ffi::glSamplerParameteriv(sampler as GLuint, pname as GLenum, param.as_ptr() as *const GLint);
         }
         Ok(())
     }
 
-    pub fn gl_sampler_parameterf(&mut self, sampler: GLuint, pname: SamplerParameter, param: GLfloat) -> Result<(), Error> {
+    pub fn gl_sampler_parameterf(&mut self, sampler: u32, pname: SamplerParameter, param: GLfloat) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameterf(sampler, pname as GLenum, param);
+            ffi::glSamplerParameterf(sampler as GLuint, pname as GLenum, param);
         }
         Ok(())
     }
 
-    pub fn gl_sampler_parameterfv(&mut self, sampler: GLuint, pname: SamplerParameter, param: &[GLfloat]) -> Result<(), Error> {
+    pub fn gl_sampler_parameterfv(&mut self, sampler: u32, pname: SamplerParameter, param: &[GLfloat]) -> Result<(), Error> {
         unsafe {
-            ffi::glSamplerParameterfv(sampler, pname as GLenum, param.as_ptr() as *const GLfloat);
-        }
-        Ok(())
-    }
-
-    //todo : 我怀疑是返回一个，这里需要用slice?
-    pub fn gl_get_sampler_parameteriv(&mut self, sampler: GLuint, pname: SamplerParameter, params: &mut [GLint]) -> Result<(), Error> {
-        unsafe {
-            ffi::glGetSamplerParameteriv(sampler, pname as GLenum, params.as_mut_ptr() as *mut GLint);
+            ffi::glSamplerParameterfv(sampler as GLuint, pname as GLenum, param.as_ptr() as *const GLfloat);
         }
         Ok(())
     }
 
     //todo : 我怀疑是返回一个，这里需要用slice?
-    pub fn gl_get_sampler_parameterfv(&mut self, sampler: GLuint, pname: SamplerParameter, params: &mut [GLfloat]) -> Result<(), Error> {
+    pub fn gl_get_sampler_parameteriv(&mut self, sampler: u32, pname: SamplerParameter, params: &mut [GLint]) -> Result<(), Error> {
         unsafe {
-            ffi::glGetSamplerParameterfv(sampler, pname as GLenum, params.as_mut_ptr() as *mut GLfloat);
+            ffi::glGetSamplerParameteriv(sampler as GLuint, pname as GLenum, params.as_mut_ptr() as *mut GLint);
+        }
+        Ok(())
+    }
+
+    //todo : 我怀疑是返回一个，这里需要用slice?
+    pub fn gl_get_sampler_parameterfv(&mut self, sampler: u32, pname: SamplerParameter, params: &mut [GLfloat]) -> Result<(), Error> {
+        unsafe {
+            ffi::glGetSamplerParameterfv(sampler as GLuint, pname as GLenum, params.as_mut_ptr() as *mut GLfloat);
         }
         Ok(())
     }

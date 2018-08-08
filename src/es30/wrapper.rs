@@ -357,14 +357,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix2x3fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x3fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -374,14 +374,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix3x2fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x2fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -391,14 +391,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix2x4fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix2x4fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -408,14 +408,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix4x2fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x2fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -425,14 +425,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix3x4fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix3x4fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -442,14 +442,14 @@ impl Wrapper {
     }
 
     pub fn gl_uniform_matrix4x3fv(&mut self,
-        location: GLint,
+        location: i32,
         count: GLsizei,
         transpose: GLboolean,
         value: &[GLfloat],
     ) -> Result<(), Error> {
         unsafe {
             ffi::glUniformMatrix4x3fv(
-                location,
+                location as GLint,
                 count,
                 transpose,
                 value.as_ptr() as *const GLfloat,
@@ -709,10 +709,10 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniformuiv(&mut self, program: GLuint, location: GLint) -> GLuint {
+    pub fn gl_get_uniformuiv(&mut self, program: GLuint, location: i32) -> GLuint {
         unsafe {
             let mut value: GLuint = 0;
-            glGetUniformuiv(program, location, &mut value);
+            glGetUniformuiv(program, location as GLint, &mut value);
             value
         }
         Ok(())
@@ -726,58 +726,58 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_uniform1ui(&mut self, location: GLint, v0: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform1ui(&mut self, location: i32, v0: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform1ui(location, v0);
+            ffi::glUniform1ui(location as GLint, v0);
         }
         Ok(())
     }
 
-    pub fn gl_uniform2ui(&mut self, location: GLint, v0: GLuint, v1: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform2ui(&mut self, location: i32, v0: GLuint, v1: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform2ui(location, v0, v1);
+            ffi::glUniform2ui(location as GLint, v0, v1);
         }
         Ok(())
     }
 
-    pub fn gl_uniform3ui(&mut self, location: GLint, v0: GLuint, v1: GLuint, v2: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform3ui(&mut self, location: i32, v0: GLuint, v1: GLuint, v2: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform3ui(location, v0, v1, v2);
+            ffi::glUniform3ui(location as GLint, v0, v1, v2);
         }
         Ok(())
     }
 
-    pub fn gl_uniform4ui(&mut self, location: GLint, v0: GLuint, v1: GLuint, v2: GLuint, v3: GLuint) -> Result<(), Error> {
+    pub fn gl_uniform4ui(&mut self, location: i32, v0: GLuint, v1: GLuint, v2: GLuint, v3: GLuint) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform4ui(location, v0, v1, v2, v3);
+            ffi::glUniform4ui(location as GLint, v0, v1, v2, v3);
         }
         Ok(())
     }
 
-    pub fn gl_uniform1uiv(&mut self, location: GLint, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform1uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform1uiv(location, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform1uiv(location as GLint, count, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform2uiv(&mut self, location: GLint, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform2uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform2uiv(location, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform2uiv(location as GLint, count, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform3uiv(&mut self, location: GLint, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform3uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform3uiv(location, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform3uiv(location as GLint, count, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }
 
-    pub fn gl_uniform4uiv(&mut self, location: GLint, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
+    pub fn gl_uniform4uiv(&mut self, location: i32, count: GLsizei, value: &[GLuint]) -> Result<(), Error> {
         unsafe {
-            ffi::glUniform4uiv(location, count, value.as_ptr() as *const GLuint);
+            ffi::glUniform4uiv(location as GLint, count, value.as_ptr() as *const GLuint);
         }
         Ok(())
     }

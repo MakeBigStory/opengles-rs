@@ -1360,13 +1360,14 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_tex_parameteriv(&mut self, target: TextureBindTarget, name: TextureParamType,
-                              value: &GLint) -> Result<(), Error> {
+    pub fn gl_tex_parameteriv(&mut self, target: TextureBindTarget, name: TextureParamType) -> Result<i32, Error> {
+        let res: GLint = 0;
+
         unsafe {
-            ffi::glTexParameteriv(target as GLenum, name as GLenum, value)
+            ffi::glTexParameteriv(target as GLenum, name as GLenum, &res)
         }
 
-        Ok(())
+        Ok(res as i32)
     }
 
     pub fn gl_tex_sub_image_2d<T>(

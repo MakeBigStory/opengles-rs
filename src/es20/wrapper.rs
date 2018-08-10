@@ -1341,12 +1341,14 @@ impl Wrapper {
     }
 
     pub fn gl_tex_parameterfv(&mut self, target: TextureBindTarget,
-                              name: TextureParamType, value: &f32) -> Result<(), Error> {
+                              name: TextureParamType) -> Result<f32, Error> {
+
+        let res: GLfloat = 0.0;
         unsafe {
-            ffi::glTexParameterfv(target as GLenum, name as GLenum, value)
+            ffi::glTexParameterfv(target as GLenum, name as GLenum, &res)
         }
 
-        Ok(())
+        Ok(res as f32)
     }
 
     pub fn gl_tex_parameteri(&mut self, target: TextureBindTarget, name: TextureParamType,

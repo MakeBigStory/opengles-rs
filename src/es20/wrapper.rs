@@ -170,7 +170,7 @@ impl Wrapper {
     }
 
     pub fn gl_buffer_data<T>(&mut self, target: BufferTarget,
-                             buffer: &[T], usage: BufferUsage) -> Result<(), Error> {
+                             buffer: &[T], usage: BufferUsage) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             let t_size = size_of::<T>();
 
@@ -186,7 +186,7 @@ impl Wrapper {
     }
 
     pub fn gl_buffer_sub_data<T>(&mut self, target: BufferTarget, offset: u32, buffer: &[T])
-                                 -> Result<(), Error> {
+                                 -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             let t_size = size_of::<T>();
 
@@ -284,7 +284,7 @@ impl Wrapper {
         border: u32,
         image_size: u32,
         buffer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glCompressedTexImage2D(
                 target as GLenum,
@@ -312,7 +312,7 @@ impl Wrapper {
         format: GLenum,
         image_size: u32,
         buffer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glCompressedTexSubImage2D(
                 target as GLenum,
@@ -505,7 +505,7 @@ impl Wrapper {
     }
 
     // TODO: type_ & T is reasonable ?
-    pub fn gl_draw_elements<T>(&mut self, mode: BeginMode, count: i32, type_: GLenum, indices: &[T]) -> Result<(), Error> {
+    pub fn gl_draw_elements<T>(&mut self, mode: BeginMode, count: i32, type_: GLenum, indices: &[T]) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glDrawElements(mode as GLenum, count as GLsizei,
                                 type_, indices.as_ptr() as *const GLvoid)
@@ -1162,7 +1162,7 @@ impl Wrapper {
         format: PixelFormat,
         type_: PixelDataType,
         buffer: &mut [T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glReadPixels(
                 x as GLint,
@@ -1224,7 +1224,7 @@ impl Wrapper {
     // TODO: data_format
     // TODO: length's unit should be byte or T ?
     pub fn gl_shader_binary<T>(&mut self, shaders: &[u32], data_format: GLenum,
-                               data: &[T], length: i32) -> Result<(), Error> {
+                               data: &[T], length: i32) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glShaderBinary(
                 shaders.len() as GLsizei,
@@ -1267,7 +1267,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_stencil_mask(mask: u32) -> Result<(), Error> {
+    pub fn gl_stencil_mask(&mut self, mask: u32) -> Result<(), Error> {
         unsafe {
             ffi::glStencilMask(mask as GLuint)
         }
@@ -1313,7 +1313,7 @@ impl Wrapper {
         format: PixelFormat,
         type_: PixelDataType,
         buffer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glTexImage2D(
                 target as GLenum,
@@ -1378,7 +1378,7 @@ impl Wrapper {
         format: PixelFormat,
         type_: PixelDataType,
         buffer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             ffi::glTexSubImage2D(
                 target as GLenum,
@@ -1657,7 +1657,7 @@ impl Wrapper {
         normalized: bool,
         stride: i32,
         buffer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug {
         unsafe {
             if buffer.len() == 0 {
                 ffi::glVertexAttribPointer(

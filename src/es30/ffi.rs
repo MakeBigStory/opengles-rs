@@ -1,7 +1,8 @@
 //#![feature(target_os = "macos", target_os = "ios")]
 
-use super::data_struct::*;
-use super::es20::data_struct::*;
+//use super::data_struct::*;
+//use super::es20::data_struct::*;
+use super::types::*;
 
 extern "C" {
     pub fn glReadBuffer(mode: GLenum);

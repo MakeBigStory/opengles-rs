@@ -1,8 +1,8 @@
-use super::es20::data_struct::*;
-use super::data_struct::*;
 use super::ffi::*;
 use super::*;
 use super::types::*;
+use super::es20::data_struct::{GL_TRUE, GL_NONE};
+use super::es30::data_struct::{ProgramBinary};
 
 use std::mem;
 
@@ -33,9 +33,9 @@ impl Wrapper {
 
     pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<(GLboolean), Error> {
         unsafe {
-            ffi::glUnmapBuffer(target as GLenum)
+            ffi::glUnmapBuffer(target as GLenum);
         }
-        Ok((GL_TRUE))
+        Ok(GL_TRUE)
     }
 
     pub fn gl_copy_buffer_sub_data(&mut self,
@@ -51,7 +51,7 @@ impl Wrapper {
                 write_target as GLenum,
                 read_offset,
                 write_offset,
-                size as GLsizei,
+                size,
             );
         }
         Ok(())
@@ -83,7 +83,7 @@ impl Wrapper {
             let count = length as usize / std::mem::size_of::<T>();
             return slice::from_raw_parts_mut(ptr as *mut T, count as usize);
         }
-        Ok(())
+//        Ok(())
     }
 
     pub fn gl_flush_mapped_buffer_range(&mut self, target: BufferObjectTarget, offset: i32, length: i32) -> Result<(), Error> {
@@ -150,13 +150,12 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_buffer_parameteri64v(&mut self, target: GLenum, pname: GLenum) -> GLint64 {
+    pub fn gl_get_buffer_parameteri64v(&mut self, target: GLenum, pname: GLenum) -> Result<i64, Error> {
         unsafe {
             let mut params = 0 as GLint64;
             ffi::glGetBufferParameteri64v(target as GLenum, pname as GLenum, &mut params);
-            params
+            Ok(params)
         }
-        Ok(())
     }
 
     pub fn gl_tex_image3d(&mut self,
@@ -171,12 +170,11 @@ impl Wrapper {
         type_: GLenum,
         opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
-        let pdata = match opt_data {
-            Some(data) => mem::transmute(data.as_ptr()),
-            None => ptr::null(),
-        };
-
         unsafe {
+            let pdata = match opt_data {
+                Some(data) => mem::transmute(data.as_ptr()),
+                None => ptr::null(),
+            };
             ffi::glTexImage3D(target as GLenum, level as GLint, internal_format as GLint, width as GLsizei, height as GLsizei, depth, border as GLint, format as GLenum, type_, pdata);
         }
         Ok(())
@@ -195,12 +193,12 @@ impl Wrapper {
         type_: GLenum,
                                  opt_data: Option<&[u8]>,
     ) -> Result<(), Error> {
-        let pdata = match opt_data {
-            Some(data) => mem::transmute(data.as_ptr()),
-            None => ptr::null(),
-        };
-
         unsafe {
+            let pdata = match opt_data {
+                Some(data) => mem::transmute(data.as_ptr()),
+                None => ptr::null(),
+            };
+
             ffi::glTexSubImage3D(
                 target as GLenum,
                 level,
@@ -304,13 +302,12 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_queries(&mut self, size: i32) -> Vec<GLuint> {
+    pub fn gl_gen_queries(&mut self, size: i32) -> Result<Vec<GLuint>, Error> {
         unsafe {
             let mut ids: Vec<GLuint> = Vec::with_capacity(size as usize);
             ffi::glGenQueries(size as GLsizei, ids.as_ptr() as *mut GLuint);
-            ids
+            Ok(ids)
         }
-        Ok(())
     }
 
     pub fn gl_delete_queries(&mut self, ids: &mut [GLuint]) -> Result<(), Error> {
@@ -321,11 +318,11 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_is_query(&mut self, id: u32) -> GLboolean {
+    pub fn gl_is_query(&mut self, id: u32) -> Result<GLboolean, Error> {
         unsafe {
-            ffi::glIsQuery(id as GLuint)
+            let result = ffi::glIsQuery(id as GLuint);
+            Ok(result)
         }
-        Ok(())
     }
 
     pub fn gl_begin_query(&mut self, target: GLenum, id: u32) -> Result<(), Error> {
@@ -495,30 +492,27 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_vertex_arrays(&mut self, count: GLsizei) -> Vec<GLuint> {
+    pub fn gl_gen_vertex_arrays(&mut self, count: GLsizei) -> Result<Vec<GLuint>, Error> {
         unsafe {
             let mut vec: Vec<GLuint> = Vec::with_capacity(count as usize);
             ffi::glGenVertexArrays(count as GLsizei, vec.as_mut_ptr());
             vec.set_len(count as usize);
-            vec
+            Ok(vec)
         }
-        Ok(())
     }
 
-    pub fn gl_is_vertex_array(&mut self, array: GLuint) -> GLboolean {
+    pub fn gl_is_vertex_array(&mut self, array: GLuint) -> Result<GLboolean, Error> {
         unsafe {
-            ffi::glIsVertexArray(array)
+            Ok(ffi::glIsVertexArray(array))
         }
-        Ok(())
     }
 
-    pub fn gl_get_integeri_v(&mut self, target: GLenum, index: GLuint) -> GLint {
+    pub fn gl_get_integeri_v(&mut self, target: GLenum, index: GLuint) -> Result<GLint, Error> {
         unsafe {
             let mut value: GLint = 0;
             ffi::glGetIntegeri_v(target as GLenum, index, &mut value);
-            value
+            Ok(value)
         }
-        Ok(())
     }
 
 
@@ -579,7 +573,7 @@ impl Wrapper {
                 index,
                 buffer_size,
                 &mut length,
-                &mut size as GLsizei,
+                &mut size,
                 &mut type_,
                 name.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
@@ -590,7 +584,7 @@ impl Wrapper {
 
                 Some(Active {
                     name,
-                    size as GLsizei,
+                    size,
                     type_,
                     length,
                 })
@@ -598,7 +592,6 @@ impl Wrapper {
                 None
             }
         }
-        Ok(())
     }
 
     pub fn gl_bind_transform_feedback(&mut self, target: TransformFeedbackObjectTarget, id: u32) -> Result<(), Error> {
@@ -626,9 +619,15 @@ impl Wrapper {
         // todo: replace with Option
     }
 
-    pub fn gl_is_transform_feedback(&mut self, id: u32) -> GLboolean {
-        unsafe { ffi::glIsTransformFeedback(id as GLuint) }
-        Ok(())
+    pub fn gl_is_transform_feedback(&mut self, id: u32) -> Result<bool, Error> {
+        unsafe {
+            let result = ffi::glIsTransformFeedback(id as GLuint);
+            if result == GL_TRUE {
+              Ok(true)
+            } else {
+             Ok(false)
+            }
+        }
     }
 
     pub fn gl_pause_transform_feedback(&mut self) -> Result<(), Error> {
@@ -664,22 +663,20 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_vertex_attrib_iiv(&mut self, index: u32, pname: GLenum) -> GLint {
+    pub fn gl_get_vertex_attrib_iiv(&mut self, index: u32, pname: GLenum) -> Result<GLint, Error> {
         unsafe {
             let mut params: GLint = 0;
             ffi::glGetVertexAttribIiv(index, pname as GLenum, &mut params);
-            params
+            Ok(params)
         }
-        Ok(())
     }
 
-    pub fn gl_get_vertex_attrib_iuiv(&mut self, index: u32, pname: GLenum) -> GLuint {
+    pub fn gl_get_vertex_attrib_iuiv(&mut self, index: u32, pname: GLenum) -> Result<GLuint, Error> {
         unsafe {
             let mut params: GLuint = 0;
             ffi::glGetVertexAttribIuiv(index, pname as GLenum, &mut params);
-            params
+            Ok(params)
         }
-        Ok(())
     }
 
     pub fn gl_vertex_attrib_i4i(&mut self, index: u32, x: GLint, y: GLint, z: GLint, w: GLint) -> Result<(), Error> {
@@ -710,21 +707,21 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniformuiv(&mut self, program: u32, location: i32) -> GLuint {
+    pub fn gl_get_uniformuiv(&mut self, program: u32, location: i32) -> Result<GLuint, Error> {
         unsafe {
             let mut value: GLuint = 0;
             glGetUniformuiv(program as GLuint, location as GLint, &mut value);
-            value
+            Ok(value)
         }
-        Ok(())
     }
 
-    pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> GLint {
+    pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> Result<GLint, Error> {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar)
+            let location = ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
+            Ok(location)
         }
-        Ok(())
+
     }
 
     pub fn gl_uniform1ui(&mut self, location: i32, v0: GLuint) -> Result<(), Error> {
@@ -802,7 +799,7 @@ impl Wrapper {
         program: u32,
         uniform_count: i32,
         uniform_names: &Vec<String>,
-    ) -> Vec<GLuint>
+    ) -> Result<Vec<GLuint>, Error>
     {
         unsafe {
             let mut names: Vec<CString> = Vec::with_capacity(uniform_count as usize);
@@ -822,16 +819,15 @@ impl Wrapper {
 
             let mut uniform_indices: Vec<GLuint> = Vec::with_capacity(uniform_count as usize);
 
-            ffi::glGetuniform_indices(
+            ffi::glGetUniformIndices(
                 program as GLuint,
                 uniform_count as GLsizei,
                 names_ptr.as_ptr() as *const *const GLchar,
                 uniform_indices.as_ptr() as *mut GLuint,
             );
 
-            uniform_indices
+            Ok(uniform_indices)
         }
-        Ok(())
     }
 
     pub fn gl_get_active_uniformsiv(&mut self,
@@ -853,19 +849,19 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_uniform_block_index(&mut self, program: u32, uniform_block_name: &str) -> GLuint {
+    pub fn gl_get_uniform_block_index(&mut self, program: u32, uniform_block_name: &str) -> Result<GLuint, Error> {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            ffi::glGetuniform_block_index(program as GLuint, c_str.as_ptr() as *const GLchar)
+            let index = ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
+            Ok(index)
         }
-        Ok(())
     }
 
     pub fn gl_get_active_uniform_blockiv(&mut self,
         program: u32,
         uniform_block_index: GLuint,
         pname: GLenum,
-    ) -> GLint {
+    ) -> Result<GLint, Error> {
         unsafe {
             let mut value = 0 as GLint;
             ffi::glGetActiveUniformBlockiv(
@@ -874,9 +870,8 @@ impl Wrapper {
                 pname as GLenum,
                 &mut value,
             );
-            value
+            Ok(value)
         }
-        Ok(())
     }
 
     pub fn gl_uniform_block_binding(&mut self,
@@ -885,7 +880,7 @@ impl Wrapper {
         uniform_block_binding: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::gluniform_block_binding(
+            ffi::glUniformBlockBinding(
                 program as GLuint,
                 uniform_block_index,
                 uniform_block_binding,
@@ -945,18 +940,22 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_fence_sync(&mut self, condition: GLenum, flags: GLbitfield) -> GLsync {
+    pub fn gl_fence_sync(&mut self, condition: GLenum, flags: GLbitfield) -> Result<GLsync, Error> {
         unsafe {
-            ffi::glFenceSync(condition, flags)
+            let sync = ffi::glFenceSync(condition, flags);
+            Ok(sync)
         }
-        Ok(())
     }
 
-    pub fn gl_is_sync(&mut self, sync: GLsync) -> GLboolean {
+    pub fn gl_is_sync(&mut self, sync: GLsync) -> Result<bool, Error> {
         unsafe {
-            ffi::glIsSync(sync)
+            let result = ffi::glIsSync(sync);
+            if result == GL_TRUE {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
         }
-        Ok(())
     }
 
     pub fn gl_delete_sync(&mut self, sync: GLsync) -> Result<(), Error> {
@@ -966,11 +965,11 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_client_wait_sync(&mut self, sync: GLsync, flags: GLbitfield, timeout: GLuint64) -> GLenum {
+    pub fn gl_client_wait_sync(&mut self, sync: GLsync, flags: GLbitfield, timeout: GLuint64) -> Result<GLenum, Error> {
         unsafe {
-            ffi::glClientWaitSync(sync, flags, timeout)
+            let result = ffi::glClientWaitSync(sync, flags, timeout);
+            Ok(result)
         }
-        Ok(())
     }
 
     pub fn gl_wait_sync(&mut self, sync: GLsync, flags: GLbitfield, timeout: GLuint64) -> Result<(), Error> {
@@ -980,13 +979,12 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_integer64v(&mut self, pname: GLenum) -> GLint64 {
+    pub fn gl_get_integer64v(&mut self, pname: GLenum) -> Result<GLint64, Error> {
         unsafe {
             let mut value = 0 as GLint64;
             ffi::glGetInteger64v(pname as GLenum, &mut value);
-            value
+            Ok(value)
         }
-        Ok(())
     }
 
     //todo: 返回两个，不封装结构体，不做处理。
@@ -995,7 +993,7 @@ impl Wrapper {
         pname: GLenum,
         buffer_size: GLsizei,
         length: &mut GLsizei,
-    ) -> Vec<GLint> {
+    ) -> Result<Vec<GLint>, Error> {
         unsafe {
             let mut values: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             ffi::glGetSynciv(
@@ -1005,29 +1003,26 @@ impl Wrapper {
                 length as *mut GLsizei,
                 values.as_mut_ptr() as *mut GLint,
             );
-            values
+            Ok(values)
         }
-        Ok(())
     }
 
-    pub fn gl_get_integer64i_v(&mut self, target: GLenum, index: GLuint) -> GLint64 {
+    pub fn gl_get_integer64i_v(&mut self, target: GLenum, index: GLuint) -> Result<GLint64, Error> {
         unsafe {
             let mut value = 0 as GLint64;
             ffi::glGetInteger64i_v(target as GLenum, index, &mut value);
-            value
+            Ok(value)
         }
-        Ok(())
     }
 
     /// Samplers
 
-    pub fn gl_gen_samplers(&mut self, count: GLsizei) -> Vec<GLuint> {
+    pub fn gl_gen_samplers(&mut self, count: GLsizei) -> Result<Vec<GLuint>, Error> {
         unsafe {
             let mut sampler: Vec<GLuint> = Vec::with_capacity(count as usize);
             ffi::glGenSamplers(count as GLsizei, sampler.as_mut_ptr() as *mut GLuint);
-            sampler
+            Ok(sampler)
         }
-        Ok(())
     }
 
     pub fn gl_delete_samplers(&mut self, samplers: &[GLuint]) -> Result<(), Error> {
@@ -1038,11 +1033,15 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_is_sampler(&mut self, sampler: GLuint) -> GLboolean {
+    pub fn gl_is_sampler(&mut self, sampler: GLuint) -> Result<bool, Error> {
         unsafe {
-            ffi::glIsSampler(sampler)
+            let result = ffi::glIsSampler(sampler);
+            if result == GL_TRUE {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
         }
-        Ok(())
     }
 
     pub fn gl_bind_sampler(&mut self, unit: GLuint, sampler: GLuint) -> Result<(), Error> {
@@ -1134,7 +1133,6 @@ impl Wrapper {
                 })
             }
         }
-        Ok(())
     }
 
     pub fn gl_program_binary(&mut self,
@@ -1279,7 +1277,7 @@ impl Wrapper {
         internal_format: TextureTarget,
         pname: GLenum,
         buffer_size: GLsizei,
-    ) -> Vec<GLint> {
+    ) -> Result<Vec<GLint>, Error> {
         unsafe {
             let mut params: Vec<GLint> = Vec::with_capacity(buffer_size as usize);
             glGetInternalformativ(
@@ -1289,8 +1287,7 @@ impl Wrapper {
                 buffer_size,
                 params.as_mut_ptr() as *mut GLint,
             );
-            params
+            Ok(params)
         }
-        Ok(())
     }
 }

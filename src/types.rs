@@ -260,7 +260,7 @@ pub enum BufferObjectTarget {
     /// Texture data source
     PixelUnpackBuffer = GL_PIXEL_UNPACK_BUFFER  as isize,
     /// Query result buffer
-    QueryBuffer = GL_QUERY_BUFFER as isize,
+//    QueryBuffer = GL_QUERY_BUFFER as isize,
     /// Read-write storage for shaders
     ShaderStorageBuffer = GL_SHADER_STORAGE_BUFFER as isize,
     /// Texture data buffer
@@ -342,7 +342,7 @@ pub enum SamplerParameter {
     BorderColor = GL_TEXTURE_BORDER_COLOR as isize,
     MinLod = GL_TEXTURE_MIN_LOD as isize,
     MaxLod = GL_TEXTURE_MAX_LOD as isize,
-    LodBias = GL_TEXTURE_LOD_BIAS as isize,
+//    LodBias = GL_TEXTURE_LOD_BIAS as isize,
     CompareMode = GL_TEXTURE_COMPARE_MODE as isize,
     CompareFunc = GL_TEXTURE_COMPARE_FUNC as isize,
 }

@@ -32,6 +32,7 @@ use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void};
 
 #[cfg(target_os = "android")]
 #[link(name = "GLESv2")]
+#[link(name = "EGL")]
 extern "C" {}
 
 #[cfg(target_os = "ios")]

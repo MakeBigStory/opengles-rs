@@ -49,6 +49,7 @@ pub mod es31;
 pub mod es32;
 
 pub mod types;
+pub mod egl;
 
 pub const ACTIVE_ATOMIC_COUNTER_BUFFERS: types::GLenum = 0x92D9;
 pub const ACTIVE_ATTRIBUTES: types::GLenum = 0x8B89;

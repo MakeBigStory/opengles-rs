@@ -593,7 +593,7 @@ impl Wrapper {
             if result == GL_TRUE {
                 Ok(GL_TRUE)
             } else {
-                Ok(GL_FLASE)
+                Ok(GL_FALSE)
             }
         }
     }

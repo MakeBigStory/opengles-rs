@@ -7,7 +7,7 @@ use std::result::Result;
 pub struct Wrapper {}
 
 impl Wrapper {
-    pub fn gl_blend_barrier(&self) -> Result<(), Error> {
+    pub fn gl_blend_barrier(&mut self) -> Result<(), Error> {
         unsafe {
             ffi::glBlendBarrier();
         }
@@ -16,7 +16,7 @@ impl Wrapper {
     }
 
     pub fn gl_copy_image_sub_data(
-        &self,
+        &mut self,
         srcName: GLuint,
         srcTarget: GLenum,
         srcLevel: GLint,
@@ -43,7 +43,7 @@ impl Wrapper {
     }
 
     pub fn gl_debug_message_control(
-        &self,
+        &mut self,
         source: GLenum,
         type_: GLenum,
         severity: GLenum,
@@ -58,7 +58,7 @@ impl Wrapper {
     }
 
     pub fn gl_debug_message_insert(
-        &self,
+        &mut self,
         source: GLenum,
         type_: GLenum,
         id: GLuint,
@@ -73,7 +73,7 @@ impl Wrapper {
     }
 
     pub fn gl_debug_message_callback(
-        &self,
+        &mut self,
         callback: GLDEBUGPROC,
         userParam: *const GLvoid,
     ) -> Result<(), Error> {
@@ -84,7 +84,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_debug_message_Log(
-        &self,
+        &mut self,
         count: GLuint,
         bufSize: GLsizei,
         sources: *mut GLenum,
@@ -110,7 +110,7 @@ impl Wrapper {
     }
 
     pub fn gl_push_debug_group(
-        &self,
+        &mut self,
         source: GLenum,
         id: GLuint,
         length: GLsizei,
@@ -122,7 +122,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_pop_debug_group(&self) -> Result<(), Error> {
+    pub fn gl_pop_debug_group(&mut self) -> Result<(), Error> {
         unsafe {
             ffi::glPopDebugGroup();
         }
@@ -130,7 +130,7 @@ impl Wrapper {
     }
 
     pub fn gl_object_label(
-        &self,
+        &mut self,
         identifier: GLenum,
         name: GLuint,
         length: GLsizei,
@@ -143,7 +143,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_object_label(
-        &self,
+        &mut self,
         ptr: *const GLvoid,
         bufSize: GLsizei,
         length: *mut GLsizei,
@@ -156,7 +156,7 @@ impl Wrapper {
     }
 
     pub fn gl_object_ptr_label(
-        &self,
+        &mut self,
         ptr: *const GLvoid,
         length: GLsizei,
         label: *const GLchar,
@@ -168,7 +168,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_object_ptr_label(
-        &self,
+        &mut self,
         ptr: *const GLvoid,
         bufSize: GLsizei,
         length: *mut GLsizei,
@@ -180,28 +180,28 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_pointer_v(&self, pname: GLenum, params: *mut *mut GLvoid) -> Result<(), Error> {
+    pub fn gl_get_pointer_v(&mut self, pname: GLenum, params: *mut *mut GLvoid) -> Result<(), Error> {
         unsafe {
             ffi::glGetPointerv(pname, params);
         }
         Ok(())
     }
 
-    pub fn gl_enable_i(&self, target: GLenum, index: GLuint) -> Result<(), Error> {
+    pub fn gl_enable_i(&mut self, target: GLenum, index: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glEnablei(target, index);
         }
         Ok(())
     }
 
-    pub fn gl_disable_i(&self, target: GLenum, index: GLuint) -> Result<(), Error> {
+    pub fn gl_disable_i(&mut self, target: GLenum, index: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glDisablei(target, index);
         }
         Ok(())
     }
 
-    pub fn gl_blend_equation_i(&self, buf: GLuint, mode: GLenum) -> Result<(), Error> {
+    pub fn gl_blend_equation_i(&mut self, buf: GLuint, mode: GLenum) -> Result<(), Error> {
         unsafe {
             ffi::glBlendEquationi(buf, mode);
         }
@@ -209,7 +209,7 @@ impl Wrapper {
     }
 
     pub fn gl_blend_equation_separate_i(
-        &self,
+        &mut self,
         buf: GLuint,
         mode_RGB: GLenum,
         mode_alpha: GLenum,
@@ -220,7 +220,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_blend_func_i(&self, buf: GLuint, src: GLenum, dst: GLenum) -> Result<(), Error> {
+    pub fn gl_blend_func_i(&mut self, buf: GLuint, src: GLenum, dst: GLenum) -> Result<(), Error> {
         unsafe {
             ffi::glBlendFunci(buf, src, dst);
         }
@@ -228,7 +228,7 @@ impl Wrapper {
     }
 
     pub fn gl_blend_func_separate_i(
-        &self,
+        &mut self,
         buf: GLuint,
         src_rgb: GLenum,
         d_stRG_b: GLenum,
@@ -242,7 +242,7 @@ impl Wrapper {
     }
 
     pub fn gl_color_mask_i(
-        &self,
+        &mut self,
         index: GLuint,
         r: GLboolean,
         g: GLboolean,
@@ -255,7 +255,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_is_enabled_i(&self, target: GLenum, index: GLuint) -> Result<bool, Error> {
+    pub fn gl_is_enabled_i(&mut self, target: GLenum, index: GLuint) -> Result<bool, Error> {
         unsafe {
             let result = ffi::glIsEnabledi(target, index);
             if result == GL_TRUE {
@@ -267,7 +267,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_elements_base_vertex(
-        &self,
+        &mut self,
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
@@ -281,7 +281,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_range_elements_base_vertex(
-        &self,
+        &mut self,
         mode: GLenum,
         start: GLuint,
         end: GLuint,
@@ -305,7 +305,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_elements_instanced_base_vertex(
-        &self,
+        &mut self,
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
@@ -327,7 +327,7 @@ impl Wrapper {
     }
 
     pub fn gl_frame_buffer_texture(
-        &self,
+        &mut self,
         target: GLenum,
         attachment: GLenum,
         texture: GLuint,
@@ -340,7 +340,7 @@ impl Wrapper {
     }
 
     pub fn gl_primitive_bounding_box(
-        &self,
+        &mut self,
         minX: GLfloat,
         minY: GLfloat,
         minZ: GLfloat,
@@ -356,7 +356,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_graphics_reset_status(&self) -> Result<GLenum, Error> {
+    pub fn gl_get_graphics_reset_status(&mut self) -> Result<GLenum, Error> {
         unsafe {
             let result = ffi::glGetGraphicsResetStatus();
             Ok(result)
@@ -364,7 +364,7 @@ impl Wrapper {
     }
 
     pub fn gl_read_n_pixels(
-        &self,
+        &mut self,
         x: GLint,
         y: GLint,
         width: GLsizei,
@@ -381,7 +381,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_n_uniform_fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         bufSize: GLsizei,
@@ -394,7 +394,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_n_uniform_iv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         bufSize: GLsizei,
@@ -407,7 +407,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_n_uniform_uiv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         bufSize: GLsizei,
@@ -419,14 +419,14 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_minsampleshading(&self, value: GLfloat) -> Result<(), Error> {
+    pub fn gl_minsampleshading(&mut self, value: GLfloat) -> Result<(), Error> {
         unsafe {
             ffi::glMinSampleShading(value);
         }
         Ok(())
     }
 
-    pub fn gl_patch_parameter_i(&self, pname: GLenum, value: GLint) -> Result<(), Error> {
+    pub fn gl_patch_parameter_i(&mut self, pname: GLenum, value: GLint) -> Result<(), Error> {
         unsafe {
             ffi::glPatchParameteri(pname, value);
         }
@@ -434,7 +434,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_parameter_iiv(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         params: *const GLint,
@@ -446,7 +446,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_parameter_iuiv(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         params: *const GLuint,
@@ -458,7 +458,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_tex_parameter_iiv(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         params: *mut GLint,
@@ -470,7 +470,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_tex_parameter_iuiv(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         params: *mut GLuint,
@@ -483,7 +483,7 @@ impl Wrapper {
     }
 
     pub fn gl_sampler_parameter_iiv(
-        &self,
+        &mut self,
         sampler: GLuint,
         pname: GLenum,
         param: *const GLint,
@@ -495,7 +495,7 @@ impl Wrapper {
     }
 
     pub fn gl_sampler_parameter_iuiv(
-        &self,
+        &mut self,
         sampler: GLuint,
         pname: GLenum,
         param: *const GLuint,
@@ -507,7 +507,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_sampler_parameter_iiv(
-        &self,
+        &mut self,
         sampler: GLuint,
         pname: GLenum,
         params: *mut GLint,
@@ -519,7 +519,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_sampler_parameter_iuiv(
-        &self,
+        &mut self,
         sampler: GLuint,
         pname: GLenum,
         params: *mut GLuint,
@@ -531,7 +531,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_buffer(
-        &self,
+        &mut self,
         target: GLenum,
         internal_format: GLenum,
         buffer: GLuint,
@@ -543,7 +543,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_buffer_range(
-        &self,
+        &mut self,
         target: GLenum,
         internal_format: GLenum,
         buffer: GLuint,
@@ -557,7 +557,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_storage_3D_multi_sample(
-        &self,
+        &mut self,
         target: GLenum,
         samples: GLsizei,
         internal_format: GLenum,

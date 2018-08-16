@@ -1,7 +1,8 @@
 use super::ffi;
-use es20::data_struct::*;
+use consts::*;
 use es20::wrapper::Error;
 use std::result::Result;
+use types::*;
 
 struct Wrapper {}
 
@@ -18,7 +19,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_dispatch_compute_indirect(&mut self, indirect: GLint) -> Result<(), Error> {
+    pub fn gl_dispatch_compute_indirect(&self, indirect: GLintptr) -> Result<(), Error> {
         unsafe {
             ffi::glDispatchComputeIndirect(indirect);
         }
@@ -817,7 +818,7 @@ impl Wrapper {
         &mut self,
         binding_index: GLuint,
         buffer: GLuint,
-        offset: GLint,
+        offset: GLintptr,
         stride: GLsizei,
     ) -> Result<(), Error> {
         unsafe {

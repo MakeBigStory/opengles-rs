@@ -1,8 +1,10 @@
+use std::result::Result;
+
 use super::ffi;
 use super::ffi::GLDEBUGPROC;
-use es20::data_struct::*;
+use consts::GL_TRUE;
 use es20::wrapper::Error;
-use std::result::Result;
+use types::*;
 
 pub struct Wrapper {}
 

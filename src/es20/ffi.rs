@@ -1,4 +1,4 @@
-use super::data_struct::*;
+use types::*;
 
 extern "C" {
     pub fn glActiveTexture(texture: GLenum);

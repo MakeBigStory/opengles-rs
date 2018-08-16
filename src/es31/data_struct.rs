@@ -1,4 +1,4 @@
-use super::es20::data_struct::*;
+use types::*;
 
 pub const GL_COMPUTE_SHADER: GLuint = 37305;
 pub const GL_MAX_COMPUTE_UNIFORM_BLOCKS: GLuint = 37307;

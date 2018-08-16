@@ -1,4 +1,4 @@
-use super::es20::data_struct::*;
+use types::*;
 
 pub const GL_MULTISAMPLE_LINE_WIDTH_RANGE: GLuint = 37761;
 pub const GL_MULTISAMPLE_LINE_WIDTH_GRANULARITY: GLuint = 37762;

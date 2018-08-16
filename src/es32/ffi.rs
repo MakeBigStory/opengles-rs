@@ -1,5 +1,4 @@
-use super::data_struct::*;
-use es20::data_struct::*;
+use types::*;
 
 pub type GLDEBUGPROC = ::std::option::Option<
     unsafe extern "C" fn(
@@ -80,11 +79,7 @@ extern "C" {
         label: *mut GLchar,
     );
 
-    pub fn glObjectPtrLabel(
-        ptr: *const GLvoid,
-        length: GLsizei,
-        label: *const GLchar,
-    );
+    pub fn glObjectPtrLabel(ptr: *const GLvoid, length: GLsizei, label: *const GLchar);
 
     pub fn glGetObjectPtrLabel(
         ptr: *const GLvoid,

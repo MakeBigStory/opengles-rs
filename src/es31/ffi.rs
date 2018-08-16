@@ -1,5 +1,4 @@
-use super::data_struct::*;
-use super::es20::data_struct::*;
+use types::*;
 
 extern "C" {
     pub fn glDispatchCompute(num_groups_x: GLuint, num_groups_y: GLuint, num_groups_z: GLuint);
@@ -8,11 +7,7 @@ extern "C" {
 
     pub fn glDrawArraysIndirect(mode: GLenum, indirect: *const GLvoid);
 
-    pub fn glDrawElementsIndirect(
-        mode: GLenum,
-        type_: GLenum,
-        indirect: *const GLvoid,
-    );
+    pub fn glDrawElementsIndirect(mode: GLenum, type_: GLenum, indirect: *const GLvoid);
 
     pub fn glFramebufferParameteri(target: GLenum, pname: GLenum, param: GLint);
 

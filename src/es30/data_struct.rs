@@ -1,5 +1,4 @@
-use super::es20::data_struct::*;
-use super::*;
+use types::*;
 
 //STRUCT
 

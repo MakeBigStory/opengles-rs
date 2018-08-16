@@ -1,41 +1,49 @@
-use super::data_struct::*;
-use super::ffi::*;
-use super::*;
-use types::TextureUnit;
-use types::BufferTarget;
-use types::FrameBufferTarget;
-use types::RenderBufferTarget;
-use types::TextureBindTarget;
-use types::BlendEquationMode;
-use types::BlendFactor;
-use types::BufferUsage;
-use types::FrameBufferStatus;
-use types::TextureTarget;
-use types::ShaderType;
-use types::FaceMode;
-use types::FuncType;
-use types::FeatureType;
-use types::BeginMode;
-use types::FrameBufferAttachmentType;
-use types::FrontFaceDirection;
-use types::StateType;
-use types::BufferParamName;
-use types::ErrorType;
-use types::FrameBufferAttachmentParamType;
-use types::ProgramParamType;
-use types::RenderBufferParamType;
-use types::ShaderParamType;
-use types::ShaderPrecisionType;
-use types::ConstantType;
-use types::TextureParamType;
-use types::VertexAttributeParamType;
-use types::HintTargetType;
-use types::HintBehaviorType;
-use types::PackParamType;
-use types::PixelFormat;
-use types::PixelDataType;
-use types::ActionType;
-use types::DataType;
+use std;
+use std::ffi::CStr;
+use std::ffi::CString;
+use std::mem::size_of;
+use std::str::from_utf8;
+
+use libc::{c_char};
+
+use super::ffi;
+use types::*;
+use consts::*;
+use enums::TextureUnit;
+use enums::BufferTarget;
+use enums::FrameBufferTarget;
+use enums::RenderBufferTarget;
+use enums::TextureBindTarget;
+use enums::BlendEquationMode;
+use enums::BlendFactor;
+use enums::BufferUsage;
+use enums::FrameBufferStatus;
+use enums::TextureTarget;
+use enums::ShaderType;
+use enums::FaceMode;
+use enums::FuncType;
+use enums::FeatureType;
+use enums::BeginMode;
+use enums::FrameBufferAttachmentType;
+use enums::FrontFaceDirection;
+use enums::StateType;
+use enums::BufferParamName;
+use enums::ErrorType;
+use enums::FrameBufferAttachmentParamType;
+use enums::ProgramParamType;
+use enums::RenderBufferParamType;
+use enums::ShaderParamType;
+use enums::ShaderPrecisionType;
+use enums::ConstantType;
+use enums::TextureParamType;
+use enums::VertexAttributeParamType;
+use enums::HintTargetType;
+use enums::HintBehaviorType;
+use enums::PackParamType;
+use enums::PixelFormat;
+use enums::PixelDataType;
+use enums::ActionType;
+use enums::DataType;
 
 // -------------------------------------------------------------------------------------------------
 // STRUCTS
@@ -86,7 +94,7 @@ impl Wrapper {
             let c_str = CString::new(name).unwrap();
 
             ffi::glBindAttribLocation(program as GLuint, index as GLuint,
-                                      c_str.as_ptr() as *const c_char);
+                                      c_str.as_ptr() as *const GLchar);
         }
 
         Ok(())
@@ -736,7 +744,7 @@ impl Wrapper {
         unsafe {
             let c_str = CString::new(name).unwrap();
 
-            let loc = ffi::glGetAttribLocation(program as GLuint, c_str.as_ptr() as *const c_char);
+            let loc = ffi::glGetAttribLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
 
             Ok(loc as i32)
         }
@@ -840,7 +848,7 @@ impl Wrapper {
                 program as GLuint,
                 max_length as GLsizei,
                 &mut length,
-                log.as_mut_vec().as_mut_ptr() as *mut u8,
+                log.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
 
             if length > 0 {
@@ -894,7 +902,7 @@ impl Wrapper {
                 shader as GLuint,
                 max_length as GLsizei,
                 &mut length,
-                log.as_mut_vec().as_mut_ptr() as *mut u8,
+                log.as_mut_vec().as_mut_ptr() as *mut GLchar,
             );
 
             if length > 0 {
@@ -1016,7 +1024,7 @@ impl Wrapper {
         unsafe {
             let name_c_str = CString::new(name).unwrap();
 
-            loc = ffi::glGetUniformLocation(program as GLuint, name_c_str.as_ptr() as *const c_char);
+            loc = ffi::glGetUniformLocation(program as GLuint, name_c_str.as_ptr() as *const GLchar);
         }
 
         Ok(loc as i32)

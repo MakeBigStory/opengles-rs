@@ -1,17 +1,20 @@
-use super::es20::data_struct::{GL_FALSE, GL_NONE, GL_TRUE};
-use super::es30::data_struct::ProgramBinary;
-use super::ffi::*;
-use super::types::*;
-use super::*;
-
+use std;
+use std::ffi::CStr;
+use std::ffi::CString;
 use std::mem;
-
+use std::mem::size_of;
 use std::ptr;
 use std::slice;
+use std::str::from_utf8;
 
-use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void};
+use libc::c_char;
 
-pub struct Error {}
+use super::data_struct::ProgramBinary;
+use super::ffi;
+use consts::*;
+use enums::*;
+use es20::wrapper::{Active, Error};
+use types::*;
 
 pub struct Wrapper {}
 
@@ -314,7 +317,10 @@ impl Wrapper {
         border: GLint,
         imageSize: GLsizei,
         data: &[T],
-    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
+    ) -> Result<(), Error>
+    where
+        T: std::fmt::Debug + Clone,
+    {
         unsafe {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
@@ -345,7 +351,10 @@ impl Wrapper {
         format: PixelDataFormat,
         image_size: GLsizei,
         data: &[T],
-    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
+    ) -> Result<(), Error>
+    where
+        T: std::fmt::Debug + Clone,
+    {
         unsafe {
             ffi::glCompressedTexSubImage3D(
                 target as GLenum,
@@ -677,11 +686,11 @@ impl Wrapper {
                 Ok(Active {
                     name,
                     size,
-                    type_,
+                    type_: DataType::BOOL,
                     length,
                 })
             } else {
-                Err(Error{})
+                Err(Error {})
             }
         }
     }
@@ -747,7 +756,10 @@ impl Wrapper {
         type_: GLenum,
         stride: GLsizei,
         pointer: &[T],
-    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
+    ) -> Result<(), Error>
+    where
+        T: std::fmt::Debug + Clone,
+    {
         unsafe {
             ffi::glVertexAttribIPointer(
                 index,
@@ -833,7 +845,8 @@ impl Wrapper {
     pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> Result<GLint, Error> {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            let location = ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let location =
+                ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(location)
         }
     }
@@ -949,10 +962,10 @@ impl Wrapper {
             if !c_str.is_null() {
                 match from_utf8(CStr::from_ptr(c_str as *const c_char).to_bytes()) {
                     Ok(s) => Ok(s.to_string()),
-                    Err(_) => Err(Error{}),
+                    Err(_) => Err(Error {}),
                 }
             } else {
-                Err(Error{})
+                Err(Error {})
             }
         }
     }
@@ -1020,7 +1033,8 @@ impl Wrapper {
     ) -> Result<GLuint, Error> {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            let index = ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let index =
+                ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(index)
         }
     }
@@ -1067,7 +1081,10 @@ impl Wrapper {
         count: i32,
         type_: GLenum,
         indices: &[T],
-    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
+    ) -> Result<(), Error>
+    where
+        T: std::fmt::Debug + Clone,
+    {
         unsafe {
             ffi::glDrawRangeElements(
                 mode as GLenum,
@@ -1106,7 +1123,10 @@ impl Wrapper {
         type_: GLenum,
         indices: &[T],
         instance_count: i32,
-    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
+    ) -> Result<(), Error>
+    where
+        T: std::fmt::Debug + Clone,
+    {
         unsafe {
             ffi::glDrawElementsInstanced(
                 mode as GLenum,
@@ -1360,7 +1380,7 @@ impl Wrapper {
             );
 
             if length == 0 {
-                Err(Error{})
+                Err(Error {})
             } else {
                 Ok(ProgramBinary {
                     length,

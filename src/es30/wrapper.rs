@@ -85,14 +85,13 @@ impl Wrapper {
         offset: GLintptr,
         length: GLsizeiptr,
         access: MappingBit,
-    ) -> &'a [T] {
+    ) -> Result<&'a [T], Error> {
         unsafe {
             let ptr = ffi::glMapBufferRange(target as GLenum, offset, length, access as GLenum);
 
             let count = length as usize / std::mem::size_of::<T>();
-            return slice::from_raw_parts_mut(ptr as *mut T, count as usize);
+            Ok(slice::from_raw_parts_mut(ptr as *mut T, count as usize))
         }
-        //        Ok(())
     }
 
     pub fn gl_flush_mapped_buffer_range(
@@ -207,7 +206,7 @@ impl Wrapper {
         }
     }
 
-    pub fn gl_tex_image3d(
+    pub fn gl_tex_image_3d(
         &mut self,
         target: TextureTarget,
         level: i32,
@@ -241,7 +240,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_tex_sub_image3d(
+    pub fn gl_tex_sub_image_3d(
         &mut self,
         target: TextureTarget,
         level: GLint,
@@ -708,14 +707,12 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_transform_feedbacks(&mut self, size: i32) -> Vec<GLuint> {
+    pub fn gl_gen_transform_feedbacks(&mut self, size: i32) -> Result<Vec<GLuint>, Error> {
         unsafe {
             let mut ids: Vec<GLuint> = Vec::with_capacity(size as usize);
             ffi::glGenTransformFeedbacks(size as GLsizei, ids.as_mut_ptr() as *mut GLuint);
-            ids
+            Ok(ids)
         }
-        //        Ok(())
-        // todo: replace with Option
     }
 
     pub fn gl_is_transform_feedback(&mut self, id: u32) -> Result<bool, Error> {
@@ -1185,7 +1182,7 @@ impl Wrapper {
         sync: GLsync,
         pname: GLenum,
         buffer_size: GLsizei,
-        length: &mut GLsizei,
+        length: GLsizei,
     ) -> Result<Vec<GLint>, Error> {
         unsafe {
             let mut values: Vec<GLint> = Vec::with_capacity(buffer_size as usize);

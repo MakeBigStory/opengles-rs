@@ -217,7 +217,7 @@ impl From<GLuint> for FrameBufferStatus {
 }
 
 /// Buffer Objects
-
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ColorBufferMode {
     Back = GL_BACK as isize,
     None = GL_NONE as isize,
@@ -240,6 +240,7 @@ pub enum ColorBufferMode {
     MaxColorAttachments = GL_MAX_COLOR_ATTACHMENTS as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum BufferObjectTarget {
     /// Vertex attributes
     ArrayBuffer = GL_ARRAY_BUFFER as isize,
@@ -271,6 +272,7 @@ pub enum BufferObjectTarget {
     UniformBuffer = GL_UNIFORM_BUFFER  as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum BufferMapTarget {
     BufferMapPointer = GL_BUFFER_MAP_POINTER as isize,
 }
@@ -324,6 +326,7 @@ pub enum BeginMode {
     TRIANGLE_FAN = GL_TRIANGLE_FAN as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum MappingBit {
     InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT as isize,
     InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT as isize,
@@ -333,6 +336,7 @@ pub enum MappingBit {
 
 /// Samplers
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum SamplerParameter {
     WrapS = GL_TEXTURE_WRAP_S as isize,
     WrapT = GL_TEXTURE_WRAP_T as isize,
@@ -347,15 +351,18 @@ pub enum SamplerParameter {
     CompareFunc = GL_TEXTURE_COMPARE_FUNC as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum TransformFeedbackMode {
     InterleavedAttributes = GL_INTERLEAVED_ATTRIBS as isize,
     SeparatedAttributes = GL_SEPARATE_ATTRIBS as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum TransformFeedbackObjectTarget {
     TransformFeedback = GL_TRANSFORM_FEEDBACK as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum AttachmentTarget {
     Color_Attachment_0 = GL_COLOR_ATTACHMENT0 as isize,
     Color_Attachment_1 = GL_COLOR_ATTACHMENT1 as isize,
@@ -366,17 +373,20 @@ pub enum AttachmentTarget {
     DepthStencilAttachment = GL_DEPTH_STENCIL_ATTACHMENT as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum FilterMode {
     Nearst = GL_NEAREST as isize,
     Linear = GL_LINEAR as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum BufferMask {
     Color = GL_COLOR_BUFFER_BIT as isize,
     Depth = GL_DEPTH_BUFFER_BIT as isize,
     Stencil = GL_STENCIL_BUFFER_BIT as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum FramebufferTarget {
     Draw = GL_DRAW_FRAMEBUFFER as isize,
     Read = GL_READ_FRAMEBUFFER as isize,
@@ -384,11 +394,13 @@ pub enum FramebufferTarget {
     Framebuffer = GL_FRAMEBUFFER as isize,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct ShaderPrecisionFormat {
     pub precision: GLint,
     pub range: [GLint; 2],
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct Active {
     pub name: String,
     pub size: GLint,
@@ -396,6 +408,7 @@ pub struct Active {
     pub length: GLsizei,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum PixelDataFormat {
     Red = GL_RED as isize,
     RedInteger = GL_RED_INTEGER as isize,

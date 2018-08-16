@@ -314,7 +314,7 @@ impl Wrapper {
         border: GLint,
         imageSize: GLsizei,
         data: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
@@ -345,7 +345,7 @@ impl Wrapper {
         format: PixelDataFormat,
         image_size: GLsizei,
         data: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexSubImage3D(
                 target as GLenum,
@@ -747,7 +747,7 @@ impl Wrapper {
         type_: GLenum,
         stride: GLsizei,
         pointer: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glVertexAttribIPointer(
                 index,
@@ -1069,7 +1069,7 @@ impl Wrapper {
         count: i32,
         type_: GLenum,
         indices: &[T],
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawRangeElements(
                 mode as GLenum,
@@ -1108,7 +1108,7 @@ impl Wrapper {
         type_: GLenum,
         indices: &[T],
         instance_count: i32,
-    ) -> Result<(), Error> {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawElementsInstanced(
                 mode as GLenum,

@@ -7,7 +7,7 @@ struct Wrapper {}
 
 impl Wrapper {
     pub fn gl_dispatch_compute(
-        &self,
+        &mut self,
         num_groups_x: GLuint,
         num_groups_y: GLuint,
         num_groups_z: GLuint,
@@ -18,7 +18,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_dispatch_compute_indirect(&self, indirect: GLint) -> Result<(), Error> {
+    pub fn gl_dispatch_compute_indirect(&mut self, indirect: GLint) -> Result<(), Error> {
         unsafe {
             ffi::glDispatchComputeIndirect(indirect);
         }
@@ -26,7 +26,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_arrays_indirect(
-        &self,
+        &mut self,
         mode: GLenum,
         indirect: *const ::std::os::raw::c_void,
     ) -> Result<(), Error> {
@@ -37,7 +37,7 @@ impl Wrapper {
     }
 
     pub fn gl_draw_elements_indirect(
-        &self,
+        &mut self,
         mode: GLenum,
         type_: GLenum,
         indirect: *const GLvoid,
@@ -49,7 +49,7 @@ impl Wrapper {
     }
 
     pub fn gl_framebuffer_parameteri(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         param: GLint,
@@ -61,7 +61,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_framebuffer_parameteriv(
-        &self,
+        &mut self,
         target: GLenum,
         pname: GLenum,
         params: *mut GLint,
@@ -73,7 +73,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_interfaceiv(
-        &self,
+        &mut self,
         program: GLuint,
         program_interface: GLenum,
         pname: GLenum,
@@ -86,7 +86,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_resource_index(
-        &self,
+        &mut self,
         program: GLuint,
         program_interface: GLenum,
         name: *const GLchar,
@@ -98,7 +98,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_resource_name(
-        &self,
+        &mut self,
         program: GLuint,
         program_interface: GLenum,
         index: GLuint,
@@ -120,7 +120,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_resourceiv(
-        &self,
+        &mut self,
         program: GLuint,
         program_interface: GLenum,
         index: GLuint,
@@ -146,7 +146,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_resource_location(
-        &self,
+        &mut self,
         program: GLuint,
         program_interface: GLenum,
         name: *const GLchar,
@@ -159,7 +159,7 @@ impl Wrapper {
     }
 
     pub fn gl_use_program_stages(
-        &self,
+        &mut self,
         pipeline: GLuint,
         stages: GLbitfield,
         program: GLuint,
@@ -170,7 +170,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_active_shader_program(&self, pipeline: GLuint, program: GLuint) -> Result<(), Error> {
+    pub fn gl_active_shader_program(&mut self, pipeline: GLuint, program: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glActiveShaderProgram(pipeline, program);
         }
@@ -178,7 +178,7 @@ impl Wrapper {
     }
 
     pub fn gl_create_shader_program_v(
-        &self,
+        &mut self,
         type_: GLenum,
         count: GLsizei,
         strings: *const *const GLchar,
@@ -189,7 +189,7 @@ impl Wrapper {
         }
     }
 
-    pub fn gl_bind_program_pipeline(&self, pipeline: GLuint) -> Result<(), Error> {
+    pub fn gl_bind_program_pipeline(&mut self, pipeline: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glBindProgramPipeline(pipeline);
         }
@@ -197,7 +197,7 @@ impl Wrapper {
     }
 
     pub fn gl_delete_program_pipelines(
-        &self,
+        &mut self,
         n: GLsizei,
         pipelines: *const GLuint,
     ) -> Result<(), Error> {
@@ -208,7 +208,7 @@ impl Wrapper {
     }
 
     pub fn gl_gen_program_pipelines(
-        &self,
+        &mut self,
         n: GLsizei,
         pipelines: *mut GLuint,
     ) -> Result<(), Error> {
@@ -218,7 +218,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_is_program_pipeline(&self, pipeline: GLuint) -> Result<bool, Error> {
+    pub fn gl_is_program_pipeline(&mut self, pipeline: GLuint) -> Result<bool, Error> {
         unsafe {
             let result = ffi::glIsProgramPipeline(pipeline);
             if result == GL_TRUE {
@@ -230,7 +230,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_pipelineiv(
-        &self,
+        &mut self,
         pipeline: GLuint,
         pname: GLenum,
         params: *mut GLint,
@@ -242,7 +242,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1i(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLint,
@@ -254,7 +254,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2i(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLint,
@@ -267,7 +267,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3i(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLint,
@@ -281,7 +281,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4i(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLint,
@@ -296,7 +296,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1ui(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLuint,
@@ -308,7 +308,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2ui(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLuint,
@@ -321,7 +321,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3ui(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLuint,
@@ -335,7 +335,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4ui(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLuint,
@@ -350,7 +350,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1f(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLfloat,
@@ -362,7 +362,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2f(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLfloat,
@@ -375,7 +375,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3f(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLfloat,
@@ -389,7 +389,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4f(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         v0: GLfloat,
@@ -404,7 +404,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1iv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -417,7 +417,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2iv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -430,7 +430,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3iv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -443,7 +443,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4iv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -456,7 +456,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1uiv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -469,7 +469,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2uiv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -482,7 +482,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3uiv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -495,7 +495,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4uiv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -508,7 +508,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform1fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -521,7 +521,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform2fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -534,7 +534,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform3fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -547,7 +547,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform4fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -560,7 +560,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix2fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -574,7 +574,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix3fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -588,7 +588,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix4fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -602,7 +602,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix2x3fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -616,7 +616,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix3x2fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -630,7 +630,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix2x4fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -644,7 +644,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix4x2fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -658,7 +658,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix3x4fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -672,7 +672,7 @@ impl Wrapper {
     }
 
     pub fn gl_program_uniform_matrix4x3fv(
-        &self,
+        &mut self,
         program: GLuint,
         location: GLint,
         count: GLsizei,
@@ -685,7 +685,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_validate_program_pipeline(&self, pipeline: GLuint) -> Result<(), Error> {
+    pub fn gl_validate_program_pipeline(&mut self, pipeline: GLuint) -> Result<(), Error> {
         unsafe {
             ffi::glValidateProgramPipeline(pipeline);
         }
@@ -693,7 +693,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_program_pipeline_info_log(
-        &self,
+        &mut self,
         pipeline: GLuint,
         buf_size: GLsizei,
         length: *mut GLsizei,
@@ -706,7 +706,7 @@ impl Wrapper {
     }
 
     pub fn gl_bind_image_texture(
-        &self,
+        &mut self,
         unit: GLuint,
         texture: GLuint,
         level: GLint,
@@ -722,7 +722,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_boolean_iv(
-        &self,
+        &mut self,
         target: GLenum,
         index: GLuint,
         data: *mut GLboolean,
@@ -733,14 +733,14 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_memory_barrier(&self, barriers: GLbitfield) -> Result<(), Error> {
+    pub fn gl_memory_barrier(&mut self, barriers: GLbitfield) -> Result<(), Error> {
         unsafe {
             ffi::glMemoryBarrier(barriers);
         }
         Ok(())
     }
 
-    pub fn gl_memory_barrier_by_region(&self, barriers: GLbitfield) -> Result<(), Error> {
+    pub fn gl_memory_barrier_by_region(&mut self, barriers: GLbitfield) -> Result<(), Error> {
         unsafe {
             ffi::glMemoryBarrierByRegion(barriers);
         }
@@ -748,7 +748,7 @@ impl Wrapper {
     }
 
     pub fn gl_tex_storage2D_multi_sample(
-        &self,
+        &mut self,
         target: GLenum,
         samples: GLsizei,
         internalformat: GLenum,
@@ -770,7 +770,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_multisamplefv(
-        &self,
+        &mut self,
         pname: GLenum,
         index: GLuint,
         val: *mut GLfloat,
@@ -781,7 +781,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_sample_mask_i(&self, maskNumber: GLuint, mask: GLbitfield) -> Result<(), Error> {
+    pub fn gl_sample_mask_i(&mut self, maskNumber: GLuint, mask: GLbitfield) -> Result<(), Error> {
         unsafe {
             ffi::glSampleMaski(maskNumber, mask);
         }
@@ -789,7 +789,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_tex_level_parameter_iv(
-        &self,
+        &mut self,
         target: GLenum,
         level: GLint,
         pname: GLenum,
@@ -802,7 +802,7 @@ impl Wrapper {
     }
 
     pub fn gl_get_tex_level_parameter_fv(
-        &self,
+        &mut self,
         target: GLenum,
         level: GLint,
         pname: GLenum,
@@ -815,7 +815,7 @@ impl Wrapper {
     }
 
     pub fn gl_bind_vertex_buffer(
-        &self,
+        &mut self,
         binding_index: GLuint,
         buffer: GLuint,
         offset: GLint,
@@ -828,7 +828,7 @@ impl Wrapper {
     }
 
     pub fn gl_vertex_attrib_format(
-        &self,
+        &mut self,
         attribindex: GLuint,
         size: GLint,
         type_: GLenum,
@@ -842,7 +842,7 @@ impl Wrapper {
     }
 
     pub fn gl_vertex_attrib_I_format(
-        &self,
+        &mut self,
         attri_bindex: GLuint,
         size: GLint,
         type_: GLenum,
@@ -855,7 +855,7 @@ impl Wrapper {
     }
 
     pub fn gl_vertex_attrib_binding(
-        &self,
+        &mut self,
         attri_bindex: GLuint,
         binding_index: GLuint,
     ) -> Result<(), Error> {
@@ -866,7 +866,7 @@ impl Wrapper {
     }
 
     pub fn gl_vertex_binding_divisor(
-        &self,
+        &mut self,
         binding_index: GLuint,
         divisor: GLuint,
     ) -> Result<(), Error> {

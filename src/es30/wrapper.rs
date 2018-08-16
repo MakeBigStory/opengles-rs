@@ -85,7 +85,7 @@ impl Wrapper {
         offset: GLintptr,
         length: GLsizeiptr,
         access: MappingBit,
-    ) -> Result<&'a [T], Error> {
+    ) -> Result<&'a [T], Error> where T: std::fmt::Debug + Clone {
         unsafe {
             let ptr = ffi::glMapBufferRange(target as GLenum, offset, length, access as GLenum);
 

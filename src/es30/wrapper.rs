@@ -833,8 +833,7 @@ impl Wrapper {
     pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> Result<GLint, Error> {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            let location =
-                ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let location = ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(location)
         }
     }
@@ -1021,8 +1020,7 @@ impl Wrapper {
     ) -> Result<GLuint, Error> {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            let index =
-                ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let index = ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(index)
         }
     }

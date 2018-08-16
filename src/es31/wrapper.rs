@@ -152,8 +152,7 @@ impl Wrapper {
         name: *const GLchar,
     ) -> Result<i32, Error> {
         unsafe {
-            let result =
-                ffi::glGetProgramResourceLocation(program, program_interface, name);
+            let result = ffi::glGetProgramResourceLocation(program, program_interface, name);
             Ok(result as i32)
         }
     }

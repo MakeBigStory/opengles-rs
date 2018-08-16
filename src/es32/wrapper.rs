@@ -75,7 +75,7 @@ impl Wrapper {
     pub fn gl_debug_message_callback(
         &self,
         callback: GLDEBUGPROC,
-        userParam: *const c_void,
+        userParam: *const GLvoid,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glDebugMessageCallback(callback, userParam);
@@ -144,21 +144,20 @@ impl Wrapper {
 
     pub fn gl_get_object_label(
         &self,
-        identifier: GLenum,
-        name: GLuint,
+        ptr: *const GLvoid,
         bufSize: GLsizei,
         length: *mut GLsizei,
         label: *mut GLchar,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetObjectPtrLabel(identifier, name, bufSize, length, label);
+            ffi::glGetObjectPtrLabel(ptr, bufSize, length, label);
         }
         Ok(())
     }
 
     pub fn gl_object_ptr_label(
         &self,
-        ptr: *const c_void,
+        ptr: *const GLvoid,
         length: GLsizei,
         label: *const GLchar,
     ) -> Result<(), Error> {
@@ -170,7 +169,7 @@ impl Wrapper {
 
     pub fn gl_get_object_ptr_label(
         &self,
-        ptr: *const c_void,
+        ptr: *const GLvoid,
         bufSize: GLsizei,
         length: *mut GLsizei,
         label: *mut GLchar,
@@ -181,7 +180,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_pointer_v(&self, pname: GLenum, params: *mut *mut c_void) -> Result<(), Error> {
+    pub fn gl_get_pointer_v(&self, pname: GLenum, params: *mut *mut GLvoid) -> Result<(), Error> {
         unsafe {
             ffi::glGetPointerv(pname, params);
         }
@@ -272,7 +271,7 @@ impl Wrapper {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         base_vertex: GLint,
     ) -> Result<(), Error> {
         unsafe {
@@ -288,7 +287,7 @@ impl Wrapper {
         end: GLuint,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         base_vertex: GLint,
     ) -> Result<(), Error> {
         unsafe {
@@ -310,7 +309,7 @@ impl Wrapper {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         instance_count: GLsizei,
         base_vertex: GLint,
     ) -> Result<(), Error> {
@@ -373,7 +372,7 @@ impl Wrapper {
         format: GLenum,
         type_: GLenum,
         bufSize: GLsizei,
-        data: *mut c_void,
+        data: *mut GLvoid,
     ) -> Result<(), Error> {
         unsafe {
             ffi::glReadnPixels(x, y, width, height, format, type_, bufSize, data);

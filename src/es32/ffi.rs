@@ -9,7 +9,7 @@ pub type GLDEBUGPROC = ::std::option::Option<
         severity: GLenum,
         length: GLsizei,
         message: *const GLchar,
-        userParam: *const c_void,
+        userParam: *const GLvoid,
     ),
 >;
 
@@ -53,7 +53,7 @@ extern "C" {
         buf: *const GLchar,
     );
 
-    pub fn glDebugMessageCallback(callback: GLDEBUGPROC, userParam: *const c_void);
+    pub fn glDebugMessageCallback(callback: GLDEBUGPROC, userParam: *const GLvoid);
 
     pub fn glGetDebugMessageLog(
         count: GLuint,
@@ -81,19 +81,19 @@ extern "C" {
     );
 
     pub fn glObjectPtrLabel(
-        ptr: *const c_void,
+        ptr: *const GLvoid,
         length: GLsizei,
         label: *const GLchar,
     );
 
     pub fn glGetObjectPtrLabel(
-        ptr: *const c_void,
+        ptr: *const GLvoid,
         bufSize: GLsizei,
         length: *mut GLsizei,
         label: *mut GLchar,
     );
 
-    pub fn glGetPointerv(pname: GLenum, params: *mut *mut c_void);
+    pub fn glGetPointerv(pname: GLenum, params: *mut *mut GLvoid);
 
     pub fn glEnablei(target: GLenum, index: GLuint);
 
@@ -121,7 +121,7 @@ extern "C" {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         basevertex: GLint,
     );
 
@@ -131,7 +131,7 @@ extern "C" {
         end: GLuint,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         basevertex: GLint,
     );
 
@@ -139,7 +139,7 @@ extern "C" {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const c_void,
+        indices: *const GLvoid,
         instancecount: GLsizei,
         basevertex: GLint,
     );
@@ -167,7 +167,7 @@ extern "C" {
         format: GLenum,
         type_: GLenum,
         bufSize: GLsizei,
-        data: *mut c_void,
+        data: *mut GLvoid,
     );
 
     pub fn glGetnUniformfv(

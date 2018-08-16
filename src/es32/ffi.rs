@@ -1,5 +1,5 @@
 use super::data_struct::*;
-use super::es20::data_struct::*;
+use es20::data_struct::*;
 
 pub type GLDEBUGPROC = ::std::option::Option<
     unsafe extern "C" fn(
@@ -9,7 +9,7 @@ pub type GLDEBUGPROC = ::std::option::Option<
         severity: GLenum,
         length: GLsizei,
         message: *const GLchar,
-        userParam: *const ::std::os::raw::c_void,
+        userParam: *const c_void,
     ),
 >;
 
@@ -53,7 +53,7 @@ extern "C" {
         buf: *const GLchar,
     );
 
-    pub fn glDebugMessageCallback(callback: GLDEBUGPROC, userParam: *const ::std::os::raw::c_void);
+    pub fn glDebugMessageCallback(callback: GLDEBUGPROC, userParam: *const c_void);
 
     pub fn glGetDebugMessageLog(
         count: GLuint,
@@ -81,19 +81,19 @@ extern "C" {
     );
 
     pub fn glObjectPtrLabel(
-        ptr: *const ::std::os::raw::c_void,
+        ptr: *const c_void,
         length: GLsizei,
         label: *const GLchar,
     );
 
     pub fn glGetObjectPtrLabel(
-        ptr: *const ::std::os::raw::c_void,
+        ptr: *const c_void,
         bufSize: GLsizei,
         length: *mut GLsizei,
         label: *mut GLchar,
     );
 
-    pub fn glGetPointerv(pname: GLenum, params: *mut *mut ::std::os::raw::c_void);
+    pub fn glGetPointerv(pname: GLenum, params: *mut *mut c_void);
 
     pub fn glEnablei(target: GLenum, index: GLuint);
 
@@ -121,7 +121,7 @@ extern "C" {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const ::std::os::raw::c_void,
+        indices: *const c_void,
         basevertex: GLint,
     );
 
@@ -131,7 +131,7 @@ extern "C" {
         end: GLuint,
         count: GLsizei,
         type_: GLenum,
-        indices: *const ::std::os::raw::c_void,
+        indices: *const c_void,
         basevertex: GLint,
     );
 
@@ -139,7 +139,7 @@ extern "C" {
         mode: GLenum,
         count: GLsizei,
         type_: GLenum,
-        indices: *const ::std::os::raw::c_void,
+        indices: *const c_void,
         instancecount: GLsizei,
         basevertex: GLint,
     );
@@ -167,7 +167,7 @@ extern "C" {
         format: GLenum,
         type_: GLenum,
         bufSize: GLsizei,
-        data: *mut ::std::os::raw::c_void,
+        data: *mut c_void,
     );
 
     pub fn glGetnUniformfv(

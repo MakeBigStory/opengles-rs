@@ -34,13 +34,13 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<(GLboolean), Error> {
+    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<bool, Error> {
         unsafe {
             let result = ffi::glUnmapBuffer(target as GLenum);
             if result == GL_TRUE {
-                Ok(GL_TRUE)
+                Ok(true)
             } else {
-                Ok(GL_FALSE)
+                Ok(false)
             }
         }
     }
@@ -317,10 +317,7 @@ impl Wrapper {
         border: GLint,
         imageSize: GLsizei,
         data: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
@@ -351,10 +348,7 @@ impl Wrapper {
         format: PixelDataFormat,
         image_size: GLsizei,
         data: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexSubImage3D(
                 target as GLenum,
@@ -756,10 +750,7 @@ impl Wrapper {
         type_: GLenum,
         stride: GLsizei,
         pointer: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glVertexAttribIPointer(
                 index,
@@ -845,8 +836,7 @@ impl Wrapper {
     pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> Result<GLint, Error> {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            let location =
-                ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let location = ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(location)
         }
     }
@@ -1033,8 +1023,7 @@ impl Wrapper {
     ) -> Result<GLuint, Error> {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            let index =
-                ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let index = ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(index)
         }
     }
@@ -1081,10 +1070,7 @@ impl Wrapper {
         count: i32,
         type_: GLenum,
         indices: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawRangeElements(
                 mode as GLenum,
@@ -1123,10 +1109,7 @@ impl Wrapper {
         type_: GLenum,
         indices: &[T],
         instance_count: i32,
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error>  where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawElementsInstanced(
                 mode as GLenum,

@@ -15,7 +15,7 @@ pub fn get_proc_address(proc_name: &str) -> *const c_void {
 // -------------------------------------------------------------------------------------------------
 // FFI
 // -------------------------------------------------------------------------------------------------
-mod ffi {
+pub mod ffi {
     use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ushort, c_void};
     extern {
         pub fn eglGetProcAddress(proc_name: *const c_char) -> *const c_void;

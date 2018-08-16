@@ -2,6 +2,8 @@ use super::es20::data_struct::*;
 use super::*;
 
 //STRUCT
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct ProgramBinary{
     pub length: GLsizei,
     pub binary_format: GLenum,

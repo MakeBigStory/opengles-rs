@@ -653,7 +653,7 @@ impl Wrapper {
         program: u32,
         index: u32,
         buffer_size: GLsizei,
-    ) -> Option<Active> {
+    ) -> Result<Active, Error> {
         unsafe {
             let mut length: GLsizei = 0;
             let mut size: i32 = 0;
@@ -674,14 +674,14 @@ impl Wrapper {
                 name.as_mut_vec().set_len(length as usize);
                 name.truncate(length as usize);
 
-                Some(Active {
+                Ok(Active {
                     name,
                     size,
                     type_,
                     length,
                 })
             } else {
-                None
+                Err(Error{})
             }
         }
     }
@@ -943,16 +943,16 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_get_stringi(&mut self, name: GLenum, index: GLuint) -> Option<String> {
+    pub fn gl_get_stringi(&mut self, name: GLenum, index: GLuint) -> Result<String, Error> {
         unsafe {
             let c_str = ffi::glGetStringi(name, index);
             if !c_str.is_null() {
                 match from_utf8(CStr::from_ptr(c_str as *const c_char).to_bytes()) {
-                    Ok(s) => Some(s.to_string()),
-                    Err(_) => None,
+                    Ok(s) => Ok(s.to_string()),
+                    Err(_) => Err(Error{}),
                 }
             } else {
-                None
+                Err(Error{})
             }
         }
     }
@@ -1345,7 +1345,7 @@ impl Wrapper {
         &mut self,
         program: u32,
         buffer_size: GLsizei,
-    ) -> Option<ProgramBinary> {
+    ) -> Result<ProgramBinary, Error> {
         unsafe {
             let mut length = 0 as GLsizei;
             let mut binary_format = GL_NONE as GLenum;
@@ -1360,9 +1360,9 @@ impl Wrapper {
             );
 
             if length == 0 {
-                None
+                Err(Error{})
             } else {
-                Some(ProgramBinary {
+                Ok(ProgramBinary {
                     length,
                     binary_format,
                     binary,

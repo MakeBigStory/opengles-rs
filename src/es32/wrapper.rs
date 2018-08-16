@@ -104,8 +104,8 @@ impl Wrapper {
                 severities,
                 lengths,
                 message_log,
-            ) as u32;
-            Ok(result)
+            );
+            Ok(result as u32)
         }
     }
 

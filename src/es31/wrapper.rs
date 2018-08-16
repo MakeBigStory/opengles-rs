@@ -18,7 +18,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_dispatch_compute_indirect(&self, indirect: GLintptr) -> Result<(), Error> {
+    pub fn gl_dispatch_compute_indirect(&self, indirect: GLint) -> Result<(), Error> {
         unsafe {
             ffi::glDispatchComputeIndirect(indirect);
         }
@@ -80,7 +80,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetProgramInterfaceivPtr(program, program_interface, pname, params);
+            ffi::glGetProgramInterfaceiv(program, program_interface, pname, params);
         }
         Ok(())
     }
@@ -92,8 +92,8 @@ impl Wrapper {
         name: *const GLchar,
     ) -> Result<u32, Error> {
         unsafe {
-            let result = ffi::glGetProgramResourceIndex(program, program_interface, name) as u32;
-            Ok(result)
+            let result = ffi::glGetProgramResourceIndex(program, program_interface, name);
+            Ok(result as u32)
         }
     }
 
@@ -107,7 +107,7 @@ impl Wrapper {
         name: *mut GLchar,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetProgramResourceivPtr(
+            ffi::glGetProgramResourceName(
                 program,
                 program_interface,
                 index,
@@ -131,7 +131,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetProgramResourceivPtr(
+            ffi::glGetProgramResourceiv(
                 program,
                 program_interface,
                 index,
@@ -153,8 +153,8 @@ impl Wrapper {
     ) -> Result<i32, Error> {
         unsafe {
             let result =
-                ffi::glGetProgramResourceLocationPtr(program, program_interface, name) as i32;
-            Ok(result)
+                ffi::glGetProgramResourceLocation(program, program_interface, name);
+            Ok(result as i32)
         }
     }
 
@@ -184,8 +184,8 @@ impl Wrapper {
         strings: *const *const GLchar,
     ) -> Result<u32, Error> {
         unsafe {
-            let result = ffi::glCreateShaderProgramvPtr(type_, count, strings) as u32;
-            Ok(result)
+            let result = ffi::glCreateShaderProgramv(type_, count, strings);
+            Ok(result as u32)
         }
     }
 
@@ -275,7 +275,7 @@ impl Wrapper {
         v2: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3iPtr(program, location, v0, v1, v2);
+            ffi::glProgramUniform3i(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -290,7 +290,7 @@ impl Wrapper {
         v3: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4iPtr(program, location, v0, v1, v2, v3);
+            ffi::glProgramUniform4i(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -329,7 +329,7 @@ impl Wrapper {
         v2: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3uiPtr(program, location, v0, v1, v2);
+            ffi::glProgramUniform3ui(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -344,7 +344,7 @@ impl Wrapper {
         v3: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4uiPtr(program, location, v0, v1, v2, v3);
+            ffi::glProgramUniform4ui(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -383,7 +383,7 @@ impl Wrapper {
         v2: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3fPtr(program, location, v0, v1, v2);
+            ffi::glProgramUniform3f(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -398,7 +398,7 @@ impl Wrapper {
         v3: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4fPtr(program, location, v0, v1, v2, v3);
+            ffi::glProgramUniform4f(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -411,7 +411,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform1ivPtr(program, location, count, value);
+            ffi::glProgramUniform1iv(program, location, count, value);
         }
         Ok(())
     }
@@ -424,7 +424,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform2ivPtr(program, location, count, value);
+            ffi::glProgramUniform2iv(program, location, count, value);
         }
         Ok(())
     }
@@ -437,7 +437,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3ivPtr(program, location, count, value);
+            ffi::glProgramUniform3iv(program, location, count, value);
         }
         Ok(())
     }
@@ -450,7 +450,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4ivPtr(program, location, count, value);
+            ffi::glProgramUniform4iv(program, location, count, value);
         }
         Ok(())
     }
@@ -463,7 +463,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform1uivPtr(program, location, count, value);
+            ffi::glProgramUniform1uiv(program, location, count, value);
         }
         Ok(())
     }
@@ -476,7 +476,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform2uivPtr(program, location, count, value);
+            ffi::glProgramUniform2uiv(program, location, count, value);
         }
         Ok(())
     }
@@ -489,7 +489,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3uivPtr(program, location, count, value);
+            ffi::glProgramUniform3uiv(program, location, count, value);
         }
         Ok(())
     }
@@ -502,7 +502,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4uivPtr(program, location, count, value);
+            ffi::glProgramUniform4uiv(program, location, count, value);
         }
         Ok(())
     }
@@ -515,7 +515,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4fvPtr(program, location, count, value);
+            ffi::glProgramUniform4fv(program, location, count, value);
         }
         Ok(())
     }
@@ -528,7 +528,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform2fvPtr(program, location, count, value);
+            ffi::glProgramUniform2fv(program, location, count, value);
         }
         Ok(())
     }
@@ -541,7 +541,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform3fvPtr(program, location, count, value);
+            ffi::glProgramUniform3fv(program, location, count, value);
         }
         Ok(())
     }
@@ -554,7 +554,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniform4fvPtr(program, location, count, value);
+            ffi::glProgramUniform4fv(program, location, count, value);
         }
         Ok(())
     }
@@ -568,7 +568,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix2fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix2fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -582,7 +582,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix3fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix3fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -596,7 +596,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix4fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix4fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -610,7 +610,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix2x3fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix2x3fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -624,7 +624,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix3x2fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix3x2fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -638,7 +638,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix2x4fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix2x4fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -652,7 +652,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix4x2fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix4x2fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -666,7 +666,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix3x4fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix3x4fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -680,7 +680,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glProgramUniformMatrix4x3fvPtr(program, location, count, transpose, value);
+            ffi::glProgramUniformMatrix4x3fv(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -700,7 +700,7 @@ impl Wrapper {
         infoLog: *mut GLchar,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetProgramPipelineInfoLogPtr(pipeline, buf_size, length, infoLog);
+            ffi::glGetProgramPipelineInfoLog(pipeline, buf_size, length, infoLog);
         }
         Ok(())
     }
@@ -716,7 +716,7 @@ impl Wrapper {
         format: GLenum,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glBindImageTexturePtr(unit, texture, level, layered, layer, access, format);
+            ffi::glBindImageTexture(unit, texture, level, layered, layer, access, format);
         }
         Ok(())
     }
@@ -757,7 +757,7 @@ impl Wrapper {
         fixedsamplelocations: GLboolean,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glTexStorage2DMultisamplePtr(
+            ffi::glTexStorage2DMultisample(
                 target,
                 samples,
                 internalformat,
@@ -809,7 +809,7 @@ impl Wrapper {
         params: *mut GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glGetTexLevelParameterfvPtr(target, level, pname, params);
+            ffi::glGetTexLevelParameterfv(target, level, pname, params);
         }
         Ok(())
     }
@@ -818,7 +818,7 @@ impl Wrapper {
         &self,
         binding_index: GLuint,
         buffer: GLuint,
-        offset: GLintptr,
+        offset: GLint,
         stride: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
@@ -836,7 +836,7 @@ impl Wrapper {
         relativeoffset: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            ffi::glVertexAttribFormatPtr(attribindex, size, type_, normalized, relativeoffset);
+            ffi::glVertexAttribFormat(attribindex, size, type_, normalized, relativeoffset);
         }
         Ok(())
     }

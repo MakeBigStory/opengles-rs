@@ -6,12 +6,12 @@ extern "C" {
 
     pub fn glDispatchComputeIndirect(indirect: GLintptr);
 
-    pub fn glDrawArraysIndirect(mode: GLenum, indirect: *const ::std::os::raw::c_void);
+    pub fn glDrawArraysIndirect(mode: GLenum, indirect: *const GLvoid);
 
     pub fn glDrawElementsIndirect(
         mode: GLenum,
         type_: GLenum,
-        indirect: *const ::std::os::raw::c_void,
+        indirect: *const GLvoid,
     );
 
     pub fn glFramebufferParameteri(target: GLenum, pname: GLenum, param: GLint);

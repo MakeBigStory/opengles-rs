@@ -1,80 +1,9 @@
-use super::super::es20::data_struct::GL_TRUE;
-use super::super::es20::wrapper::Error;
-use super::ffi::*;
-use std;
+use super::ffi;
+use es20::data_struct::*;
+use es20::wrapper::Error;
 use std::result::Result;
-use types::*;
 
-struct Wrapper {
-    glDispatchComputePtr: *const c_void,
-    glDispatchComputeIndirectPtr: *const c_void,
-    glDrawArraysIndirectPtr: *const c_void,
-    glDrawElementsIndirectPtr: *const c_void,
-    glFramebufferParameteriPtr: *const c_void,
-    glGetFramebufferParameterivPtr: *const c_void,
-    glGetProgramInterfaceivPtr: *const c_void,
-    glGetProgramResourceIndexPtr: *const c_void,
-    glGetProgramResourceNamePtr: *const c_void,
-    glGetProgramResourceivPtr: *const c_void,
-    glGetProgramResourceLocationPtr: *const c_void,
-    glUseProgramStagesPtr: *const c_void,
-    glActiveShaderProgramPtr: *const c_void,
-    glCreateShaderProgramvPtr: *const c_void,
-    glBindProgramPipelinePtr: *const c_void,
-    glDeleteProgramPipelinesPtr: *const c_void,
-    glGenProgramPipelinesPtr: *const c_void,
-    glIsProgramPipelinePtr: *const c_void,
-    glGetProgramPipelineivPtr: *const c_void,
-    glProgramUniform1iPtr: *const c_void,
-    glProgramUniform2iPtr: *const c_void,
-    glProgramUniform3iPtr: *const c_void,
-    glProgramUniform4iPtr: *const c_void,
-    glProgramUniform1uiPtr: *const c_void,
-    glProgramUniform2uiPtr: *const c_void,
-    glProgramUniform3uiPtr: *const c_void,
-    glProgramUniform4uiPtr: *const c_void,
-    glProgramUniform1fPtr: *const c_void,
-    glProgramUniform2fPtr: *const c_void,
-    glProgramUniform3fPtr: *const c_void,
-    glProgramUniform4fPtr: *const c_void,
-    glProgramUniform1ivPtr: *const c_void,
-    glProgramUniform2ivPtr: *const c_void,
-    glProgramUniform3ivPtr: *const c_void,
-    glProgramUniform4ivPtr: *const c_void,
-    glProgramUniform1uivPtr: *const c_void,
-    glProgramUniform2uivPtr: *const c_void,
-    glProgramUniform3uivPtr: *const c_void,
-    glProgramUniform4uivPtr: *const c_void,
-    glProgramUniform1fvPtr: *const c_void,
-    glProgramUniform2fvPtr: *const c_void,
-    glProgramUniform3fvPtr: *const c_void,
-    glProgramUniform4fvPtr: *const c_void,
-    glProgramUniformMatrix2fvPtr: *const c_void,
-    glProgramUniformMatrix3fvPtr: *const c_void,
-    glProgramUniformMatrix4fvPtr: *const c_void,
-    glProgramUniformMatrix2x3fvPtr: *const c_void,
-    glProgramUniformMatrix3x2fvPtr: *const c_void,
-    glProgramUniformMatrix2x4fvPtr: *const c_void,
-    glProgramUniformMatrix4x2fvPtr: *const c_void,
-    glProgramUniformMatrix3x4fvPtr: *const c_void,
-    glProgramUniformMatrix4x3fvPtr: *const c_void,
-    glValidateProgramPipelinePtr: *const c_void,
-    glGetProgramPipelineInfoLogPtr: *const c_void,
-    glBindImageTexturePtr: *const c_void,
-    glGetBooleani_vPtr: *const c_void,
-    glMemoryBarrierPtr: *const c_void,
-    glMemoryBarrierByRegionPtr: *const c_void,
-    glTexStorage2DMultisamplePtr: *const c_void,
-    glGetMultisamplefvPtr: *const c_void,
-    glSampleMaskiPtr: *const c_void,
-    glGetTexLevelParameterivPtr: *const c_void,
-    glGetTexLevelParameterfvPtr: *const c_void,
-    glBindVertexBufferPtr: *const c_void,
-    glVertexAttribFormatPtr: *const c_void,
-    glVertexAttribIFormatPtr: *const c_void,
-    glVertexAttribBindingPtr: *const c_void,
-    glVertexBindingDivisorPtr: *const c_void,
-}
+struct Wrapper {}
 
 impl Wrapper {
     pub fn gl_dispatch_compute(
@@ -84,22 +13,14 @@ impl Wrapper {
         num_groups_z: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glDispatchComputePtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLuint, GLuint) -> ()>(
-                    self.glDispatchComputePtr,
-                )(num_groups_x, num_groups_y, num_groups_z);
-            }
+            ffi::glDispatchCompute(num_groups_x, num_groups_y, num_groups_z);
         }
         Ok(())
     }
 
     pub fn gl_dispatch_compute_indirect(&self, indirect: GLintptr) -> Result<(), Error> {
         unsafe {
-            if self.glDispatchComputeIndirectPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLintptr) -> ()>(
-                    self.glDispatchComputeIndirectPtr,
-                )(indirect);
-            }
+            ffi::glDispatchComputeIndirect(indirect);
         }
         Ok(())
     }
@@ -110,11 +31,7 @@ impl Wrapper {
         indirect: *const ::std::os::raw::c_void,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glDrawArraysIndirectPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, *const c_void) -> ()>(
-                    self.glDrawArraysIndirectPtr,
-                )(mode as GLenum, indirect);
-            }
+            ffi::glDrawArraysIndirect(mode as GLenum, indirect as *const GLvoid);
         }
         Ok(())
     }
@@ -126,11 +43,7 @@ impl Wrapper {
         indirect: *const GLvoid,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glDrawElementsIndirectPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLenum, *const GLvoid) -> ()>(
-                    self.glDrawElementsIndirectPtr,
-                )(mode, type_, indirect);
-            }
+            ffi::glDrawElementsIndirect(mode, type_, indirect);
         }
         Ok(())
     }
@@ -142,11 +55,7 @@ impl Wrapper {
         param: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glFramebufferParameteriPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLenum, GLint) -> ()>(
-                    self.glFramebufferParameteriPtr,
-                )(target, pname, param);
-            }
+            ffi::glFramebufferParameteri(target, pname, param);
         }
         Ok(())
     }
@@ -158,11 +67,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetFramebufferParameterivPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLenum, *mut GLint) -> ()>(
-                    self.glGetFramebufferParameterivPtr,
-                )(target, pname, params);
-            }
+            ffi::glGetFramebufferParameteriv(target, pname, params);
         }
         Ok(())
     }
@@ -175,14 +80,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetProgramInterfaceivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLenum, GLenum, *mut GLint) -> (),
-                >(self.glGetProgramInterfaceivPtr)(
-                    program, program_interface, pname, params
-                );
-            }
+            ffi::glGetProgramInterfaceivPtr(program, program_interface, pname, params);
         }
         Ok(())
     }
@@ -194,17 +92,8 @@ impl Wrapper {
         name: *const GLchar,
     ) -> Result<u32, Error> {
         unsafe {
-            if self.glGetProgramResourceIndexPtr != 0 as *const c_void {
-                let result = std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLenum, *const GLchar) -> GLuint,
-                >(self.glGetProgramResourceIndexPtr)(
-                    program, program_interface, name
-                ) as u32;
-                Ok(result)
-            } else {
-                Err(Error {})
-            }
+            let result = ffi::glGetProgramResourceIndex(program, program_interface, name) as u32;
+            Ok(result)
         }
     }
 
@@ -218,20 +107,14 @@ impl Wrapper {
         name: *mut GLchar,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetProgramResourceivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLenum, GLuint, GLsizei, *mut GLsizei, *mut GLchar)
-                        -> (),
-                >(self.glGetProgramResourceivPtr)(
-                    program,
-                    program_interface,
-                    index,
-                    buf_size,
-                    length,
-                    name,
-                );
-            }
+            ffi::glGetProgramResourceivPtr(
+                program,
+                program_interface,
+                index,
+                buf_size,
+                length,
+                name,
+            );
         }
         Ok(())
     }
@@ -248,30 +131,16 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetProgramResourceivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(
-                        GLuint,
-                        GLenum,
-                        GLuint,
-                        GLsizei,
-                        *const GLenum,
-                        GLsizei,
-                        *mut GLsizei,
-                        *mut GLint,
-                    ) -> (),
-                >(self.glGetProgramResourceivPtr)(
-                    program,
-                    program_interface,
-                    index,
-                    propCount,
-                    props,
-                    buf_size,
-                    length,
-                    params,
-                );
-            }
+            ffi::glGetProgramResourceivPtr(
+                program,
+                program_interface,
+                index,
+                propCount,
+                props,
+                buf_size,
+                length,
+                params,
+            );
         }
         Ok(())
     }
@@ -283,17 +152,9 @@ impl Wrapper {
         name: *const GLchar,
     ) -> Result<i32, Error> {
         unsafe {
-            if self.glGetProgramResourceLocationPtr != 0 as *const c_void {
-                let result = std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLenum, *const GLchar) -> GLuint,
-                >(self.glGetProgramResourceLocationPtr)(
-                    program, program_interface, name
-                ) as i32;
-                Ok(result)
-            } else {
-                Err(Error {})
-            }
+            let result =
+                ffi::glGetProgramResourceLocationPtr(program, program_interface, name) as i32;
+            Ok(result)
         }
     }
 
@@ -304,22 +165,14 @@ impl Wrapper {
         program: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glUseProgramStagesPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLbitfield, GLuint) -> ()>(
-                    self.glUseProgramStagesPtr,
-                )(pipeline, stages, program);
-            }
+            ffi::glUseProgramStages(pipeline, stages, program);
         }
         Ok(())
     }
 
     pub fn gl_active_shader_program(&self, pipeline: GLuint, program: GLuint) -> Result<(), Error> {
         unsafe {
-            if self.glActiveShaderProgramPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLuint) -> ()>(
-                    self.glActiveShaderProgramPtr,
-                )(pipeline, program);
-            }
+            ffi::glActiveShaderProgram(pipeline, program);
         }
         Ok(())
     }
@@ -331,26 +184,14 @@ impl Wrapper {
         strings: *const *const GLchar,
     ) -> Result<u32, Error> {
         unsafe {
-            if self.glCreateShaderProgramvPtr != 0 as *const c_void {
-                let result = std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLenum, GLsizei, *const *const GLchar) -> GLuint,
-                >(self.glCreateShaderProgramvPtr)(type_, count, strings)
-                    as u32;
-                Ok(result)
-            } else {
-                Err(Error {})
-            }
+            let result = ffi::glCreateShaderProgramvPtr(type_, count, strings) as u32;
+            Ok(result)
         }
     }
 
     pub fn gl_bind_program_pipeline(&self, pipeline: GLuint) -> Result<(), Error> {
         unsafe {
-            if self.glBindProgramPipelinePtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint) -> ()>(
-                    self.glBindProgramPipelinePtr,
-                )(pipeline);
-            }
+            ffi::glBindProgramPipeline(pipeline);
         }
         Ok(())
     }
@@ -361,11 +202,7 @@ impl Wrapper {
         pipelines: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glDeleteProgramPipelinesPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLsizei, *const GLuint) -> ()>(
-                    self.glDeleteProgramPipelinesPtr,
-                )(n, pipelines);
-            }
+            ffi::glDeleteProgramPipelines(n, pipelines);
         }
         Ok(())
     }
@@ -376,28 +213,18 @@ impl Wrapper {
         pipelines: *mut GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGenProgramPipelinesPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLsizei, *mut GLuint) -> ()>(
-                    self.glGenProgramPipelinesPtr,
-                )(n, pipelines);
-            }
+            ffi::glGenProgramPipelines(n, pipelines);
         }
         Ok(())
     }
 
     pub fn gl_is_program_pipeline(&self, pipeline: GLuint) -> Result<bool, Error> {
         unsafe {
-            if self.glIsProgramPipelinePtr != 0 as *const c_void {
-                let result = std::mem::transmute::<_, extern "system" fn(GLuint) -> GLboolean>(
-                    self.glIsProgramPipelinePtr,
-                )(pipeline);
-                if result == GL_TRUE {
-                    Ok(true)
-                } else {
-                    Ok(false)
-                }
+            let result = ffi::glIsProgramPipeline(pipeline);
+            if result == GL_TRUE {
+                Ok(true)
             } else {
-                Err(Error {})
+                Ok(false)
             }
         }
     }
@@ -409,11 +236,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetProgramPipelineivPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLenum, *mut GLint) -> ()>(
-                    self.glGetProgramPipelineivPtr,
-                )(pipeline, pname, params);
-            }
+            ffi::glGetProgramPipelineiv(pipeline, pname, params);
         }
         Ok(())
     }
@@ -425,11 +248,7 @@ impl Wrapper {
         v0: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform1iPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLint) -> ()>(
-                    self.glProgramUniform1iPtr,
-                )(program, location, v0);
-            }
+            ffi::glProgramUniform1i(program, location, v0);
         }
         Ok(())
     }
@@ -442,11 +261,7 @@ impl Wrapper {
         v1: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2iPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLint, GLint) -> ()>(
-                    self.glProgramUniform2iPtr,
-                )(program, location, v0, v1);
-            }
+            ffi::glProgramUniform2i(program, location, v0, v1);
         }
         Ok(())
     }
@@ -460,12 +275,7 @@ impl Wrapper {
         v2: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3iPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLint, GLint, GLint) -> (),
-                >(self.glProgramUniform3iPtr)(program, location, v0, v1, v2);
-            }
+            ffi::glProgramUniform3iPtr(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -480,12 +290,7 @@ impl Wrapper {
         v3: GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4iPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLint, GLint, GLint, GLint) -> (),
-                >(self.glProgramUniform4iPtr)(program, location, v0, v1, v2, v3);
-            }
+            ffi::glProgramUniform4iPtr(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -497,11 +302,7 @@ impl Wrapper {
         v0: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform1uiPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLuint) -> ()>(
-                    self.glProgramUniform1uiPtr,
-                )(program, location, v0);
-            }
+            ffi::glProgramUniform1ui(program, location, v0);
         }
         Ok(())
     }
@@ -514,11 +315,7 @@ impl Wrapper {
         v1: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2uiPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLuint, GLuint) -> ()>(
-                    self.glProgramUniform2uiPtr,
-                )(program, location, v0, v1);
-            }
+            ffi::glProgramUniform2ui(program, location, v0, v1);
         }
         Ok(())
     }
@@ -532,12 +329,7 @@ impl Wrapper {
         v2: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3uiPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLuint, GLuint, GLuint) -> (),
-                >(self.glProgramUniform3uiPtr)(program, location, v0, v1, v2);
-            }
+            ffi::glProgramUniform3uiPtr(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -552,12 +344,7 @@ impl Wrapper {
         v3: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4uiPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLuint, GLuint, GLuint, GLuint) -> (),
-                >(self.glProgramUniform4uiPtr)(program, location, v0, v1, v2, v3);
-            }
+            ffi::glProgramUniform4uiPtr(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -569,11 +356,7 @@ impl Wrapper {
         v0: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform1fPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLfloat) -> ()>(
-                    self.glProgramUniform1fPtr,
-                )(program, location, v0);
-            }
+            ffi::glProgramUniform1f(program, location, v0);
         }
         Ok(())
     }
@@ -586,11 +369,7 @@ impl Wrapper {
         v1: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2fPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLfloat, GLfloat) -> ()>(
-                    self.glProgramUniform2fPtr,
-                )(program, location, v0, v1);
-            }
+            ffi::glProgramUniform2f(program, location, v0, v1);
         }
         Ok(())
     }
@@ -604,12 +383,7 @@ impl Wrapper {
         v2: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3fPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLfloat, GLfloat, GLfloat) -> (),
-                >(self.glProgramUniform3fPtr)(program, location, v0, v1, v2);
-            }
+            ffi::glProgramUniform3fPtr(program, location, v0, v1, v2);
         }
         Ok(())
     }
@@ -624,12 +398,7 @@ impl Wrapper {
         v3: GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4fPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLfloat, GLfloat, GLfloat, GLfloat) -> (),
-                >(self.glProgramUniform4fPtr)(program, location, v0, v1, v2, v3);
-            }
+            ffi::glProgramUniform4fPtr(program, location, v0, v1, v2, v3);
         }
         Ok(())
     }
@@ -642,12 +411,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform1ivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLint) -> (),
-                >(self.glProgramUniform1ivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform1ivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -660,12 +424,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2ivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLint) -> (),
-                >(self.glProgramUniform2ivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform2ivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -678,12 +437,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3ivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLint) -> (),
-                >(self.glProgramUniform3ivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform3ivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -696,12 +450,7 @@ impl Wrapper {
         value: *const GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4ivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLint) -> (),
-                >(self.glProgramUniform4ivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform4ivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -714,12 +463,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform1uivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLuint) -> (),
-                >(self.glProgramUniform1uivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform1uivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -732,12 +476,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2uivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLuint) -> (),
-                >(self.glProgramUniform2uivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform2uivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -750,12 +489,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3uivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLuint) -> (),
-                >(self.glProgramUniform3uivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform3uivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -768,12 +502,7 @@ impl Wrapper {
         value: *const GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4uivPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLuint) -> (),
-                >(self.glProgramUniform4uivPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform4uivPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -786,12 +515,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLfloat) -> (),
-                >(self.glProgramUniform4fvPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform4fvPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -804,12 +528,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform2fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLfloat) -> (),
-                >(self.glProgramUniform2fvPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform2fvPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -822,12 +541,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform3fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLfloat) -> (),
-                >(self.glProgramUniform3fvPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform3fvPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -840,12 +554,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniform4fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, *const GLfloat) -> (),
-                >(self.glProgramUniform4fvPtr)(program, location, count, value);
-            }
+            ffi::glProgramUniform4fvPtr(program, location, count, value);
         }
         Ok(())
     }
@@ -859,14 +568,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix2fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix2fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix2fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -880,14 +582,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix3fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix3fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix3fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -901,14 +596,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix4fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix4fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix4fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -922,14 +610,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix2x3fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix2x3fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix2x3fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -943,14 +624,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix3x2fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix3x2fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix3x2fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -964,14 +638,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix2x4fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix2x4fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix2x4fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -985,14 +652,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix4x2fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix4x2fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix4x2fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -1006,14 +666,7 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix3x4fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix3x4fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix3x4fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
@@ -1027,25 +680,14 @@ impl Wrapper {
         value: *const GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glProgramUniformMatrix4x3fvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLsizei, GLboolean, *const GLfloat) -> (),
-                >(self.glProgramUniformMatrix4x3fvPtr)(
-                    program, location, count, transpose, value
-                );
-            }
+            ffi::glProgramUniformMatrix4x3fvPtr(program, location, count, transpose, value);
         }
         Ok(())
     }
 
     pub fn gl_validate_program_pipeline(&self, pipeline: GLuint) -> Result<(), Error> {
         unsafe {
-            if self.glValidateProgramPipelinePtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint) -> ()>(
-                    self.glValidateProgramPipelinePtr,
-                )(pipeline);
-            }
+            ffi::glValidateProgramPipeline(pipeline);
         }
         Ok(())
     }
@@ -1058,14 +700,7 @@ impl Wrapper {
         infoLog: *mut GLchar,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetProgramPipelineInfoLogPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLsizei, *mut GLsizei, *mut GLchar) -> (),
-                >(self.glGetProgramPipelineInfoLogPtr)(
-                    pipeline, buf_size, length, infoLog
-                );
-            }
+            ffi::glGetProgramPipelineInfoLogPtr(pipeline, buf_size, length, infoLog);
         }
         Ok(())
     }
@@ -1081,15 +716,7 @@ impl Wrapper {
         format: GLenum,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glBindImageTexturePtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLuint, GLint, GLboolean, GLint, GLenum, GLenum)
-                        -> (),
-                >(self.glBindImageTexturePtr)(
-                    unit, texture, level, layered, layer, access, format
-                );
-            }
+            ffi::glBindImageTexturePtr(unit, texture, level, layered, layer, access, format);
         }
         Ok(())
     }
@@ -1101,33 +728,21 @@ impl Wrapper {
         data: *mut GLboolean,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetBooleani_vPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLuint, *mut GLboolean) -> ()>(
-                    self.glGetBooleani_vPtr,
-                )(target, index, data);
-            }
+            ffi::glGetBooleani_v(target, index, data);
         }
         Ok(())
     }
 
     pub fn gl_memory_barrier(&self, barriers: GLbitfield) -> Result<(), Error> {
         unsafe {
-            if self.glMemoryBarrierPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLbitfield) -> ()>(
-                    self.glMemoryBarrierPtr,
-                )(barriers);
-            }
+            ffi::glMemoryBarrier(barriers);
         }
         Ok(())
     }
 
     pub fn gl_memory_barrier_by_region(&self, barriers: GLbitfield) -> Result<(), Error> {
         unsafe {
-            if self.glMemoryBarrierByRegionPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLbitfield) -> ()>(
-                    self.glMemoryBarrierByRegionPtr,
-                )(barriers);
-            }
+            ffi::glMemoryBarrierByRegion(barriers);
         }
         Ok(())
     }
@@ -1142,19 +757,14 @@ impl Wrapper {
         fixedsamplelocations: GLboolean,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glTexStorage2DMultisamplePtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLenum, GLsizei, GLenum, GLsizei, GLsizei, GLboolean) -> (),
-                >(self.glTexStorage2DMultisamplePtr)(
-                    target,
-                    samples,
-                    internalformat,
-                    width,
-                    height,
-                    fixedsamplelocations,
-                );
-            }
+            ffi::glTexStorage2DMultisamplePtr(
+                target,
+                samples,
+                internalformat,
+                width,
+                height,
+                fixedsamplelocations,
+            );
         }
         Ok(())
     }
@@ -1166,22 +776,14 @@ impl Wrapper {
         val: *mut GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetMultisamplefvPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLuint, *mut GLfloat) -> ()>(
-                    self.glGetMultisamplefvPtr,
-                )(pname, index, val);
-            }
+            ffi::glGetMultisamplefv(pname, index, val);
         }
         Ok(())
     }
 
     pub fn gl_sample_mask_i(&self, maskNumber: GLuint, mask: GLbitfield) -> Result<(), Error> {
         unsafe {
-            if self.glSampleMaskiPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLbitfield) -> ()>(
-                    self.glSampleMaskiPtr,
-                )(maskNumber, mask);
-            }
+            ffi::glSampleMaski(maskNumber, mask);
         }
         Ok(())
     }
@@ -1194,11 +796,7 @@ impl Wrapper {
         params: *mut GLint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetTexLevelParameterivPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLenum, GLint, GLenum, *mut GLint) -> ()>(
-                    self.glGetTexLevelParameterivPtr,
-                )(target, level, pname, params);
-            }
+            ffi::glGetTexLevelParameteriv(target, level, pname, params);
         }
         Ok(())
     }
@@ -1211,12 +809,7 @@ impl Wrapper {
         params: *mut GLfloat,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glGetTexLevelParameterfvPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLenum, GLint, GLenum, *mut GLfloat) -> (),
-                >(self.glGetTexLevelParameterfvPtr)(target, level, pname, params);
-            }
+            ffi::glGetTexLevelParameterfvPtr(target, level, pname, params);
         }
         Ok(())
     }
@@ -1229,11 +822,7 @@ impl Wrapper {
         stride: GLsizei,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glBindVertexBufferPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLuint, GLintptr, GLsizei) -> ()>(
-                    self.glBindVertexBufferPtr,
-                )(binding_index, buffer, offset, stride);
-            }
+            ffi::glBindVertexBuffer(binding_index, buffer, offset, stride);
         }
         Ok(())
     }
@@ -1247,18 +836,7 @@ impl Wrapper {
         relativeoffset: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glVertexAttribFormatPtr != 0 as *const c_void {
-                std::mem::transmute::<
-                    _,
-                    extern "system" fn(GLuint, GLint, GLenum, GLboolean, GLuint) -> (),
-                >(self.glVertexAttribFormatPtr)(
-                    attribindex,
-                    size,
-                    type_,
-                    normalized,
-                    relativeoffset,
-                );
-            }
+            ffi::glVertexAttribFormatPtr(attribindex, size, type_, normalized, relativeoffset);
         }
         Ok(())
     }
@@ -1271,11 +849,7 @@ impl Wrapper {
         relative_offset: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glVertexAttribIFormatPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLint, GLenum, GLuint) -> ()>(
-                    self.glVertexAttribIFormatPtr,
-                )(attri_bindex, size, type_, relative_offset);
-            }
+            ffi::glVertexAttribIFormat(attri_bindex, size, type_, relative_offset);
         }
         Ok(())
     }
@@ -1286,11 +860,7 @@ impl Wrapper {
         binding_index: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glVertexAttribBindingPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLuint) -> ()>(
-                    self.glVertexAttribBindingPtr,
-                )(attri_bindex, binding_index);
-            }
+            ffi::glVertexAttribBinding(attri_bindex, binding_index);
         }
         Ok(())
     }
@@ -1301,11 +871,7 @@ impl Wrapper {
         divisor: GLuint,
     ) -> Result<(), Error> {
         unsafe {
-            if self.glVertexBindingDivisorPtr != 0 as *const c_void {
-                std::mem::transmute::<_, extern "system" fn(GLuint, GLuint) -> ()>(
-                    self.glVertexBindingDivisorPtr,
-                )(binding_index, divisor);
-            }
+            ffi::glVertexBindingDivisor(binding_index, divisor);
         }
         Ok(())
     }

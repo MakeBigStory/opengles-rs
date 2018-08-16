@@ -34,13 +34,13 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<(GLboolean), Error> {
+    pub fn gl_unmap_buffer(&mut self, target: BufferObjectTarget) -> Result<bool, Error> {
         unsafe {
             let result = ffi::glUnmapBuffer(target as GLenum);
             if result == GL_TRUE {
-                Ok(GL_TRUE)
+                Ok(true)
             } else {
-                Ok(GL_FALSE)
+                Ok(false)
             }
         }
     }
@@ -85,14 +85,13 @@ impl Wrapper {
         offset: GLintptr,
         length: GLsizeiptr,
         access: MappingBit,
-    ) -> &'a [T] {
+    ) -> Result<&'a [T], Error> {
         unsafe {
             let ptr = ffi::glMapBufferRange(target as GLenum, offset, length, access as GLenum);
 
             let count = length as usize / std::mem::size_of::<T>();
-            return slice::from_raw_parts_mut(ptr as *mut T, count as usize);
+            Ok(slice::from_raw_parts_mut(ptr as *mut T, count as usize))
         }
-        //        Ok(())
     }
 
     pub fn gl_flush_mapped_buffer_range(
@@ -207,7 +206,7 @@ impl Wrapper {
         }
     }
 
-    pub fn gl_tex_image3d(
+    pub fn gl_tex_image_3d(
         &mut self,
         target: TextureTarget,
         level: i32,
@@ -241,7 +240,7 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_tex_sub_image3d(
+    pub fn gl_tex_sub_image_3d(
         &mut self,
         target: TextureTarget,
         level: GLint,
@@ -317,10 +316,7 @@ impl Wrapper {
         border: GLint,
         imageSize: GLsizei,
         data: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexImage3D(
                 target as GLenum,
@@ -351,10 +347,7 @@ impl Wrapper {
         format: PixelDataFormat,
         image_size: GLsizei,
         data: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glCompressedTexSubImage3D(
                 target as GLenum,
@@ -714,14 +707,12 @@ impl Wrapper {
         Ok(())
     }
 
-    pub fn gl_gen_transform_feedbacks(&mut self, size: i32) -> Vec<GLuint> {
+    pub fn gl_gen_transform_feedbacks(&mut self, size: i32) -> Result<Vec<GLuint>, Error> {
         unsafe {
             let mut ids: Vec<GLuint> = Vec::with_capacity(size as usize);
             ffi::glGenTransformFeedbacks(size as GLsizei, ids.as_mut_ptr() as *mut GLuint);
-            ids
+            Ok(ids)
         }
-        //        Ok(())
-        // todo: replace with Option
     }
 
     pub fn gl_is_transform_feedback(&mut self, id: u32) -> Result<bool, Error> {
@@ -756,10 +747,7 @@ impl Wrapper {
         type_: GLenum,
         stride: GLsizei,
         pointer: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glVertexAttribIPointer(
                 index,
@@ -845,8 +833,7 @@ impl Wrapper {
     pub fn gl_get_frag_data_location(&mut self, program: u32, name: &str) -> Result<GLint, Error> {
         unsafe {
             let c_str = CString::new(name).unwrap();
-            let location =
-                ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let location = ffi::glGetFragDataLocation(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(location)
         }
     }
@@ -1033,8 +1020,7 @@ impl Wrapper {
     ) -> Result<GLuint, Error> {
         unsafe {
             let c_str = CString::new(uniform_block_name).unwrap();
-            let index =
-                ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
+            let index = ffi::glGetUniformBlockIndex(program as GLuint, c_str.as_ptr() as *const GLchar);
             Ok(index)
         }
     }
@@ -1081,10 +1067,7 @@ impl Wrapper {
         count: i32,
         type_: GLenum,
         indices: &[T],
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error> where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawRangeElements(
                 mode as GLenum,
@@ -1123,10 +1106,7 @@ impl Wrapper {
         type_: GLenum,
         indices: &[T],
         instance_count: i32,
-    ) -> Result<(), Error>
-    where
-        T: std::fmt::Debug + Clone,
-    {
+    ) -> Result<(), Error>  where T: std::fmt::Debug + Clone {
         unsafe {
             ffi::glDrawElementsInstanced(
                 mode as GLenum,
@@ -1202,7 +1182,7 @@ impl Wrapper {
         sync: GLsync,
         pname: GLenum,
         buffer_size: GLsizei,
-        length: &mut GLsizei,
+        length: GLsizei,
     ) -> Result<Vec<GLint>, Error> {
         unsafe {
             let mut values: Vec<GLint> = Vec::with_capacity(buffer_size as usize);

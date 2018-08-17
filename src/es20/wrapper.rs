@@ -45,7 +45,24 @@ pub struct ProgramBinary {
 #[derive(Debug)]
 pub struct Error {}
 
+use std::collections::HashMap;
+use std::boxed::Box;
+
+trait Interceptor {
+
+    fn get_name(&self) -> String;
+
+    fn enable(&mut self, enable: bool);
+
+    fn is_enabled(&self) -> bool;
+
+    fn pre_intercept(&mut self, func_info: &FuncInfo) -> Result<(), Error>;
+
+    fn post_intercept(&mut self, func_info: &FuncInfo, res_desc: &str) -> Result<(), Error>;
+}
+
 pub struct Wrapper {
+    interceptors: HashMap<String, Box<Interceptor>>,
     debug: bool,
     glReadBuffer_ptr: *const c_void,
     glDrawBuffers_ptr: *const c_void,
@@ -260,12 +277,6 @@ pub struct Wrapper {
     glTexStorage3DMultisample_ptr: *const c_void,
 }
 
-trait Interceptor {
-    fn pre_intercept(&mut self, func_info: &FuncInfo) -> Result<(), Error>;
-
-    fn post_intercept(&mut self, func_info: &FuncInfo, res_desc: &str) -> Result<(), Error>;
-}
-
 trait Param: std::fmt::Debug {}
 
 impl Param for i32 {}
@@ -459,11 +470,33 @@ struct InitError {
 }
 
 impl Wrapper {
+
+    fn add_interceptor<T>(&mut self, interceptor: T) where T: Interceptor + 'static {
+        let new_interceptor : Box<Interceptor> = Box::new(interceptor);
+        self.interceptors.insert(new_interceptor.get_name(), new_interceptor);
+    }
+
+    fn remove_interceptor<T>(&mut self, name: &str) {
+        self.interceptors.remove(name);
+    }
+
     fn pre_process(&mut self, func_info: &FuncInfo) -> Result<(), Error> {
+        for interceptor in self.interceptors.values_mut() {
+            if interceptor.is_enabled() {
+                interceptor.pre_intercept(func_info)?;
+            }
+        }
+
         Ok(())
     }
 
     fn post_process(&mut self, func_info: &FuncInfo, res_desc: &str) -> Result<(), Error> {
+        for interceptor in self.interceptors.values_mut() {
+            if interceptor.is_enabled() {
+                interceptor.post_intercept(func_info, res_desc)?;
+            }
+        }
+
         Ok(())
     }
 
@@ -477,6 +510,7 @@ impl Wrapper {
 
     fn new() -> Self {
         Wrapper {
+            interceptors: HashMap::new(),
             debug: false,
             glReadBuffer_ptr: 0 as *const c_void,
             glDrawBuffers_ptr: 0 as *const c_void,

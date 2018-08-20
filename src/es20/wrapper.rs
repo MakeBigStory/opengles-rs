@@ -16419,6 +16419,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_dispatch_compute(
         &mut self,
         num_groups_x: GLuint,
@@ -16480,6 +16482,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_dispatch_compute_indirect(&mut self, indirect: GLintptr) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_indirect = ParamInfo::new("GLintptr", "indirect");
@@ -16526,6 +16530,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_draw_arrays_indirect(
         &mut self,
         mode: GLenum,
@@ -16581,6 +16587,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_draw_elements_indirect(
         &mut self,
         mode: GLenum,
@@ -16642,6 +16650,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_framebuffer_parameteri(
         &mut self,
         target: GLenum,
@@ -16703,6 +16713,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_framebuffer_parameteriv(
         &mut self,
         target: GLenum,
@@ -16764,6 +16776,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_interfaceiv(
         &mut self,
         program: GLuint,
@@ -16837,6 +16851,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_resource_index(
         &mut self,
         program: GLuint,
@@ -16906,6 +16922,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_resource_name(
         &mut self,
         program: GLuint,
@@ -17023,6 +17041,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_resourceiv(
         &mut self,
         program: GLuint,
@@ -17170,6 +17190,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_resource_location(
         &mut self,
         program: GLuint,
@@ -17240,6 +17262,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_use_program_stages(
         &mut self,
         pipeline: GLuint,
@@ -17301,6 +17325,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_active_shader_program(
         &mut self,
         pipeline: GLuint,
@@ -17356,6 +17382,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_create_shader_program_v(
         &mut self,
         type_: GLenum,
@@ -17424,6 +17452,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_bind_program_pipeline(&mut self, pipeline: GLuint) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_pipeline = ParamInfo::new("GLuint", "pipeline");
@@ -17470,6 +17500,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_delete_program_pipelines(
         &mut self,
         n: GLsizei,
@@ -17525,6 +17557,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_gen_program_pipelines(
         &mut self,
         n: GLsizei,
@@ -17580,6 +17614,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_is_program_pipeline(&mut self, pipeline: GLuint) -> Result<bool, Error> {
         if self.is_debug() {
             let mut param_info_pipeline = ParamInfo::new("GLuint", "pipeline");
@@ -17636,6 +17672,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_pipelineiv(
         &mut self,
         pipeline: GLuint,
@@ -17697,6 +17735,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1i(
         &mut self,
         program: GLuint,
@@ -17758,6 +17798,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2i(
         &mut self,
         program: GLuint,
@@ -17825,6 +17867,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3i(
         &mut self,
         program: GLuint,
@@ -17902,6 +17946,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4i(
         &mut self,
         program: GLuint,
@@ -17985,6 +18031,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1ui(
         &mut self,
         program: GLuint,
@@ -18046,6 +18094,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2ui(
         &mut self,
         program: GLuint,
@@ -18113,6 +18163,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3ui(
         &mut self,
         program: GLuint,
@@ -18190,6 +18242,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4ui(
         &mut self,
         program: GLuint,
@@ -18273,6 +18327,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1f(
         &mut self,
         program: GLuint,
@@ -18334,6 +18390,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2f(
         &mut self,
         program: GLuint,
@@ -18402,6 +18460,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3f(
         &mut self,
         program: GLuint,
@@ -18479,6 +18539,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4f(
         &mut self,
         program: GLuint,
@@ -18562,6 +18624,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1iv(
         &mut self,
         program: GLuint,
@@ -18633,6 +18697,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2iv(
         &mut self,
         program: GLuint,
@@ -18704,6 +18770,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3iv(
         &mut self,
         program: GLuint,
@@ -18775,6 +18843,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4iv(
         &mut self,
         program: GLuint,
@@ -18846,6 +18916,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1uiv(
         &mut self,
         program: GLuint,
@@ -18917,6 +18989,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2uiv(
         &mut self,
         program: GLuint,
@@ -18988,6 +19062,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3uiv(
         &mut self,
         program: GLuint,
@@ -19059,6 +19135,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4uiv(
         &mut self,
         program: GLuint,
@@ -19130,6 +19208,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform1fv(
         &mut self,
         program: GLuint,
@@ -19201,6 +19281,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform2fv(
         &mut self,
         program: GLuint,
@@ -19272,6 +19354,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform3fv(
         &mut self,
         program: GLuint,
@@ -19343,6 +19427,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform4fv(
         &mut self,
         program: GLuint,
@@ -19414,6 +19500,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix2fv(
         &mut self,
         program: GLuint,
@@ -19493,6 +19581,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix3fv(
         &mut self,
         program: GLuint,
@@ -19572,6 +19662,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix4fv(
         &mut self,
         program: GLuint,
@@ -19651,6 +19743,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix2x3fv(
         &mut self,
         program: GLuint,
@@ -19730,6 +19824,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix3x2fv(
         &mut self,
         program: GLuint,
@@ -19809,6 +19905,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix2x4fv(
         &mut self,
         program: GLuint,
@@ -19888,6 +19986,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix4x2fv(
         &mut self,
         program: GLuint,
@@ -19967,6 +20067,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix3x4fv(
         &mut self,
         program: GLuint,
@@ -20046,6 +20148,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_program_uniform_matrix4x3fv(
         &mut self,
         program: GLuint,
@@ -20125,6 +20229,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_validate_program_pipeline(&mut self, pipeline: GLuint) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_pipeline = ParamInfo::new("GLuint", "pipeline");
@@ -20171,6 +20277,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_program_pipeline_info_log(
         &mut self,
         pipeline: GLuint,
@@ -20244,6 +20352,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_bind_image_texture(
         &mut self,
         unit: GLuint,
@@ -20337,6 +20447,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_boolean_iv(
         &mut self,
         target: GLenum,
@@ -20399,6 +20511,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_memory_barrier(&mut self, barriers: GLbitfield) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_barriers = ParamInfo::new("GLbitfield", "barriers");
@@ -20445,6 +20559,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_memory_barrier_by_region(&mut self, barriers: GLbitfield) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_barriers = ParamInfo::new("GLbitfield", "barriers");
@@ -20491,6 +20607,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_storage2D_multi_sample(
         &mut self,
         target: GLenum,
@@ -20602,6 +20720,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_multisamplefv(
         &mut self,
         pname: GLenum,
@@ -20663,6 +20783,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_sample_mask_i(&mut self, maskNumber: GLuint, mask: GLbitfield) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_maskNumber = ParamInfo::new("GLuint", "maskNumber");
@@ -20714,6 +20836,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_tex_level_parameter_iv(
         &mut self,
         target: GLenum,
@@ -20784,6 +20908,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_tex_level_parameter_fv(
         &mut self,
         target: GLenum,
@@ -20855,6 +20981,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_bind_vertex_buffer(
         &mut self,
         binding_index: GLuint,
@@ -20925,6 +21053,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_vertex_attrib_format(
         &mut self,
         attribindex: GLuint,
@@ -21012,6 +21142,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_vertex_attrib_I_format(
         &mut self,
         attri_bindex: GLuint,
@@ -21079,6 +21211,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_vertex_attrib_binding(
         &mut self,
         attri_bindex: GLuint,
@@ -21134,6 +21268,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_vertex_binding_divisor(
         &mut self,
         binding_index: GLuint,
@@ -21189,6 +21325,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_blend_barrier(&mut self) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_values: Vec<&Param> = vec![];
@@ -21228,6 +21366,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_copy_image_sub_data(
         &mut self,
         srcName: GLuint,
@@ -21407,6 +21547,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_debug_message_control(
         &mut self,
         source: GLenum,
@@ -21500,6 +21642,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_debug_message_insert(
         &mut self,
         source: GLenum,
@@ -21642,6 +21786,8 @@ impl Wrapper {
 //            Ok(())
 //        }
 //    }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_debug_message_Log(
         &mut self,
         count: GLuint,
@@ -21791,6 +21937,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_push_debug_group(
         &mut self,
         source: GLenum,
@@ -21860,6 +22008,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_pop_debug_group(&mut self) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_values: Vec<&Param> = vec![];
@@ -21898,6 +22048,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_object_label(
         &mut self,
         identifier: GLenum,
@@ -21967,6 +22119,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_object_label(
         &mut self,
         ptr: *const GLvoid,
@@ -22036,6 +22190,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_object_ptr_label(
         &mut self,
         ptr: *const GLvoid,
@@ -22099,6 +22255,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_object_ptr_label(
         &mut self,
         ptr: *const GLvoid,
@@ -22168,6 +22326,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_pointer_v(
         &mut self,
         pname: GLenum,
@@ -22223,6 +22383,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_enable_i(&mut self, target: GLenum, index: GLuint) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_target = ParamInfo::new("GLenum", "target");
@@ -22274,6 +22436,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_disable_i(&mut self, target: GLenum, index: GLuint) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_target = ParamInfo::new("GLenum", "target");
@@ -22325,6 +22489,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_blend_equation_i(&mut self, buf: GLuint, mode: GLenum) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_buf = ParamInfo::new("GLuint", "buf");
@@ -22376,6 +22542,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_blend_equation_separate_i(
         &mut self,
         buf: GLuint,
@@ -22437,6 +22605,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_blend_func_i(&mut self, buf: GLuint, src: GLenum, dst: GLenum) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_buf = ParamInfo::new("GLuint", "buf");
@@ -22493,6 +22663,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_blend_func_separate_i(
         &mut self,
         buf: GLuint,
@@ -22572,6 +22744,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_color_mask_i(
         &mut self,
         index: GLuint,
@@ -22648,6 +22822,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_is_enabled_i(&mut self, target: GLenum, index: GLuint) -> Result<bool, Error> {
         if self.is_debug() {
             let mut param_info_target = ParamInfo::new("GLenum", "target");
@@ -22711,6 +22887,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_draw_elements_base_vertex(
         &mut self,
         mode: GLenum,
@@ -22790,6 +22968,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_draw_range_elements_base_vertex(
         &mut self,
         mode: GLenum,
@@ -22925,6 +23105,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_draw_elements_instanced_base_vertex(
         &mut self,
         mode: GLenum,
@@ -23036,6 +23218,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_frame_buffer_texture(
         &mut self,
         target: GLenum,
@@ -23103,6 +23287,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_primitive_bounding_box(
         &mut self,
         minX: GLfloat,
@@ -23218,6 +23404,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_graphics_reset_status(&mut self) -> Result<GLenum, Error> {
         if self.is_debug() {
             let mut param_values: Vec<&Param> = vec![];
@@ -23261,6 +23449,8 @@ impl Wrapper {
             }
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_read_n_pixels(
         &mut self,
         x: GLint,
@@ -23376,6 +23566,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_n_uniform_fv(
         &mut self,
         program: GLuint,
@@ -23447,6 +23639,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_n_uniform_iv(
         &mut self,
         program: GLuint,
@@ -23518,6 +23712,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_n_uniform_uiv(
         &mut self,
         program: GLuint,
@@ -23589,6 +23785,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_minsampleshading(&mut self, value: GLfloat) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_value = ParamInfo::new("GLfloat", "value");
@@ -23635,6 +23833,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_patch_parameter_i(&mut self, pname: GLenum, value: GLint) -> Result<(), Error> {
         if self.is_debug() {
             let mut param_info_pname = ParamInfo::new("GLenum", "pname");
@@ -23686,6 +23886,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_parameter_iiv(
         &mut self,
         target: GLenum,
@@ -23747,6 +23949,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_parameter_iuiv(
         &mut self,
         target: GLenum,
@@ -23808,6 +24012,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_tex_parameter_iiv(
         &mut self,
         target: GLenum,
@@ -23869,6 +24075,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_tex_parameter_iuiv(
         &mut self,
         target: GLenum,
@@ -23932,6 +24140,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_sampler_parameter_iiv(
         &mut self,
         sampler: GLuint,
@@ -23993,6 +24203,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_sampler_parameter_iuiv(
         &mut self,
         sampler: GLuint,
@@ -24054,6 +24266,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_sampler_parameter_iiv(
         &mut self,
         sampler: GLuint,
@@ -24115,6 +24329,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_get_sampler_parameter_iuiv(
         &mut self,
         sampler: GLuint,
@@ -24176,6 +24392,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_buffer(
         &mut self,
         target: GLenum,
@@ -24237,6 +24455,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_buffer_range(
         &mut self,
         target: GLenum,
@@ -24316,6 +24536,8 @@ impl Wrapper {
             Ok(())
         }
     }
+
+    #[cfg(target_os = "android")]
     pub fn gl_tex_storage_3D_multi_sample(
         &mut self,
         target: GLenum,

@@ -1,6 +1,14 @@
 use types::*;
 use consts::*;
 
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ES_VERSION {
+    ES20,
+    ES30,
+    ES31,
+    ES32
+}
+
 pub struct Error {
 
 }

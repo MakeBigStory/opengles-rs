@@ -62,6 +62,7 @@ trait Interceptor {
 }
 
 pub struct Wrapper {
+    es_version: ES_VERSION,
     interceptors: HashMap<String, Box<Interceptor>>,
     debug: bool,
     glReadBuffer_ptr: *const c_void,
@@ -469,7 +470,16 @@ struct InitError {
     desc: String,
 }
 
+pub struct InitResult {
+    es_version: ES_VERSION,
+    desc: String,
+}
+
 impl Wrapper {
+
+    pub fn get_es_version(&self) -> ES_VERSION {
+        return self.es_version;
+    }
 
     fn add_interceptor<T>(&mut self, interceptor: T) where T: Interceptor + 'static {
         let new_interceptor : Box<Interceptor> = Box::new(interceptor);
@@ -510,6 +520,7 @@ impl Wrapper {
 
     fn new() -> Self {
         Wrapper {
+            es_version: ES_VERSION::ES20,
             interceptors: HashMap::new(),
             debug: false,
             glReadBuffer_ptr: 0 as *const c_void,
@@ -726,7 +737,7 @@ impl Wrapper {
         }
     }
 
-    fn init(&mut self) -> Result<(), InitError> {
+    fn init_es30(&mut self) -> Result<(), InitError> {
         self.glReadBuffer_ptr = self.get_proc_address("glReadBuffer")?;
         self.glDrawBuffers_ptr = self.get_proc_address("glDrawBuffers")?;
         self.glUnmapBuffer_ptr = self.get_proc_address("glUnmapBuffer")?;
@@ -832,6 +843,11 @@ impl Wrapper {
         self.glTexStorage2D_ptr = self.get_proc_address("glTexStorage2D")?;
         self.glTexStorage3D_ptr = self.get_proc_address("glTexStorage3D")?;
         self.glGetInternalformativ_ptr = self.get_proc_address("glGetInternalformativ")?;
+
+        Ok(())
+    }
+
+    fn init_es31(&mut self) -> Result<(), InitError> {
         self.glDispatchCompute_ptr = self.get_proc_address("glDispatchCompute")?;
         self.glDispatchComputeIndirect_ptr = self.get_proc_address("glDispatchComputeIndirect")?;
         self.glDrawArraysIndirect_ptr = self.get_proc_address("glDrawArraysIndirect")?;
@@ -908,6 +924,11 @@ impl Wrapper {
         self.glVertexAttribIFormat_ptr = self.get_proc_address("glVertexAttribIFormat")?;
         self.glVertexAttribBinding_ptr = self.get_proc_address("glVertexAttribBinding")?;
         self.glVertexBindingDivisor_ptr = self.get_proc_address("glVertexBindingDivisor")?;
+
+        Ok(())
+    }
+
+    fn init_es32(&mut self) -> Result<(), InitError> {
         self.glBlendBarrier_ptr = self.get_proc_address("glBlendBarrier")?;
         self.glCopyImageSubData_ptr = self.get_proc_address("glCopyImageSubData")?;
         self.glDebugMessageControl_ptr = self.get_proc_address("glDebugMessageControl")?;
@@ -954,6 +975,48 @@ impl Wrapper {
         self.glTexStorage3DMultisample_ptr = self.get_proc_address("glTexStorage3DMultisample")?;
 
         Ok(())
+    }
+
+    pub fn init(&mut self) -> InitResult {
+        let mut result = InitResult {
+            es_version: ES_VERSION::ES20,
+            desc: "".to_string(),
+        };
+
+        match self.init_es30() {
+            Ok(()) => {
+                self.es_version = ES_VERSION::ES30;
+                result.es_version = ES_VERSION::ES30;
+            },
+            Err(error) => {
+                result.desc = error.desc.clone();
+                return result;
+            }
+        }
+
+        match self.init_es31() {
+            Ok(()) => {
+                self.es_version = ES_VERSION::ES31;
+                result.es_version = ES_VERSION::ES31;
+            },
+            Err(error) => {
+                result.desc = error.desc.clone();
+                return result;
+            }
+        }
+
+        match self.init_es32() {
+            Ok(()) => {
+                self.es_version = ES_VERSION::ES32;
+                result.es_version = ES_VERSION::ES32;
+            },
+            Err(error) => {
+                result.desc = error.desc.clone();
+                return result;
+            }
+        }
+
+        return result;
     }
 
     fn get_proc_address(&mut self, proc_name: &str) -> Result<*const c_void, InitError> {

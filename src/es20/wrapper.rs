@@ -737,6 +737,7 @@ impl Wrapper {
         }
     }
 
+    #[cfg(target_os = "android")]
     fn init_es30(&mut self) -> Result<(), InitError> {
         self.glReadBuffer_ptr = self.get_proc_address("glReadBuffer")?;
         self.glDrawBuffers_ptr = self.get_proc_address("glDrawBuffers")?;
@@ -847,6 +848,7 @@ impl Wrapper {
         Ok(())
     }
 
+    #[cfg(target_os = "android")]
     fn init_es31(&mut self) -> Result<(), InitError> {
         self.glDispatchCompute_ptr = self.get_proc_address("glDispatchCompute")?;
         self.glDispatchComputeIndirect_ptr = self.get_proc_address("glDispatchComputeIndirect")?;
@@ -928,6 +930,7 @@ impl Wrapper {
         Ok(())
     }
 
+    #[cfg(target_os = "android")]
     fn init_es32(&mut self) -> Result<(), InitError> {
         self.glBlendBarrier_ptr = self.get_proc_address("glBlendBarrier")?;
         self.glCopyImageSubData_ptr = self.get_proc_address("glCopyImageSubData")?;
@@ -978,47 +981,58 @@ impl Wrapper {
     }
 
     pub fn init(&mut self) -> InitResult {
-        let mut result = InitResult {
-            es_version: ES_VERSION::ES20,
-            desc: "".to_string(),
-        };
-
-        match self.init_es30() {
-            Ok(()) => {
-                self.es_version = ES_VERSION::ES30;
-                result.es_version = ES_VERSION::ES30;
-            },
-            Err(error) => {
-                result.desc = error.desc.clone();
-                return result;
-            }
+        #[cfg(target_os = "ios")] {
+            return InitResult {
+                es_version: ES_VERSION::ES30,
+                desc: "".to_string(),
+            };
         }
 
-        match self.init_es31() {
-            Ok(()) => {
-                self.es_version = ES_VERSION::ES31;
-                result.es_version = ES_VERSION::ES31;
-            },
-            Err(error) => {
-                result.desc = error.desc.clone();
-                return result;
-            }
-        }
+        #[cfg(target_os = "android")] {
+            let mut result = InitResult {
+                es_version: ES_VERSION::ES20,
+                desc: "".to_string(),
+            };
 
-        match self.init_es32() {
-            Ok(()) => {
-                self.es_version = ES_VERSION::ES32;
-                result.es_version = ES_VERSION::ES32;
-            },
-            Err(error) => {
-                result.desc = error.desc.clone();
-                return result;
+            match self.init_es30() {
+                Ok(()) => {
+                    self.es_version = ES_VERSION::ES30;
+                    result.es_version = ES_VERSION::ES30;
+                },
+                Err(error) => {
+                    result.desc = error.desc.clone();
+                    return result;
+                }
             }
-        }
 
-        return result;
+            match self.init_es31() {
+                Ok(()) => {
+                    self.es_version = ES_VERSION::ES31;
+                    result.es_version = ES_VERSION::ES31;
+                },
+                Err(error) => {
+                    result.desc = error.desc.clone();
+                    return result;
+                }
+            }
+
+            match self.init_es32() {
+                Ok(()) => {
+                    self.es_version = ES_VERSION::ES32;
+                    result.es_version = ES_VERSION::ES32;
+                },
+                Err(error) => {
+                    result.desc = error.desc.clone();
+                    return result;
+                }
+            }
+
+            return result;
+        }
     }
 
+
+    #[cfg(target_os = "android")]
     fn get_proc_address(&mut self, proc_name: &str) -> Result<*const c_void, InitError> {
         unsafe {
             let string = CString::new(proc_name).unwrap();
